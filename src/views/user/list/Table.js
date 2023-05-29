@@ -1,5 +1,5 @@
 // ** React Imports
-import { Fragment, useState, useEffect } from 'react'
+import { Fragment, useState } from 'react'
 
 // ** Invoice List Sidebar
 import Sidebar from './Sidebar'
@@ -8,7 +8,7 @@ import Sidebar from './Sidebar'
 import { columns } from './columns'
 
 // ** Store & Actions
-import { getAllData, getData } from '../store'
+// import { getAllData, getData } from '../store'
 import { useDispatch, useSelector } from 'react-redux'
 
 // ** Third Party Components
@@ -108,22 +108,22 @@ const UsersList = () => {
   // ** Function to toggle sidebar
   const toggleSidebar = () => setSidebarOpen(!sidebarOpen)
 
-  // ** Get data on mount
-  useEffect(() => {
-    dispatch(getAllData())
-    dispatch(
-      getData({
-        sort,
-        sortColumn,
-        q: searchTerm,
-        page: currentPage
-        // perPage: rowsPerPage,
-        // role: currentRole.value,
-        // status: currentStatus.value,
-        // currentPlan: currentPlan.value
-      })
-    )
-  }, [dispatch, store.data.length, sort, sortColumn, currentPage])
+  // // ** Get data on mount
+  // useEffect(() => {
+  //   dispatch(getAllData())
+  //   dispatch(
+  //     getData({
+  //       sort,
+  //       sortColumn,
+  //       q: searchTerm,
+  //       page: currentPage
+  //       // perPage: rowsPerPage,
+  //       // role: currentRole.value,
+  //       // status: currentStatus.value,
+  //       // currentPlan: currentPlan.value
+  //     })
+  //   )
+  // }, [dispatch, store.data.length, sort, sortColumn, currentPage])
 
   // ** User filter options
   const regionOptions = [

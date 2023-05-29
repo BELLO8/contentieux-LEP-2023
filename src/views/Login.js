@@ -41,8 +41,8 @@ const Login = () => {
                 <InputPasswordToggle className='input-group-merge' id='login-password' />
               </div>
              
-              <Button color='primary' block>
-                Sign in
+              <Button color='primary' block  tag={Link} to="/liste-electorale">
+                Se connecter
               </Button>
             </Form>
             <p className='text-center mt-2'> 

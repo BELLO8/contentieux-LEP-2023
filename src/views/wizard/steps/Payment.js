@@ -3,6 +3,7 @@
 // ** Reactstrap Imports
 import { Button, Card, CardBody, CardHeader, CardText, CardTitle, Col, Form, Input, Label, Row } from 'reactstrap'
 import { ArrowLeft } from 'react-feather'
+import { Link } from 'react-router-dom'
 
 const PaymentInfo = ({ stepper }) => {
   return (
@@ -84,7 +85,7 @@ const PaymentInfo = ({ stepper }) => {
           <ArrowLeft size={14} className='align-middle me-sm-25 me-0'></ArrowLeft>
           <span className='align-middle d-sm-inline-block d-none'>Previous</span>
         </Button>
-        <Button color='success' className='btn-next' >
+        <Button color='success' className='btn-next' tag={Link} to="/login" >
               <span className='align-middle d-sm-inline-block d-none'>Passer au paiement</span>
         </Button>
       </div>
