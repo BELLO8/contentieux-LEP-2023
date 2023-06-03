@@ -1,5 +1,7 @@
+/* eslint-disable */
 import axios from "axios";
 import jwtDefaultConfig from "./jwtDefaultConfig";
+import { client } from "./const";
 
 export default class JwtService {
   // ** jwtConfig <= Will be used by this service
@@ -95,11 +97,11 @@ export default class JwtService {
   }
 
   login(...args) {
-    return axios.post(this.jwtConfig.loginEndpoint, ...args);
+    return client.post(this.jwtConfig.loginEndpoint, ...args);
   }
 
   register(...args) {
-    return axios.post(this.jwtConfig.registerEndpoint, ...args);
+    return client.post(this.jwtConfig.registerEndpoint, ...args);
   }
 
   refreshToken() {

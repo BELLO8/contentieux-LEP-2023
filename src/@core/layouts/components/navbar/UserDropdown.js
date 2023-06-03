@@ -23,10 +23,22 @@ import {
   DropdownToggle,
   DropdownItem
 } from "reactstrap"
+import { useEffect, useState } from "react"
+import { isUserLoggedIn } from "../../../../utility/Utils"
 
 // ** Default Avatar Image
 
 const UserDropdown = () => {
+
+  const [userData, setUserData] = useState(null)
+
+  //** ComponentDidMount
+  useEffect(() => {
+    if (isUserLoggedIn() !== null) {
+      setUserData(JSON.parse(localStorage.getItem('userProfil')))
+    }
+  }, [])
+
   return (
     <UncontrolledDropdown tag="li" className="dropdown-user nav-item">
       <DropdownToggle
@@ -36,7 +48,7 @@ const UserDropdown = () => {
         onClick={(e) => e.preventDefault()}
       >
         <div className="user-nav d-sm-flex d-none">
-          <span className="user-name fw-bold">Kouamé Aime</span>
+          <span className="user-name fw-bold">{ userData !== null ? userData.nom : '' }</span>
           <span className="user-status">Candidat</span>
         </div>
         <Avatar

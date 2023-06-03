@@ -8,27 +8,18 @@ import { ArrowLeft, ArrowRight } from 'react-feather'
 import { Label, Row, Col, Input, Form, Button } from 'reactstrap'
 import UserInfoCard from '../../user/view/UserInfoCard'
 import PlanCard from '../../user/view/PlanCard'
+import { useDispatch, useSelector } from 'react-redux'
+import { Register } from '../../../redux/store/InfoCandidat'
 
 const CandidantInfo = ({ stepper }) => {
 
-  const user = 
-    {
-      id: 1,
-      billing: 'Manual - Credit Card',
-      fullName: 'Galen Slixby',
-      company: 'Yotz PVT LTD',
-      role: 'Candidat',
-      username: 'gslixby0',
-      country: 'El Salvador',
-      contact: '(479) 232-9151',
-      email: 'gslixby0@abc.net.au',
-      currentPlan: 'enterprise',
-      status: 'inactive',
-      avatar: '',
-      avatarColor: 'light-primary'
-    }
-  
+  const dispatch = useDispatch()
+  const candidatInfo = useSelector(state => state.infoCandidat.data)
+  const userRegister = useSelector(state => state.infoCandidat.user)
 
+  const user = {...userRegister, id_candidat: candidatInfo.cod_candidat}
+
+  
   return (
     <Fragment>
       <div className='content-header'>
@@ -37,11 +28,10 @@ const CandidantInfo = ({ stepper }) => {
       </div>
       <Row>
         <Col lg="6" sm="12">
-          <UserInfoCard selectedUser={user}/>
+          <UserInfoCard selectedUser={candidatInfo}/>
         </Col>
-
         <Col lg="6" sm="12">
-          <PlanCard/>
+          <PlanCard userInfo={candidatInfo}/>
         </Col>
       </Row>
       
@@ -51,7 +41,10 @@ const CandidantInfo = ({ stepper }) => {
             <ArrowLeft size={14} className='align-middle me-sm-25 me-0'></ArrowLeft>
             <span className='align-middle d-sm-inline-block d-none'>Previous</span>
           </Button>
-          <Button color='primary' className='btn-next' onClick={() => stepper.next()}>
+          <Button color='primary' className='btn-next' onClick={() => { 
+            dispatch(Register(user))
+            stepper.next() 
+            } }>
             <span className='align-middle d-sm-inline-block d-none'>Next</span>
             <ArrowRight size={14} className='align-middle ms-sm-25 ms-0'></ArrowRight>
           </Button>

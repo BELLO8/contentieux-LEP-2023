@@ -2,16 +2,60 @@
 
 // ** Reactstrap Imports
 import { Button, Card, CardBody, CardHeader, CardText, CardTitle, Col, Form, Input, Label, Row } from 'reactstrap'
-import { ArrowLeft } from 'react-feather'
-import { Link } from 'react-router-dom'
-
+import { ArrowLeft, Check, AlertCircle } from 'react-feather'
+import Avatar from '@components/avatar'
+import { useSelector } from 'react-redux'
+import toast from 'react-hot-toast'
+import { useForm } from 'react-hook-form'
+import { register } from '../../../@core/auth/jwt/const'
+import { useNavigate } from 'react-router-dom'
 const PaymentInfo = ({ stepper }) => {
+  const navigate = useNavigate()
+  const userRegister = useSelector(state => state.infoCandidat.user)
+  console.log(userRegister)
+  const {
+    handleSubmit
+  } = useForm()
+
+  const onSubmit = () => {
+    if (userRegister !== null) {
+        register({
+          username: userRegister.username,
+          password: userRegister.password,
+          id_candidat: userRegister.id_candidat
+        }).then((res) => {
+          if (res.data.status === "success") {
+            toast(
+              <div className='d-flex'>
+                <div className='me-1'>
+                  <Avatar size='sm' color='success' icon={<Check size={12} />} />
+                </div>
+                <div className='d-flex flex-column'>
+                  <h6>{res.data.message}</h6>
+                </div>
+              </div>
+            )
+            navigate('/login')
+          } else { 
+              toast(
+                <div className='d-flex'>
+                  <div className='me-1'>
+                    <Avatar size='sm' color='danger' icon={<AlertCircle size={12}/>} />
+                  </div>
+                  <div className='d-flex flex-column'>
+                    <h6>{result.payload.message}</h6>
+                  </div>
+                </div>
+              )
+          }
+        })
+    }
+  }
+
   return (
     <Form
       className='list-view product-checkout'
-      onSubmit={e => {
-        e.preventDefault()
-      }}
+      onSubmit={handleSubmit(onSubmit)}
     >
       <div className='payment-type'>
         <Card>
@@ -85,7 +129,7 @@ const PaymentInfo = ({ stepper }) => {
           <ArrowLeft size={14} className='align-middle me-sm-25 me-0'></ArrowLeft>
           <span className='align-middle d-sm-inline-block d-none'>Previous</span>
         </Button>
-        <Button color='success' className='btn-next' tag={Link} to="/login" >
+        <Button type='submit' color='success' className='btn-next' >
               <span className='align-middle d-sm-inline-block d-none'>Passer au paiement</span>
         </Button>
       </div>
