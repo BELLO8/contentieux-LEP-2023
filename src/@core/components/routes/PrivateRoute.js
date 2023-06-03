@@ -20,7 +20,7 @@ const PrivateRoute = ({ children, route }) => {
       restrictedRoute = route.meta.restricted
     }
     if (!user) {
-      return <Navigate to="/not-authorized" />
+      return <Navigate to="/interdit" />
     }
     if (user && restrictedRoute) {
       return <Navigate to="/" />

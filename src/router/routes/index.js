@@ -81,7 +81,7 @@ const Routes = [
     }
   },
   {
-    path: '/not-authorized',
+    path: '/interdit',
     element: <NotAuthorized />,
     meta: {
       publicRoute: true,
