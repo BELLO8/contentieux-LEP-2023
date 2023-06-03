@@ -120,7 +120,7 @@ const MergeLayoutRoutes = (layout, defaultLayout) => {
         ((route.meta === undefined || route.meta.layout === undefined) &&
           defaultLayout === layout)
       ) {
-        let RouteTag = PublicRoute
+        let RouteTag = PrivateRoute
 
         // ** Check for public or private route
         if (route.meta) {

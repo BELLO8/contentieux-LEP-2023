@@ -18,7 +18,11 @@ export const getDepartement = createAsyncThunk('departement/getDepartement', asy
   })
 
   export const getElecteur = createAsyncThunk('electeur/getElecteur', async(params) => {
-    const response = await client.get(`electeurbydep/2023/${params.idDep}/${params.idCand}/?page=${params.page}`)
+    const response = await client.get(
+        `electeurbydep/2023/${params.idDep}/${params.idCand}/?page=${
+          params.page === null ? 1 : params.page
+        }`
+      )
     return response.data.data
   })
 

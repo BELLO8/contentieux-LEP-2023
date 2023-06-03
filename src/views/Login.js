@@ -2,8 +2,6 @@
 
 import { Link, useNavigate } from "react-router-dom"
 import {
-  Row,
-  Col,
   Card, CardBody,
   CardTitle,
   CardText,
@@ -16,9 +14,10 @@ import "@styles/react/pages/page-authentication.scss"
 import InputPasswordToggle from "@components/input-password-toggle"
 import { login } from "../@core/auth/jwt/const"
 import { useForm, Controller } from "react-hook-form"
-import { getHomeRouteForLoggedInUser } from "../utility/Utils"
+import { getHomeRouteForLoggedInUser, isUserLoggedIn } from "../utility/Utils"
 import { handleLogin } from "../redux/auth"
 import { useDispatch } from "react-redux"
+import { useEffect } from "react"
 
 const defaultValues = {
   password: "",
@@ -35,6 +34,12 @@ const Login = () => {
     formState: { errors }
   } = useForm({ defaultValues })
 
+  useEffect(() => {
+    if (isUserLoggedIn() !== null) {
+      navigate('/liste-electorale')
+    }
+  }, [])
+
   const onSubmit = (data) => {
     if (Object.values(data).every((field) => field.length > 0)) {
       login({
@@ -46,11 +51,12 @@ const Login = () => {
           if (res.data.status === "success") {
             const data = {
               ...res.data.data.candidat,
+              role:candidat,
               accessToken: Token,
               refreshToken: res.data.refreshToken
             }
             dispatch(handleLogin(data))
-            navigate(getHomeRouteForLoggedInUser(data.type_election))
+            navigate(getHomeRouteForLoggedInUser("candidat"))
             
           } else {
             alert(res.data.message)

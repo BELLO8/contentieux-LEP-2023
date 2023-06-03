@@ -1,30 +1,31 @@
 // ** React Imports
-import { Link } from "react-router-dom"
+import { Link, useNavigate } from "react-router-dom"
 
 // ** Icons Imports
-import { Facebook, Twitter, Mail, GitHub } from "react-feather"
 
 // ** Custom Components
-import InputPasswordToggle from "@components/input-password-toggle"
 
 // ** Reactstrap Imports
 import {
   Row,
   Col,
   CardTitle,
-  CardText,
-  Form,
-  Label,
-  Input,
-  Button
+  CardText
 } from "reactstrap"
 
 // ** Styles
 import "@styles/react/pages/page-authentication.scss"
 import WizardModern from "./wizard/WizardModern"
+import { useEffect } from "react"
+import { isUserLoggedIn } from "../utility/Utils"
 
 const Register = () => {
-
+  const navigate = useNavigate()
+  useEffect(() => {
+    if (isUserLoggedIn() !== null) {
+      navigate('/liste-electorale')
+    }
+  }, [])
 
   return (
     <div className="auth-wrapper auth-cover">

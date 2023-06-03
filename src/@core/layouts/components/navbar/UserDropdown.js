@@ -1,19 +1,12 @@
 // ** React Imports
-import { Link } from "react-router-dom"
+import { Link, useNavigate } from "react-router-dom"
 
 // ** Custom Components
 import Avatar from "@components/avatar"
 
 // ** Third Party Components
 import {
-  User,
-  Mail,
-  CheckSquare,
-  MessageSquare,
-  Settings,
-  CreditCard,
-  HelpCircle,
-  Power
+  User, Power
 } from "react-feather"
 
 // ** Reactstrap Imports
@@ -25,13 +18,16 @@ import {
 } from "reactstrap"
 import { useEffect, useState } from "react"
 import { isUserLoggedIn } from "../../../../utility/Utils"
+import { useDispatch } from "react-redux"
+import { handleLogout } from "../../../../redux/auth"
 
 // ** Default Avatar Image
 
 const UserDropdown = () => {
 
   const [userData, setUserData] = useState(null)
-
+  const dispatch = useDispatch()
+  const navigate = useNavigate()
   //** ComponentDidMount
   useEffect(() => {
     if (isUserLoggedIn() !== null) {
@@ -49,7 +45,7 @@ const UserDropdown = () => {
       >
         <div className="user-nav d-sm-flex d-none">
           <span className="user-name fw-bold">{ userData !== null ? userData.nom : '' }</span>
-          <span className="user-status">Candidat</span>
+          <span className="user-status">{ userData !== null ? userData.role : '' }</span>
         </div>
         <Avatar
           imgHeight="40"
@@ -62,7 +58,10 @@ const UserDropdown = () => {
           <User size={14} className="me-75" />
           <span className="align-middle">Profile</span>
         </DropdownItem>
-        <DropdownItem tag={Link} to="/login">
+        <DropdownItem onClick={() => { 
+          dispatch(handleLogout())
+          navigate('/login')
+          }}>
           <Power size={14} className="me-75" />
           <span className="align-middle">Logout</span>
         </DropdownItem>
