@@ -42,7 +42,7 @@ const Routes = [
     element: <Home />
   },
   {
-    path: "/second-page",
+    path: "/repertoire-electeur",
     element: <SecondPage />
   },
   {

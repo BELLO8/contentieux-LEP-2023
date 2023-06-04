@@ -6,11 +6,11 @@ export default [
     title: "Liste electorale",
     icon: <Home size={20} />,
     navLink: "/liste-electorale"
+  },
+  {
+    id: "secondPage",
+    title: "Repertoire electeur",
+    icon: <Mail size={20} />,
+    navLink: "/repertoire-electeur"
   }
-  // {
-  //   id: "secondPage",
-  //   title: "Second Page",
-  //   icon: <Mail size={20} />,
-  //   navLink: "/second-page"
-  // }
 ]

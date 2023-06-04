@@ -26,6 +26,24 @@ export const getDepartement = createAsyncThunk('departement/getDepartement', asy
     return response.data.data
   })
 
+  export const getElecteurByCommune = createAsyncThunk('electeurbycommune/getElecteurByCommune', async(params) => {
+    const response = await client.get(
+        `electeurbycommune/2023/${params.idCom}/${params.idCand}/?page=${
+          params.page === null ? 1 : params.page
+        }`
+      )
+
+    return response.data.data
+  })
+
+  export const getElecteurByLieuVote = createAsyncThunk('electeurbyLieuVote/getElecteurByLieuVote', async(params) => {
+    const response = await client.get(
+        `electeurbyLieuVote/2023/${params.idLv}/${params.idCand}/?page=${
+          params.page === null ? 1 : params.page
+        }`
+      )
+    return response.data.data
+  })
 
 export const ElectionSlice = createSlice({
     name:'election',
@@ -52,7 +70,15 @@ export const ElectionSlice = createSlice({
             .addCase(getElecteur.fulfilled, (state, action) => {
                         state.status = "succeeded"
                         state.electeur = action.payload
-                        })
+                    })
+            .addCase(getElecteurByCommune.fulfilled, (state, action) => {
+                state.status = "succeeded"
+                state.electeur = action.payload
+            })
+            .addCase(getElecteurByLieuVote.fulfilled, (state, action) => {
+                state.status = "succeeded"
+                state.electeur = action.payload
+            })
     }
 })
 

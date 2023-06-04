@@ -51,10 +51,11 @@ const Login = () => {
           if (res.data.status === "success") {
             const data = {
               ...res.data.data.candidat,
-              role:candidat,
+              role:"candidat",
               accessToken: Token,
               refreshToken: res.data.refreshToken
             }
+            console.log(data)
             dispatch(handleLogin(data))
             navigate(getHomeRouteForLoggedInUser("candidat"))
             
