@@ -43,7 +43,7 @@ const PaymentInfo = ({ stepper }) => {
                     <Avatar size='sm' color='danger' icon={<AlertCircle size={12}/>} />
                   </div>
                   <div className='d-flex flex-column'>
-                    <h6>{result.payload.message}</h6>
+                    <h6>{res.data.message}</h6>
                   </div>
                 </div>
               )

@@ -17,6 +17,16 @@ export const getDepartement = createAsyncThunk('departement/getDepartement', asy
     return response.data.data
   })
 
+//   export const getLieuxVoteCirconscription = createAsyncThunk('lieuxVoteCirconscription/getLieuxVoteCirconscription', async(idCircons) => {
+//     const response = await client.get(`LieudeVote/2023/${idCircons}`)
+//     return response.data.data
+//   })
+
+  export const getBureauVote = createAsyncThunk('bureauVote/getBureauVote', async(idLv) => {
+    const response = await client.get(`bureauVote/${idLv}`)
+    return response.data.data
+  })
+
   export const getElecteur = createAsyncThunk('electeur/getElecteur', async(params) => {
     const response = await client.get(
         `electeurbydep/2023/${params.idDep}/${params.idCand}/?page=${
@@ -52,7 +62,8 @@ export const ElectionSlice = createSlice({
         departement: [],
         commune: [],
         lieuxVote: [],
-        electeur:[]
+        electeur:[],
+        bureauVote: []
     },
     extraReducers: builder => {
         builder.addCase(getDepartement.fulfilled, (state, action) => {
@@ -78,6 +89,10 @@ export const ElectionSlice = createSlice({
             .addCase(getElecteurByLieuVote.fulfilled, (state, action) => {
                 state.status = "succeeded"
                 state.electeur = action.payload
+            })
+            .addCase(getBureauVote.fulfilled, (state, action) => {
+                state.status = "succeeded"
+                state.bureauVote = action.payload
             })
     }
 })

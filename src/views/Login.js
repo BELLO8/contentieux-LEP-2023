@@ -10,6 +10,8 @@ import {
   Input,
   Button
 } from "reactstrap"
+import { AlertCircle } from 'react-feather'
+import Avatar from '@components/avatar'
 import "@styles/react/pages/page-authentication.scss"
 import InputPasswordToggle from "@components/input-password-toggle"
 import { login } from "../@core/auth/jwt/const"
@@ -18,6 +20,7 @@ import { getHomeRouteForLoggedInUser, isUserLoggedIn } from "../utility/Utils"
 import { handleLogin } from "../redux/auth"
 import { useDispatch } from "react-redux"
 import { useEffect } from "react"
+import toast from 'react-hot-toast'
 
 const defaultValues = {
   password: "",
@@ -47,6 +50,7 @@ const Login = () => {
           password: data.password
         })
         .then((res) => {
+          console.log(res)
           const Token = res.data.data.token
           if (res.data.status === "success") {
             const data = {
@@ -55,12 +59,19 @@ const Login = () => {
               accessToken: Token,
               refreshToken: res.data.refreshToken
             }
-            console.log(data)
             dispatch(handleLogin(data))
             navigate(getHomeRouteForLoggedInUser("candidat"))
-            
           } else {
-            alert(res.data.message)
+              toast(
+                <div className='d-flex'>
+                  <div className='me-1'>
+                    <Avatar size='sm' color='danger' icon={<AlertCircle size={12}/>} />
+                  </div>
+                  <div className='d-flex flex-column'>
+                    <h6>{res.data.message}</h6>
+                  </div>
+                </div>
+              )
           }
         })
         .catch((err) => console.log(err))

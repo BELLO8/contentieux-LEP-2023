@@ -184,6 +184,7 @@ const UsersList = () => {
   const lieuxVoteData = [];
   const departementData = [];
   const comData = [];
+  const bureauVoteData = [];
 
   departement?.map((item) => {
     departementData.push({ value: item.cod_dep, label: item.lib_dep });
@@ -356,7 +357,7 @@ const UsersList = () => {
                   isClearable={false}
                   className="react-select"
                   classNamePrefix="select"
-                  options={lib_lvote}
+                  options={lieuxVoteData}
                   onChange={() => {}}
                 />
               </Col>
@@ -367,8 +368,7 @@ const UsersList = () => {
                   isClearable={false}
                   className="react-select"
                   classNamePrefix="select"
-                  options={sousOptions}
-                  value={currentSous}
+                  options={bureauVoteData}
                   onChange={(data) => {
                     setCurrentSous(data);
                   }}
