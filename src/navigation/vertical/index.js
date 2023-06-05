@@ -1,4 +1,4 @@
-import { Mail, Home } from "react-feather"
+import { Mail, Home, Circle } from "react-feather"
 
 export default [
   {
@@ -11,6 +11,31 @@ export default [
     id: "secondPage",
     title: "Repertoire electeur",
     icon: <Mail size={20} />,
-    navLink: "/repertoire-electeur"
+    children: [
+      {
+        id: 'decede',
+        title: 'Liste decede',
+        icon: <Circle size={12} />,
+        navLink: '/repertoire-electeur-decede'
+      },
+      {
+        id: 'info',
+        title: 'Information manquante',
+        icon: <Circle size={12} />,
+        navLink: '/repertoire-information-manquante'
+      },
+      {
+        id: 'contentieux',
+        title: 'Liste contentieux',
+        icon: <Circle size={12} />,
+        navLink: '/repertoire-electeur'
+      }
+    ]
+  },
+  {
+    id: "synthese",
+    title: "Synthese",
+    icon: <Mail size={20} />,
+    navLink: "/syntheses"
   }
 ]

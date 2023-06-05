@@ -6,7 +6,7 @@ import { Fragment, useState, useEffect } from "react";
 // ** Invoice List Sidebar
 
 // ** Table Columns
-import { columns } from "./columns";
+import { columns } from "./user/list/columns";
 
 // ** Store & Actions
 // import { getAllData, getData } from '../store'
@@ -44,15 +44,13 @@ import {
 // ** Styles
 import "@styles/react/libs/react-select/_react-select.scss";
 import "@styles/react/libs/tables/react-dataTable-component.scss";
-import { getUserData } from "../../../utility/Utils";
+import { getUserData } from "../utility/Utils";
 import {
+  clearStore,
   getCirconscriptionAdmin,
-  getDepartement,
-  getElecteur,
-  getElecteurByCommune,
-  getElecteurByLieuVote,
+  getDepartement, getElecteurInformationManquante,
   getLieuxVote
-} from "../../../redux/store/Election";
+} from "../redux/store/Election";
 
 // ** Table Header
 const CustomHeader = ({
@@ -153,7 +151,7 @@ const CustomHeader = ({
   );
 };
 
-const UsersList = () => {
+const InformationMaquante = () => {
   // ** Store Vars
   const dispatch = useDispatch();
   const store = useSelector((state) => state.election.electeur);
@@ -190,9 +188,9 @@ const UsersList = () => {
   // ** States
   const [sort, setSort] = useState("desc");
   const [searchTerm, setSearchTerm] = useState("");
-  const [currentPage, setCurrentPage] = useState(1);
+  const [Page, setPage] = useState(1);
   const [select, setSelect] = useState("");
-  const [rowsPerPage, setRowsPerPage] = useState(10);
+  const [rowsPage, setRowsPage] = useState(10);
   const [sidebarOpen, setSidebarOpen] = useState(false);
   const [idDep, setIdDep] = useState();
   const [idCom, setIdCom] = useState();
@@ -202,6 +200,7 @@ const UsersList = () => {
 
   // // ** Get data on mount
   useEffect(() => {
+    dispatch(clearStore())
     dispatch(getDepartement(userData.id_circons_er));
     dispatch(getLieuxVote(userData.id_circons_em))
   }, [dispatch]);
@@ -210,35 +209,38 @@ const UsersList = () => {
   const handlePagination = (page) => {
     if (select === "selectDep") {
       dispatch(
-        getElecteur({
-          idDep: idDep,
+        getElecteurInformationManquante({
+          url: "electeurInfoManquanteByDep",
+          id: idDep,
           idCand: userData.id_candidat,
           page: page.selected + 1,
         })
       );
     } else if (select === "selectCom") {
       dispatch(
-        getElecteurByCommune({
-          idCom: idCom,
+        getElecteurInformationManquante({
+          url: "electeurInfoManquanteByCommune",
+          id: idCom,
           idCand: userData.id_candidat,
           page: page.selected + 1,
         })
       );
     } else {
       dispatch(
-        getElecteurByLieuVote({
-          idLv: idLv,
+        getElecteurInformationManquante({
+          url: "electeurInfoManquanteByLieuvote",
+          id: idLv,
           idCand: userData.id_candidat,
           page: page.selected + 1,
         })
       );
     }
-    setCurrentPage(page.selected + 1);
+    setPage(page.selected + 1);
   };
 
   const handlePerPage = (e) => {
     const value = parseInt(e.currentTarget.value);
-    setRowsPerPage(value);
+    setRowsPage(value);
   };
 
   // ** Custom Pagination
@@ -251,7 +253,7 @@ const UsersList = () => {
         nextLabel={""}
         pageCount={count || 1}
         activeClassName="active"
-        forcePage={currentPage !== 0 ? currentPage - 1 : 0}
+        forcePage={Page !== 0 ? Page - 1 : 0}
         onPageChange={(page) => handlePagination(page)}
         pageClassName={"page-item"}
         nextLinkClassName={"page-link"}
@@ -270,7 +272,7 @@ const UsersList = () => {
     <Fragment>
       <Card>
         <CardHeader>
-          <CardTitle tag="h4">Filtre des données</CardTitle>
+          <CardTitle tag="h4">Information manquante </CardTitle>
         </CardHeader>
         <CardBody>
           {userData.type_election === "2" ? (
@@ -284,12 +286,13 @@ const UsersList = () => {
                   classNamePrefix="select"
                   options={departementData}
                   onChange={(event) => {
-                    setCurrentPage(1)
+                    setPage(1)
                     setSelect("selectDep");
                     setIdDep(event.value);
                     dispatch(
-                      getElecteur({
-                        idDep: event.value,
+                      getElecteurInformationManquante({
+                        url: "electeurInfoManquanteByDep",
+                        id: event.value,
                         idCand: userData.id_candidat,
                       })
                     );
@@ -298,7 +301,7 @@ const UsersList = () => {
                 />
               </Col>
               <Col className="my-md-0 my-1" md="3">
-                <Label for="plan-select">Circonscription administrative</Label>
+                <Label for="plan-select">Circonscription</Label>
                 <Select
                   theme={selectThemeColors}
                   isClearable={false}
@@ -307,11 +310,12 @@ const UsersList = () => {
                   options={comData}
                   onChange={(event) => {
                     setSelect("selectCom");
-                    setCurrentPage(1)
+                    setPage(1)
                     setIdCom(event.value);
                     dispatch(getLieuxVote(event.value));
-                    dispatch(getElecteurByCommune({
-                      idCom: event.value,
+                    dispatch(getElecteurInformationManquante({
+                      url: "electeurInfoManquanteByCommune",
+                      id: event.value,
                       idCand: userData.id_candidat
                     }))
                   }}
@@ -326,11 +330,12 @@ const UsersList = () => {
                   classNamePrefix="select"
                   options={lieuxVoteData}
                   onChange={(event) => {
-                    setCurrentPage(1)
+                    setPage(1)
                     setSelect("selectLv");
                     setIdLv(event.value);
-                    dispatch(getElecteurByLieuVote({
-                      idLv: event.value,
+                    dispatch(getElecteurInformationManquante({
+                      url: "electeurInfoManquanteByLieuvote",
+                      id: event.value,
                       idCand: userData.id_candidat
                     }))
                   }}
@@ -348,28 +353,16 @@ const UsersList = () => {
                   classNamePrefix="select"
                   options={lieuxVoteData}
                   onChange={(event) => {
-                    setCurrentPage(1)
+                    setPage(1)
                     setIdLv(event.value);
-                    dispatch(getElecteurByLieuVote({
-                      idLv: event.value,
+                    dispatch(getElecteurInformationManquante({
+                      url: "electeurInfoManquanteByLieuvote",
+                      id: event.value,
                       idCand: userData.id_candidat
                     }))
                   }}
                 />
-              </Col>
-              {/* <Col md="3">
-                <Label for="status-select">Bureau de vote</Label>
-                <Select
-                  theme={selectThemeColors}
-                  isClearable={false}
-                  className="react-select"
-                  classNamePrefix="select"
-                  options={bureauVoteData}
-                  onChange={(data) => {
-                    setCurrentSous(data);
-                  }}
-                />
-              </Col> */}
+              </Col> 
             </Row>
           ) : null}
         </CardBody>
@@ -390,7 +383,7 @@ const UsersList = () => {
             subHeaderComponent={
               <CustomHeader
                 searchTerm={searchTerm}
-                rowsPerPage={rowsPerPage}
+                rowsPerPage={rowsPage}
                 handlePerPage={handlePerPage}
               />
             }
@@ -401,4 +394,4 @@ const UsersList = () => {
   );
 };
 
-export default UsersList;
+export default InformationMaquante;

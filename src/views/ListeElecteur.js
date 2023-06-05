@@ -6,7 +6,7 @@ import { Fragment, useState, useEffect } from "react";
 // ** Invoice List Sidebar
 
 // ** Table Columns
-import { columns } from "./columns";
+import { columns } from "./user/list/columns";
 
 // ** Store & Actions
 // import { getAllData, getData } from '../store'
@@ -44,15 +44,17 @@ import {
 // ** Styles
 import "@styles/react/libs/react-select/_react-select.scss";
 import "@styles/react/libs/tables/react-dataTable-component.scss";
-import { getUserData } from "../../../utility/Utils";
+import { getUserData } from "../utility/Utils";
 import {
-  getCirconscriptionAdmin,
+  clearStore,
   getDepartement,
   getElecteur,
   getElecteurByCommune,
   getElecteurByLieuVote,
+  getElecteurContentieux,
+  getElecteurNatDouteuseByRegion,
   getLieuxVote
-} from "../../../redux/store/Election";
+} from "../redux/store/Election";
 
 // ** Table Header
 const CustomHeader = ({
@@ -153,7 +155,7 @@ const CustomHeader = ({
   );
 };
 
-const UsersList = () => {
+const ListeElecteur = () => {
   // ** Store Vars
   const dispatch = useDispatch();
   const store = useSelector((state) => state.election.electeur);
@@ -162,14 +164,20 @@ const UsersList = () => {
   const departement = useSelector((state) => state.election.departement);
   const com = useSelector((state) => state.election.commune);
   const lieux = useSelector((state) => state.election.lieuxVote);
-  const electeur = useSelector((state) => state.election.electeur);
+  const electeur = useSelector((state) => state.election.electeurInfo);
   const bureauVote = useSelector((state) => state.election.bureauVote)
 
   const lieuxVoteData = [];
   const departementData = [];
   const comData = [];
   const bureauVoteData = [];
-
+  const dataContentieux = [
+    { value: 'electeurNationnaliteDouteuse', label: "Nationnalité douteuse" },
+    { value: 'electeurContumace', label: "Contumace" },
+    { value: 'electeurNaturaliseEnStage', label: "Naturalisé en periode de stage" },
+    { value: 'electeurIdentiteIncorrect', label: "Identite incorrect" },
+    { value: 'electeurCondCrime', label: "Comdamné pour crime" }
+  ]
   departement?.map((item) => {
     departementData.push({ value: item.cod_dep, label: item.lib_dep });
   });
@@ -198,10 +206,10 @@ const UsersList = () => {
   const [idCom, setIdCom] = useState();
   const [idLv, setIdLv] = useState();
 
-  // ** Function to toggle sidebar
 
   // // ** Get data on mount
   useEffect(() => {
+    dispatch(clearStore())
     dispatch(getDepartement(userData.id_circons_er));
     dispatch(getLieuxVote(userData.id_circons_em))
   }, [dispatch]);
@@ -270,108 +278,27 @@ const UsersList = () => {
     <Fragment>
       <Card>
         <CardHeader>
-          <CardTitle tag="h4">Filtre des données</CardTitle>
+          <CardTitle tag="h4">Repertoire du contentieux</CardTitle>
         </CardHeader>
         <CardBody>
-          {userData.type_election === "2" ? (
-            <Row>
-              <Col md="3">
-                <Label for="status-select">Département</Label>
-                <Select
-                  theme={selectThemeColors}
-                  isClearable={false}
-                  className="react-select"
-                  classNamePrefix="select"
-                  options={departementData}
-                  onChange={(event) => {
-                    setCurrentPage(1)
-                    setSelect("selectDep");
-                    setIdDep(event.value);
-                    dispatch(
-                      getElecteur({
-                        idDep: event.value,
-                        idCand: userData.id_candidat,
-                      })
-                    );
-                    dispatch(getCirconscriptionAdmin(event.value));
-                  }}
-                />
-              </Col>
-              <Col className="my-md-0 my-1" md="3">
-                <Label for="plan-select">Circonscription administrative</Label>
-                <Select
-                  theme={selectThemeColors}
-                  isClearable={false}
-                  className="react-select"
-                  classNamePrefix="select"
-                  options={comData}
-                  onChange={(event) => {
-                    setSelect("selectCom");
-                    setCurrentPage(1)
-                    setIdCom(event.value);
-                    dispatch(getLieuxVote(event.value));
-                    dispatch(getElecteurByCommune({
-                      idCom: event.value,
-                      idCand: userData.id_candidat
-                    }))
-                  }}
-                />
-              </Col>
-              <Col md="3">
-                <Label for="status-select">Lieux de vote</Label>
-                <Select
-                  theme={selectThemeColors}
-                  isClearable={false}
-                  className="react-select"
-                  classNamePrefix="select"
-                  options={lieuxVoteData}
-                  onChange={(event) => {
-                    setCurrentPage(1)
-                    setSelect("selectLv");
-                    setIdLv(event.value);
-                    dispatch(getElecteurByLieuVote({
-                      idLv: event.value,
-                      idCand: userData.id_candidat
-                    }))
-                  }}
-                />
-              </Col>
-            </Row>
-          ) : userData.type_election === "1" ? (
-            <Row>
-              <Col md="3">
-                <Label for="status-select">Lieux de vote</Label>
-                <Select
-                  theme={selectThemeColors}
-                  isClearable={false}
-                  className="react-select"
-                  classNamePrefix="select"
-                  options={lieuxVoteData}
-                  onChange={(event) => {
-                    setCurrentPage(1)
-                    setIdLv(event.value);
-                    dispatch(getElecteurByLieuVote({
-                      idLv: event.value,
-                      idCand: userData.id_candidat
-                    }))
-                  }}
-                />
-              </Col>
-              {/* <Col md="3">
-                <Label for="status-select">Bureau de vote</Label>
-                <Select
-                  theme={selectThemeColors}
-                  isClearable={false}
-                  className="react-select"
-                  classNamePrefix="select"
-                  options={bureauVoteData}
-                  onChange={(data) => {
-                    setCurrentSous(data);
-                  }}
-                />
-              </Col> */}
-            </Row>
-          ) : null}
+        <Row>
+          <Col md="3">
+            <Label for="status-select">choisir un contentieux</Label>
+            <Select
+              theme={selectThemeColors}
+              isClearable={false}
+              className="react-select"
+              classNamePrefix="select"
+              options={dataContentieux}
+              onChange={(event) => {
+                dispatch(getElecteurContentieux({
+                  url: event.value,
+                  idCand: userData.id_candidat
+                }))
+              }}
+            />
+          </Col>
+        </Row>
         </CardBody>
       </Card>
       <CustomPagination />
@@ -386,7 +313,7 @@ const UsersList = () => {
             sortIcon={<ChevronDown />}
             className="react-dataTable"
             paginationRowsPerPageOptions={[25, 50, 75, 100]}
-            data={electeur.data}
+            data={electeur}
             subHeaderComponent={
               <CustomHeader
                 searchTerm={searchTerm}
@@ -401,4 +328,4 @@ const UsersList = () => {
   );
 };
 
-export default UsersList;
+export default ListeElecteur;

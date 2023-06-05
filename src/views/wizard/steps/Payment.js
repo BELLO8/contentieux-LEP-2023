@@ -36,18 +36,24 @@ const PaymentInfo = ({ stepper }) => {
               </div>
             )
             navigate('/login')
-          } else { 
-              toast(
-                <div className='d-flex'>
-                  <div className='me-1'>
-                    <Avatar size='sm' color='danger' icon={<AlertCircle size={12}/>} />
-                  </div>
-                  <div className='d-flex flex-column'>
-                    <h6>{res.data.message}</h6>
-                  </div>
-                </div>
-              )
           }
+        })
+        .catch((err) => {
+            toast(
+              <div className="d-flex">
+                <div className="me-1">
+                  <Avatar
+                    size="sm"
+                    color="danger"
+                    icon={<AlertCircle size={12} />}
+                  />
+                </div>
+                <div className="d-flex flex-column">
+                  <h6>{err.message}</h6>
+                </div>
+              </div>
+            )
+          console.log(err)
         })
     }
   }

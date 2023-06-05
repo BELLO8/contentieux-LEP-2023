@@ -42,13 +42,59 @@ export const getDepartement = createAsyncThunk('departement/getDepartement', asy
           params.page === null ? 1 : params.page
         }`
       )
-
     return response.data.data
   })
 
   export const getElecteurByLieuVote = createAsyncThunk('electeurbyLieuVote/getElecteurByLieuVote', async(params) => {
     const response = await client.get(
         `electeurbyLieuVote/2023/${params.idLv}/${params.idCand}/?page=${
+          params.page === null ? 1 : params.page
+        }`
+      )
+    return response.data.data
+  })
+
+
+  export const getElecteurDecedeByDep = createAsyncThunk('electeurDecedeByDep/getElecteurDecedeByDep', async(params) => {
+    const response = await client.get(
+        `electeurDecedebyDep/${params.idDep}/${params.idCand}/?page=${
+          params.page === null ? 1 : params.page
+        }`
+      )
+    return response.data.data
+  })
+
+  export const getElecteurDecedeByCom = createAsyncThunk('electeurDecedeByCom/getElecteurDecedeByCom', async(params) => {
+    const response = await client.get(
+        `electeurDecedebyCommune/${params.idCom}/${params.idCand}/?page=${
+          params.page === null ? 1 : params.page
+        }`
+      )
+    return response.data.data
+  })
+  
+  export const getElecteurDecedeByLv = createAsyncThunk('electeurDecedeByLv/getElecteurDecedeByLv', async(params) => {
+    const response = await client.get(
+        `electeurDecedebyLieuvote/${params.idLv}/${params.idCand}/?page=${
+          params.page === null ? 1 : params.page
+        }`
+      )
+    return response.data.data
+  })
+
+
+  export const getElecteurContentieux = createAsyncThunk('electeurContentieux/getElecteurContentieux', async(params) => {
+    const response = await client.get(
+        `${params.url}/${params.idCand}/?page=${
+          params.page === null ? 1 : params.page
+        }`
+      )
+    return response.data.data
+  })
+
+  export const getElecteurInformationManquante = createAsyncThunk('electeurInformationManquante/getElecteurInformationManquante', async(params) => {
+    const response = await client.get(
+        `${params.url}/${params.id}/${params.idCand}/?page=${
           params.page === null ? 1 : params.page
         }`
       )
@@ -63,7 +109,14 @@ export const ElectionSlice = createSlice({
         commune: [],
         lieuxVote: [],
         electeur:[],
-        bureauVote: []
+        bureauVote: [],
+        electeurDecede: [],
+        electeurInfo: []
+    },
+    reducers:{
+        clearStore: (state) => {
+            state.electeur = []
+        }
     },
     extraReducers: builder => {
         builder.addCase(getDepartement.fulfilled, (state, action) => {
@@ -94,7 +147,29 @@ export const ElectionSlice = createSlice({
                 state.status = "succeeded"
                 state.bureauVote = action.payload
             })
+            .addCase(getElecteurDecedeByDep.fulfilled, (state, action) => {
+                state.status = "succeeded"
+                state.electeurDecede = action.payload
+            })
+            .addCase(getElecteurDecedeByCom.fulfilled, (state, action) => {
+                state.status = "succeeded"
+                state.electeurDecede = action.payload
+            })
+            .addCase(getElecteurDecedeByLv.fulfilled, (state, action) => {
+                state.status = "succeeded"
+                state.electeurDecede = action.payload
+            })
+            .addCase(getElecteurContentieux.fulfilled, (state, action) => {
+                state.status = "succeeded"
+                state.electeurInfo = action.payload
+            })
+            .addCase(getElecteurInformationManquante.fulfilled, (state, action) => {
+                state.status = "succeeded"
+                state.electeur = action.payload
+            })
     }
 })
+
+export const {clearStore} = ElectionSlice.actions
 
 export default ElectionSlice.reducer

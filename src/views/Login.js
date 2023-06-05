@@ -61,28 +61,35 @@ const Login = () => {
             }
             dispatch(handleLogin(data))
             navigate(getHomeRouteForLoggedInUser("candidat"))
-          } else {
-              toast(
-                <div className='d-flex'>
-                  <div className='me-1'>
-                    <Avatar size='sm' color='danger' icon={<AlertCircle size={12}/>} />
-                  </div>
-                  <div className='d-flex flex-column'>
-                    <h6>{res.data.message}</h6>
-                  </div>
-                </div>
-              )
           }
         })
-        .catch((err) => console.log(err))
-    } else {
-      for (const key in data) {
-        if (data[key].length === 0) {
-          setError(key, {
-            type: "manual"
-          })
-        }
-      }
+        .catch((err) => {
+          if (err.code === "ERR_BAD_REQUEST"){
+            toast(
+              <div className='d-flex'>
+                <div className='me-1'>
+                  <Avatar size='sm' color='danger' icon={<AlertCircle size={12}/>} />
+                </div>
+                <div className='d-flex flex-column'>
+                  <h6>{err.response.data.message}</h6>
+                </div>
+              </div>
+            )
+          }else{
+             toast(
+              <div className='d-flex'>
+                <div className='me-1'>
+                  <Avatar size='sm' color='danger' icon={<AlertCircle size={12}/>} />
+                </div>
+                <div className='d-flex flex-column'>
+                  <h6>{err.message}</h6>
+                </div>
+              </div>
+            )
+          }
+           
+          console.log(err)
+        })
     }
   }
 
@@ -111,6 +118,7 @@ const Login = () => {
                       placeholder="username"
                       invalid={errors.username && true}
                       {...field}
+                      required
                     />
                   )}
                 />              
@@ -132,6 +140,7 @@ const Login = () => {
                       className="input-group-merge"
                       invalid={errors.password && true}
                       {...field}
+                      required
                     />
                   )}
                 />             

@@ -2,14 +2,9 @@
 import { Link } from 'react-router-dom'
 
 // ** Custom Components
-import Avatar from '@components/avatar'
-
-// ** Store & Actions
-import { store } from '@store/store'
-import { getUser, deleteUser } from '../store'
 
 // ** Icons Imports
-import { Slack, User, Settings, Database, Edit2, MoreVertical, FileText, Trash2, Archive } from 'react-feather'
+import { MoreVertical, FileText, Archive } from 'react-feather'
 
 // ** Reactstrap Imports
 import { Badge, UncontrolledDropdown, DropdownToggle, DropdownMenu, DropdownItem } from 'reactstrap'
@@ -27,7 +22,6 @@ export const columns = [
           <Link
             to={`/apps/user/view/${row.id}`}
             className='user_name text-truncate text-body'
-            onClick={() => store.dispatch(getUser(row.id))}
           >
             <span className='fw-bolder'>{row.nom.concat(" ", row.prenoms)}</span>
           </Link>
@@ -105,26 +99,14 @@ export const columns = [
               tag={Link}
               className='w-100'
               to={`/apps/user/view/${row.id}`}
-              onClick={() => store.dispatch(getUser(row.id))}
+              // onClick={() => }
             >
               <FileText size={14} className='me-50' />
-              <span className='align-middle'>Details</span>
+              <span className='align-middle'>Detail du candidant</span>
             </DropdownItem>
             <DropdownItem tag='a' href='/' className='w-100' onClick={e => e.preventDefault()}>
               <Archive size={14} className='me-50' />
-              <span className='align-middle'>Edit</span>
-            </DropdownItem>
-            <DropdownItem
-              tag='a'
-              href='/'
-              className='w-100'
-              onClick={e => {
-                e.preventDefault()
-                store.dispatch(deleteUser(row.id))
-              }}
-            >
-              <Trash2 size={14} className='me-50' />
-              <span className='align-middle'>Delete</span>
+              <span className='align-middle'>Modifier</span>
             </DropdownItem>
           </DropdownMenu>
         </UncontrolledDropdown>

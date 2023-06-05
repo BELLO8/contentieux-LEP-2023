@@ -15,6 +15,8 @@ import PrivateRoute from '@components/routes/PrivateRoute'
 import { isObjEmpty } from "@utils"
 import Wizard from "../../views/wizard"
 import UsersList from "../../views/user/list"
+import ListeElecteur from "../../views/ListeElecteur"
+import InformationMaquante from "../../views/InformationManquante"
 
 const getLayout = {
   blank: <BlankLayout />,
@@ -42,7 +44,19 @@ const Routes = [
     element: <Home />
   },
   {
+    path: "/repertoire-electeur-decede",
+    element: <SecondPage />
+  },
+   {
+    path: "/repertoire-information-manquante",
+    element: <InformationMaquante />
+  },
+  {
     path: "/repertoire-electeur",
+    element: <ListeElecteur />
+  },
+  {
+    path: "/syntheses",
     element: <SecondPage />
   },
   {
