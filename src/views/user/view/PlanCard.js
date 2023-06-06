@@ -19,8 +19,7 @@ const PlanCard = ({ userInfo }) => {
          <CardBody>
          <div className='mb-2 d-flex justify-content-between align-items-start'>
            <div className='d-flex justify-content-center'>
-             <span className='fw-bolder display-6 mb-0 text-primary'>{userInfo.montant}</span>
-             <span className='h5 pricing-currency text-primary mt-1 mb-0'>Fcfa</span>
+             <span className='fw-bolder display-6 mb-0 text-primary'>{new Intl.NumberFormat('de-DE', { style: 'currency', currency: 'XOF' }).format(userInfo.montant)}</span>
            </div>
          </div>
          <ul className='ps-1 mb-2'>
