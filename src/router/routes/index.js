@@ -17,6 +17,7 @@ import Wizard from "../../views/wizard"
 import UsersList from "../../views/user/list"
 import ListeElecteur from "../../views/ListeElecteur"
 import InformationMaquante from "../../views/InformationManquante"
+import EditElecteur from "../../views/EditElecteur"
 
 const getLayout = {
   blank: <BlankLayout />,
@@ -54,6 +55,10 @@ const Routes = [
   {
     path: "/repertoire-electeur",
     element: <ListeElecteur />
+  },
+  {
+    path: "/modification-electeur",
+    element: <EditElecteur />
   },
   {
     path: "/syntheses",

@@ -54,6 +54,10 @@ export const getDepartement = createAsyncThunk('departement/getDepartement', asy
     return response.data.data
   })
 
+  export const showElecteur = createAsyncThunk('electeur/showElecteur', async(data) => {
+    const response = await client.post('electeurInfo', data)
+    return response.data
+  })
 
   export const getElecteurDecedeByDep = createAsyncThunk('electeurDecedeByDep/getElecteurDecedeByDep', async(params) => {
     const response = await client.get(
@@ -101,6 +105,11 @@ export const getDepartement = createAsyncThunk('departement/getDepartement', asy
     return response.data.data
   })
 
+  export const AjoutElecteurContentieux = createAsyncThunk('AddContentieux/AjoutElecteurContentieux', async(data) => {
+      const response = await client.post('ajoutElecteurContentieux', data)
+      return response.data
+  })
+
 export const ElectionSlice = createSlice({
     name:'election',
     initialState:{
@@ -111,7 +120,8 @@ export const ElectionSlice = createSlice({
         electeur:[],
         bureauVote: [],
         electeurDecede: [],
-        electeurInfo: []
+        electeurInfo: [],
+        showElecteur: []
     },
     reducers:{
         clearStore: (state) => {
@@ -166,6 +176,10 @@ export const ElectionSlice = createSlice({
             .addCase(getElecteurInformationManquante.fulfilled, (state, action) => {
                 state.status = "succeeded"
                 state.electeur = action.payload
+            })
+            .addCase(showElecteur.fulfilled, (state, action) => {
+                state.status = "succeeded"
+                state.showElecteur = action.payload
             })
     }
 })

@@ -275,7 +275,7 @@ const SecondPage = () => {
     <Fragment>
       <Card>
         <CardHeader>
-          <CardTitle tag="h4">Electeur decede</CardTitle>
+          <CardTitle tag="h4">Electeur décédé</CardTitle>
         </CardHeader>
         <CardBody>
           {userData.type_election === "2" ? (

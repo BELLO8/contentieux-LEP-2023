@@ -3,13 +3,8 @@
 // ** React Imports
 import { Fragment, useState, useEffect } from "react";
 
-// ** Invoice List Sidebar
+import { Link } from 'react-router-dom'
 
-// ** Table Columns
-import { columns } from "./columns";
-
-// ** Store & Actions
-// import { getAllData, getData } from '../store'
 import { useDispatch, useSelector } from "react-redux";
 
 // ** Third Party Components
@@ -19,7 +14,8 @@ import DataTable from "react-data-table-component";
 import {
   ChevronDown,
   Share, FileText,
-  File
+  File,
+  MoreVertical
 } from "react-feather";
 
 // ** Utils
@@ -27,6 +23,7 @@ import { selectThemeColors } from "@utils";
 
 // ** Reactstrap Imports
 import {
+  Badge,
   Row,
   Col,
   Card,
@@ -51,7 +48,8 @@ import {
   getElecteur,
   getElecteurByCommune,
   getElecteurByLieuVote,
-  getLieuxVote
+  getLieuxVote,
+  showElecteur
 } from "../../../redux/store/Election";
 
 // ** Table Header
@@ -199,7 +197,102 @@ const UsersList = () => {
   const [idLv, setIdLv] = useState();
 
   // ** Function to toggle sidebar
-
+   const columns = [
+    {
+      name: 'Electeur',
+      sortable: true,
+      minWidth: '300px',
+      sortField: 'nom',
+      selector: row => row.nom.concat(" ", row.prenoms),
+      cell: row => (
+        <div className='d-flex justify-content-left align-items-center'>
+          <div className='d-flex flex-column'>
+              <span className='fw-bolder'>{row.nom.concat(" ", row.prenoms)}</span>
+          </div>
+        </div>
+      )
+    },
+    {
+      name: 'Numero electeur',
+      sortable: true,
+      minWidth: '172px',
+      sortField: 'num_electeur',
+      selector: row => row.num_electeur,
+      cell: row => (<Badge color='primary'> {row.num_electeur} </Badge>) 
+    },
+    {
+      name: 'Sexe',
+      minWidth: '138px',
+      sortable: true,
+      sortField: 'sexe',
+      selector: row => row.sexe,
+      cell: row => <span className='text-capitalize'>{row.sexe}</span>
+    },
+    {
+      name: 'Date_naissance',
+      minWidth: '230px',
+      sortable: true,
+      sortField: 'Date_naissance',
+      selector: row => row.Date_naissance,
+      cell: row => <span className='text-capitalize'>{row.Date_naissance}</span>
+    },
+    {
+      name: 'Lieu_naissance',
+      minWidth: '138px',
+      sortable: true,
+      sortField: 'Lieu_naissance',
+      selector: row => row.Lieu_naissance,
+      cell: row => row.Lieu_naissance
+    },
+    {
+      name: 'Nom du pere',
+      minWidth: '138px',
+      sortable: true,
+      sortField: 'nom_pere',
+      selector: row => row.nom_pere,
+      cell: row => row.nom_pere
+    },
+    {
+      name: 'Nom de la mere',
+      minWidth: '138px',
+      sortable: true,
+      sortField: 'nom_mere',
+      selector: row => row.nom_mere,
+      cell: row => row.nom_mere
+    },
+    {
+      name: 'Profession',
+      minWidth: '138px',
+      sortable: true,
+      sortField: 'profession',
+      selector: row => row.profession,
+      cell: row => row.profession
+    },
+    {
+      name: 'Actions',
+      minWidth: '100px',
+      cell: row => (
+        <div className='column-action'>
+          <UncontrolledDropdown>
+            <DropdownToggle tag='div' className='btn btn-sm'>
+              <MoreVertical size={14} className='cursor-pointer' />
+            </DropdownToggle>
+            <DropdownMenu>
+              <DropdownItem
+                tag={Link}
+                className='w-100'
+                to={'/modification-electeur'}
+                onClick={() => dispatch(showElecteur({ numelecteur: row.num_electeur })) }
+              >
+                <FileText size={14} className='me-50' />
+                <span className='align-middle'>Detail d'un électeur</span>
+              </DropdownItem>
+            </DropdownMenu>
+          </UncontrolledDropdown>
+        </div>
+      )
+    }
+  ]
   // // ** Get data on mount
   useEffect(() => {
     dispatch(getDepartement(userData.id_circons_er));

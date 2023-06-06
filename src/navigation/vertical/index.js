@@ -3,18 +3,18 @@ import { Mail, Home, Circle } from "react-feather"
 export default [
   {
     id: "home",
-    title: "Liste electorale",
+    title: "Liste électorale",
     icon: <Home size={20} />,
     navLink: "/liste-electorale"
   },
   {
     id: "secondPage",
-    title: "Repertoire electeur",
+    title: "Répertoire électeur",
     icon: <Mail size={20} />,
     children: [
       {
         id: 'decede',
-        title: 'Liste decede',
+        title: 'Liste décédé',
         icon: <Circle size={12} />,
         navLink: '/repertoire-electeur-decede'
       },
@@ -26,7 +26,7 @@ export default [
       },
       {
         id: 'contentieux',
-        title: 'Liste contentieux',
+        title: 'Résultats du contentieux',
         icon: <Circle size={12} />,
         navLink: '/repertoire-electeur'
       }
@@ -34,7 +34,7 @@ export default [
   },
   {
     id: "synthese",
-    title: "Synthese",
+    title: "Synthèse",
     icon: <Mail size={20} />,
     navLink: "/syntheses"
   }

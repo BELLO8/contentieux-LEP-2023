@@ -278,12 +278,12 @@ const ListeElecteur = () => {
     <Fragment>
       <Card>
         <CardHeader>
-          <CardTitle tag="h4">Repertoire du contentieux</CardTitle>
+          <CardTitle tag="h4">Répertoire du contentieux</CardTitle>
         </CardHeader>
         <CardBody>
         <Row>
           <Col md="3">
-            <Label for="status-select">choisir un contentieux</Label>
+            <Label for="status-select">Sélectionnez une anomalie</Label>
             <Select
               theme={selectThemeColors}
               isClearable={false}
