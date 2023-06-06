@@ -8,8 +8,6 @@ import { MoreVertical, FileText, Archive } from 'react-feather'
 
 // ** Reactstrap Imports
 import { Badge, UncontrolledDropdown, DropdownToggle, DropdownMenu, DropdownItem } from 'reactstrap'
-import { showElecteur } from '../../../redux/store/Election'
-
 
 export const columns = [
   {
@@ -86,29 +84,5 @@ export const columns = [
     sortField: 'profession',
     selector: row => row.profession,
     cell: row => row.profession
-  },
-  {
-    name: 'Actions',
-    minWidth: '100px',
-    cell: row => (
-      <div className='column-action'>
-        <UncontrolledDropdown>
-          <DropdownToggle tag='div' className='btn btn-sm'>
-            <MoreVertical size={14} className='cursor-pointer' />
-          </DropdownToggle>
-          <DropdownMenu>
-            <DropdownItem
-              tag={Link}
-              className='w-100'
-              to={'editElecteur'}
-              onClick={() => dispatch(showElecteur(row.num_electeur)) }
-            >
-              <FileText size={14} className='me-50' />
-              <span className='align-middle'>Detail d'un électeur</span>
-            </DropdownItem>
-          </DropdownMenu>
-        </UncontrolledDropdown>
-      </div>
-    )
   }
 ]

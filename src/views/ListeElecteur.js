@@ -29,6 +29,7 @@ import { selectThemeColors } from "@utils";
 import {
   Row,
   Col,
+  Button,
   Card,
   Input,
   Label,
@@ -302,25 +303,51 @@ const ListeElecteur = () => {
         </CardBody>
       </Card>
       <CustomPagination />
+        <div className="invoice-list-table-header w-100 me-1 ms-50 mt-2 mb-75">
+        <Row>
+          <Col xl="6" className="d-flex align-items-center p-0">
+            <div className="d-flex align-items-center table-header-actions">
+              
+              <Button color="primary" onClick={() => {
+                        const printContent = document.getElementById('electeur').innerHTML;
+                        const originalContent = document.body.innerHTML;
+                        document.body.innerHTML = printContent;
+                        window.print();
+                        document.body.innerHTML = originalContent;
+                  }}> Imprimer les données</Button>
+            </div>
+          </Col>
+          <Col
+            xl="6"
+            className="d-flex align-items-sm-center justify-content-xl-end justify-content-start flex-xl-nowrap flex-wrap flex-sm-row flex-column pe-xl-1 p-0 mt-xl-0 mt-1"
+          >
+            <div className="d-flex align-items-center mb-sm-0 mb-1 me-1">
+              <label className="mb-0" htmlFor="search-invoice">
+                Rechercher:
+              </label>
+              <Input
+                id="search-invoice"
+                className="ms-50 w-100"
+                type="text"
+                value={searchTerm}
+                // onChange={(e) => handleFilter(e.target.value)}
+              />
+            </div>
+          </Col>
+        </Row>
+        </div>
+        <h5>{electeur.meta?.total === undefined ? '' : electeur.meta?.total +' '+'élements trouvés' } </h5>
       <Card className="overflow-hidden">
-        <div className="react-dataTable">
+        <div className="react-dataTable" id="electeur">
           <DataTable
-            noHeader
             pagination
-            subHeader
             responsive
             columns={columns}
             sortIcon={<ChevronDown />}
             className="react-dataTable"
-            paginationRowsPerPageOptions={[25, 50, 75, 100]}
+            paginationPerPage={100}
+            paginationRowsPerPageOptions={[100]}
             data={electeur}
-            subHeaderComponent={
-              <CustomHeader
-                searchTerm={searchTerm}
-                rowsPerPage={rowsPerPage}
-                handlePerPage={handlePerPage}
-              />
-            }
           />
         </div>
       </Card>
