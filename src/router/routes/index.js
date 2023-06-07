@@ -18,6 +18,13 @@ import UsersList from "../../views/user/list"
 import ListeElecteur from "../../views/ListeElecteur"
 import InformationMaquante from "../../views/InformationManquante"
 import EditElecteur from "../../views/EditElecteur"
+import Synthese from "../../views/synthese"
+import ListeDoublons from "../../views/ListeDoublons"
+import ListeChangementRegion from "../../views/ListeChangementRegion"
+import ListeChangementDep from "../../views/ListeChangementDep"
+import ListeNouveauInscrit from "../../views/ListeNouveauInscrit"
+import ListeCentenaire from "../../views/ListeCentenaire"
+import ListeMineur from "../../views/ListeMineur"
 
 const getLayout = {
   blank: <BlankLayout />,
@@ -62,7 +69,31 @@ const Routes = [
   },
   {
     path: "/syntheses",
-    element: <SecondPage />
+    element: <Synthese />
+  },
+  {
+    path: "/doublons",
+    element: <ListeDoublons />
+  },
+  {
+    path: "/changement-region",
+    element: <ListeChangementRegion />
+  },
+  {
+    path: "/changement-departement",
+    element: <ListeChangementDep />
+  },
+  {
+    path: "/nouveau-inscrit",
+    element: <ListeNouveauInscrit />
+  },
+   {
+    path: "/centenaire",
+    element: <ListeCentenaire />
+  },
+  {
+    path: "/mineur",
+    element: <ListeMineur />
   },
   {
     path: "/login",

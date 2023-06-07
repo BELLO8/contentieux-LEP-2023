@@ -1,7 +1,7 @@
 // ** Icon Imports
 
 // ** Reactstrap Imports
-import { Button, Card, CardBody, CardHeader, CardText, CardTitle, Col, Form, Input, Label, Row } from 'reactstrap'
+import { Button, Form } from 'reactstrap'
 import { ArrowLeft, Check, AlertCircle } from 'react-feather'
 import Avatar from '@components/avatar'
 import { useSelector } from 'react-redux'
@@ -12,8 +12,8 @@ import { useNavigate } from 'react-router-dom'
 const PaymentInfo = ({ stepper }) => {
   const navigate = useNavigate()
   const userRegister = useSelector(state => state.infoCandidat.user)
-  const candidat = useSelector(state => state.infoCandidat.data)
-  const src = `https://pay.apaym.com/institutjamawue/m=${candidat.montant}`
+  //const candidat = useSelector(state => state.infoCandidat.data)
+  
   console.log(userRegister)
   const {
     handleSubmit
@@ -66,7 +66,7 @@ const PaymentInfo = ({ stepper }) => {
       onSubmit={handleSubmit(onSubmit)}
     >
       <div className='payment-type'>
-      <iframe src={src} width={820} height={500} ></iframe>
+      <iframe src='https://pay.apaym.com/institutjamawue' width={820} height={500} ></iframe>
       </div>
       <div className='d-flex justify-content-between'>
         <Button color='primary' className='btn-prev' onClick={() => stepper.previous()}>

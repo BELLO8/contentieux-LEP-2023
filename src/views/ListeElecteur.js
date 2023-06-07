@@ -176,7 +176,6 @@ const ListeElecteur = () => {
     { value: 'electeurNationnaliteDouteuse', label: "Nationnalité douteuse" },
     { value: 'electeurContumace', label: "Contumace" },
     { value: 'electeurNaturaliseEnStage', label: "Naturalisé en periode de stage" },
-    { value: 'electeurIdentiteIncorrect', label: "Identite incorrect" },
     { value: 'electeurCondCrime', label: "Comdamné pour crime" }
   ]
   departement?.map((item) => {

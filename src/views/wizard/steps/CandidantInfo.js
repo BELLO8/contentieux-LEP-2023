@@ -17,7 +17,7 @@ const CandidantInfo = ({ stepper }) => {
   const candidatInfo = useSelector(state => state.infoCandidat.data)
   const userRegister = useSelector(state => state.infoCandidat.user)
 
-  const user = {...userRegister, id_candidat: candidatInfo.cod_candidat}
+  const user = {...userRegister, id_candidat: candidatInfo?.cod_candidat}
 
   
   return (

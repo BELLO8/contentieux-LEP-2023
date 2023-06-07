@@ -1,16 +1,16 @@
-import { Mail, Home, Circle } from "react-feather"
+import { Mail, Home, Circle, FileText, AlignJustify, BookOpen } from "react-feather"
 
 export default [
   {
     id: "home",
     title: "Liste électorale",
-    icon: <Home size={20} />,
+    icon: <AlignJustify size={20} />,
     navLink: "/liste-electorale"
   },
   {
-    id: "secondPage",
+    id: "Répertoire",
     title: "Répertoire électeur",
-    icon: <Mail size={20} />,
+    icon: <BookOpen size={20} />,
     children: [
       {
         id: 'decede',
@@ -35,7 +35,50 @@ export default [
   {
     id: "synthese",
     title: "Synthèse",
-    icon: <Mail size={20} />,
-    navLink: "/syntheses"
+    icon: <FileText size={20} />,
+    children:[
+      {
+        id: 'listesynthese',
+        title: 'Synthèses',
+        icon: <Circle size={12} />,
+        navLink: '/syntheses'
+      },
+      {
+        id: 'doublon',
+        title: 'Liste des doublons',
+        icon: <Circle size={12} />,
+        navLink: '/doublons'
+      },
+      {
+        id: 'changeRegion',
+        title: 'Changement de région',
+        icon: <Circle size={12} />,
+        navLink: '/changement-region'
+      },
+      {
+        id: 'changeDep',
+        title: 'Changement de departement',
+        icon: <Circle size={12} />,
+        navLink: '/changement-departement'
+      },
+       {
+        id: 'newinscritbyRegion',
+        title: 'Nouveau inscrit',
+        icon: <Circle size={12} />,
+        navLink: '/nouveau-inscrit'
+      },
+      {
+        id: 'electeurCentenaireByRegion',
+        title: 'Centenaire',
+        icon: <Circle size={12} />,
+        navLink: '/centenaire'
+      },
+      {
+        id: 'electeurMineurByRegion',
+        title: 'Mineur',
+        icon: <Circle size={12} />,
+        navLink: '/mineur'
+      }
+    ]
   }
 ]
