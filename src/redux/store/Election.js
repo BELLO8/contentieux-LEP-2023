@@ -14,12 +14,27 @@ export const changeRegionByRegion = createAsyncThunk('ChangeRegionByRegion/chang
     return response.data.data
   })
 
+  export const changeRegionByCommune = createAsyncThunk('ChangeRegionByCommune/changeRegionByCommune', async(params) => {
+    const response = await client.get(`changeRegionByCommune/${params.idCom}/?page=${
+      params.page === null ? 1 : params.page
+    }`)
+    return response.data.data
+  })
+
   export const conservRegionChangeDepByRegion = createAsyncThunk('ConservRegionChangeDepByRegion/conservRegionChangeDepByRegion', async(params) => {
     const response = await client.get(`conservRegionChangeDepByRegion/${params.idRegion}/?page=${
       params.page === null ? 1 : params.page
     }`)
     return response.data.data
   })
+
+  export const conservRegionChangeDepByCommune = createAsyncThunk('ConservRegionChangeDepByCommune/conservRegionChangeDepByCommune', async(params) => {
+    const response = await client.get(`conservRegionChangeDepByCommune/${params.idCom}/?page=${
+      params.page === null ? 1 : params.page
+    }`)
+    return response.data.data
+  })
+
 
   export const newinscritbyRegion = createAsyncThunk('NewinscritbyRegion/newinscritbyRegion', async(params) => {
     const response = await client.get(`newinscritbyRegion/${params.idRegion}/?page=${
@@ -28,22 +43,47 @@ export const changeRegionByRegion = createAsyncThunk('ChangeRegionByRegion/chang
     return response.data.data
   })
 
+   export const newinscritbyCircons = createAsyncThunk('NewinscritbyCircons/newinscritbyCircons', async(params) => {
+    const response = await client.get(`newinscritbyCircons/${params.idCom}/?page=${
+      params.page === null ? 1 : params.page
+    }`)
+    return response.data.data
+  })
+  
   export const electeurCentenaireByRegion = createAsyncThunk('ElecteurCentenaireByRegion/electeurCentenaireByRegion', async(params) => {
     const response = await client.get(`electeurCentenaireByRegion/${params.idRegion}/?page=${
       params.page === null ? 1 : params.page
     }`)
     return response.data.data
   })
-
+  export const electeurCentenaireByCommune = createAsyncThunk('ElecteurCentenaireByCommune/electeurCentenaireByCommune', async(params) => {
+    const response = await client.get(`electeurCentenaireByCommune/${params.idCom}/?page=${
+      params.page === null ? 1 : params.page
+    }`)
+    return response.data.data
+  })
+  
   export const electeurMineurByRegion = createAsyncThunk('ElecteurMineurByRegion/electeurMineurByRegion', async(params) => {
     const response = await client.get(`electeurMineurByRegion/${params.idRegion}/?page=${
       params.page === null ? 1 : params.page
     }`)
     return response.data.data
   })
+  export const electeurMineurByCommune = createAsyncThunk('ElecteurMineurByCommune/electeurMineurByCommune', async(params) => {
+    const response = await client.get(`electeurMineurByCommune/${params.idCom}/?page=${
+      params.page === null ? 1 : params.page
+    }`)
+    return response.data.data
+  })
 
+  
 export const getDoublons = createAsyncThunk('doublons/getDoublons', async(idRegion) => {
     const response = await client.get(`doublon/${idRegion}`)
+    return response.data.data
+  })
+
+export const doublonbycommune = createAsyncThunk('Doublonbycommune/doublonbycommune', async(idcom) => {
+    const response = await client.get(`doublonbycommune/${idcom}`)
     return response.data.data
   })
 
@@ -176,7 +216,7 @@ export const EvolutionCirconsByDep = createAsyncThunk('evolutionCirconsByDep/Evo
 })
 
 export const EvolutionPopulationBylieuVote = createAsyncThunk('evolutionCirconsByDep/EvolutionPopulationBylieuVote', async(params) => {
-  const response = await client.get(`evolutionPopulationBylieuVote/${params.idDep}`)
+  const response = await client.get(`evolutionPopulationBylieuVote/${params.idLv}`)
   return response.data
 })
 
@@ -205,6 +245,17 @@ export const NbrLieuVotebyCircons23 = createAsyncThunk('nbrLieuVotebyCircons23/N
   return response.data
 })
 
+export const NbrPopulationByLieuVote20 = createAsyncThunk('nbrPopulationByLieuVote20/NbrPopulationByLieuVote20', async(params) => {
+  const response = await client.get(`NbrPopulationByLieuVote/2020/${params.idLv}`)
+  return response.data
+})
+
+export const NbrPopulationByLieuVote23 = createAsyncThunk('nbrPopulationByLieuVote23/NbrPopulationByLieuVote23', async(params) => {
+  const response = await client.get(`NbrPopulationByLieuVote/2023/${params.idLv}`)
+  return response.data
+})
+
+
 export const ElectionSlice = createSlice({
     name:'election',
     initialState:{
@@ -232,7 +283,9 @@ export const ElectionSlice = createSlice({
         evolutionPopulationBylieuVote:[],
         newinscritbyRegion:[],
         electeurMineurByRegion:[],
-        electeurCentenaireByRegion:[]
+        electeurCentenaireByRegion:[],
+        nbrPopulationByLieuVote23:[],
+        nbrPopulationByLieuVote20:[]
     },
     reducers:{
         clearStore: (state) => {
@@ -284,10 +337,18 @@ export const ElectionSlice = createSlice({
               state.status = "succeeded"
               state.electeurdoublons = action.payload
           })
+          .addCase(doublonbycommune.fulfilled, (state, action) => {
+            state.status = "succeeded"
+            state.electeurdoublons = action.payload
+        })
           .addCase(changeRegionByRegion.fulfilled, (state, action) => {
               state.status = "succeeded"
               state.Electeur = action.payload
           })
+          .addCase(changeRegionByCommune.fulfilled, (state, action) => {
+            state.status = "succeeded"
+            state.Electeur = action.payload
+        })
             .addCase(getElecteurContentieux.fulfilled, (state, action) => {
                 state.status = "succeeded"
                 state.electeurInfo = action.payload
@@ -328,7 +389,7 @@ export const ElectionSlice = createSlice({
           state.status = "succeeded"
           state.evolutionPopulationBylieuVote = action.payload
       })
-            .addCase(NbrPopulationByDep20.fulfilled, (state, action) => {
+        .addCase(NbrPopulationByDep20.fulfilled, (state, action) => {
               state.status = "succeeded"
               state.nbrPopulationByDep20 = action.payload
           })
@@ -344,22 +405,47 @@ export const ElectionSlice = createSlice({
             state.status = "succeeded"
             state.nbrLieuVotebyCircons23 = action.payload
         })
+        .addCase(NbrPopulationByLieuVote23.fulfilled, (state, action) => {
+          state.status = "succeeded"
+          state.nbrPopulationByLieuVote23 = action.payload
+      })
+      .addCase(NbrPopulationByLieuVote20.fulfilled, (state, action) => {
+        state.status = "succeeded"
+        state.nbrPopulationByLieuVote20 = action.payload
+        })
         .addCase(conservRegionChangeDepByRegion.fulfilled, (state, action) => {
           state.status = "succeeded"
           state.conservRegionChangeDepByRegion = action.payload
       })
+      .addCase(conservRegionChangeDepByCommune.fulfilled, (state, action) => {
+        state.status = "succeeded"
+        state.conservRegionChangeDepByRegion = action.payload
+         })
       .addCase(newinscritbyRegion.fulfilled, (state, action) => {
           state.status = "succeeded"
           state.newinscritbyRegion = action.payload
       })
+      .addCase(newinscritbyCircons.fulfilled, (state, action) => {
+        state.status = "succeeded"
+        state.newinscritbyRegion = action.payload
+    })
       .addCase(electeurCentenaireByRegion.fulfilled, (state, action) => {
         state.status = "succeeded"
         state.electeurCentenaireByRegion = action.payload
     })
+    .addCase(electeurCentenaireByCommune.fulfilled, (state, action) => {
+      state.status = "succeeded"
+      state.electeurCentenaireByRegion = action.payload
+  })
     .addCase(electeurMineurByRegion.fulfilled, (state, action) => {
       state.status = "succeeded"
       state.electeurMineurByRegion = action.payload
-  })
+      })
+      .addCase(electeurMineurByCommune.fulfilled, (state, action) => {
+        state.status = "succeeded"
+        state.electeurMineurByRegion = action.payload
+        })
+      
     }
 })
 

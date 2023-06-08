@@ -412,6 +412,7 @@ const UsersList = () => {
             ref={componentRef}
             pagination
             responsive
+            noDataComponent='aucune données pour le moment'
             columns={columns}
             sortIcon={<ChevronDown />}
             className="react-dataTable"

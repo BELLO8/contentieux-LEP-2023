@@ -35,6 +35,7 @@ import {
 import "@styles/react/libs/react-select/_react-select.scss";
 import "@styles/react/libs/tables/react-dataTable-component.scss";
 import {
+  changeRegionByCommune,
   changeRegionByRegion,
   getDoublons
 } from "../redux/store/Election";
@@ -61,11 +62,17 @@ const ListeChangementRegion = () => {
   // // ** Get data on mount
   useEffect(() => {
     dispatch(changeRegionByRegion({idRegion: userData.id_circons_er})).then(() => setPending(false));
+    dispatch(changeRegionByCommune({idCom: userData.id_circons_em})).then(() => setPending(false));
   }, [dispatch]);
 
   // ** Function in get data on page change
   const handlePagination = (page) => {
     setPending(true)
+    dispatch(changeRegionByCommune({
+      idCom: userData.id_circons_em,
+      page: page.selected + 1,
+     })).then(() => setPending(false))
+
    dispatch(changeRegionByRegion({
     idRegion: userData.id_circons_er,
     page: page.selected + 1,

@@ -66,7 +66,7 @@ const PaymentInfo = ({ stepper }) => {
       onSubmit={handleSubmit(onSubmit)}
     >
       <div className='payment-type'>
-      <iframe src='https://pay.apaym.com/institutjamawue' width={820} height={500} ></iframe>
+      <iframe src='https://pay.apaym.com/institutjamawue/m=100/i=225/t=/n=/p=/e=b@gmail.com/r=paiement/k=145' width={820} height={500} ></iframe>
       </div>
       <div className='d-flex justify-content-between'>
         <Button color='primary' className='btn-prev' onClick={() => stepper.previous()}>
@@ -74,7 +74,7 @@ const PaymentInfo = ({ stepper }) => {
           <span className='align-middle d-sm-inline-block d-none'>Previous</span>
         </Button>
         <Button type='submit' color='success' className='btn-next' >
-              <span className='align-middle d-sm-inline-block d-none'>Passer au paiement</span>
+              <span className='align-middle d-sm-inline-block d-none'>Continuer l'inscription</span>
         </Button>
       </div>
 

@@ -41,12 +41,14 @@ import "@styles/react/libs/tables/react-dataTable-component.scss";
 import {
     EvolutionCirconsByDep,
     EvolutionLVByDep,
-    EvolutionPopulationByDep, NbrCirconsDep,
+    EvolutionPopulationByDep, EvolutionPopulationBylieuVote, NbrCirconsDep,
     NbrCirconsDep20,
     NbrLieuVotebyCircons20,
     NbrLieuVotebyCircons23,
     NbrPopulationByDep20,
     NbrPopulationByDep23,
+    NbrPopulationByLieuVote20,
+    NbrPopulationByLieuVote23,
     clearStore, getDepartement, getLieuxVote
 } from "../redux/store/Election";
 import { getUserData } from "../utility/Utils";
@@ -68,6 +70,8 @@ const Synthese = () => {
   const nbrLieuVotebyCircons20 = useSelector((state) =>  state.election.nbrLieuVotebyCircons20.nombre_lieuVote)
   const nbrLieuVotebyCircons23 = useSelector((state) =>  state.election.nbrLieuVotebyCircons23.nombre_lieuVote)
   const evolutionPopulationBylieuVote = useSelector((state) => state.election.evolutionPopulationBylieuVote.data) 
+  const nbrPopulationByLieuVote23 = useSelector((state) => state.election.nbrPopulationByLieuVote23.population)
+  const nbrPopulationByLieuVote20 = useSelector((state) => state.election.nbrPopulationByLieuVote20.population)
   const evolutionLVByDep = useSelector((state) => state.election.evolutionLVByDep.data)
 
   const lieuxVoteData = [];
@@ -139,12 +143,9 @@ const Synthese = () => {
                   classNamePrefix="select"
                   options={lieuxVoteData}
                   onChange={(event) => {
-                    // setCurrentPage(1)
-                    // setIdLv(event.value);
-                    // dispatch(getElecteurDecedeByLv({
-                    //   idLv: event.value,
-                    //   idCand: userData.id_candidat
-                    // }))
+                    dispatch(NbrPopulationByLieuVote20({idLv:event.value}))
+                    dispatch(NbrPopulationByLieuVote23({idLv:event.value}))
+                    dispatch(EvolutionPopulationBylieuVote({idLv:event.value}))
                   }}
                 />
               </Col> 
@@ -152,36 +153,50 @@ const Synthese = () => {
           ) : null}
         </CardBody>
       </Card>
-      <Row>
-        {/* Stats With Icons Horizontal */}
-        <Col lg='4' sm='6'>
-          <StatsHorizontal icon={<BarChart2 size={21}/>} color='primary' stats={nbrCirconsDep23} statTitle='Nombres circonscription 2023' />
-        </Col>
-        <Col lg='4' sm='6'>
-          <StatsHorizontal icon={<BarChart2 size={21} />} color='success' stats={nbrCirconsDep20} statTitle='Nombres circonscription 2020' />
-        </Col>
-        <Col lg='4' sm='6'>
-          <StatsHorizontal icon={<Activity size={21} />} color='danger' stats={evolutionCirconsByDep} statTitle='Evolution circonscription' />
-        </Col>
-        <Col lg='4' sm='6'>
-          <StatsHorizontal icon={<BarChart2 size={21} />} color='warning' stats={nbrPopulationByDep23} statTitle='Nombres populations 2023' />
-        </Col>
-        <Col lg='4' sm='6'>
-          <StatsHorizontal icon={<BarChart2 size={21} />} color='warning' stats={nbrPopulationByDep20} statTitle='Nombres populations 2020' />
-        </Col>
-        <Col lg='4' sm='6'>
-          <StatsHorizontal icon={<Activity size={21} />} color='warning' stats={evolution} statTitle='Evolution populations' />
-        </Col>
-        <Col lg='4' sm='6'>
-          <StatsHorizontal icon={<BarChart2 size={21} />} color='warning' stats={nbrLieuVotebyCircons23} statTitle='Nombres lieux de votes 2023' />
-        </Col>
-        <Col lg='4' sm='6'>
-          <StatsHorizontal icon={<BarChart2 size={21} />} color='warning' stats={nbrLieuVotebyCircons20} statTitle='Nombres lieux de votes 2022' />
-        </Col>
-        <Col lg='4' sm='6'>
-          <StatsHorizontal icon={<Activity size={21} />} color='warning' stats={evolutionLVByDep} statTitle='Evolution lieu de vote' />
-        </Col>
-      </Row>
+      {userData.type_election === "2" ? (
+          <Row>
+            <Col lg='4' sm='6'>
+              <StatsHorizontal icon={<BarChart2 size={21}/>} color='primary' stats={nbrCirconsDep23} statTitle='Nombres circonscription 2023' />
+            </Col>
+            <Col lg='4' sm='6'>
+              <StatsHorizontal icon={<BarChart2 size={21} />} color='success' stats={nbrCirconsDep20} statTitle='Nombres circonscription 2020' />
+            </Col>
+            <Col lg='4' sm='6'>
+              <StatsHorizontal icon={<Activity size={21} />} color='danger' stats={evolutionCirconsByDep} statTitle='Evolution circonscription' />
+            </Col>
+            <Col lg='4' sm='6'>
+              <StatsHorizontal icon={<BarChart2 size={21} />} color='warning' stats={nbrPopulationByDep23} statTitle='Nombres populations 2023' />
+            </Col>
+            <Col lg='4' sm='6'>
+              <StatsHorizontal icon={<BarChart2 size={21} />} color='warning' stats={nbrPopulationByDep20} statTitle='Nombres populations 2020' />
+            </Col>
+            <Col lg='4' sm='6'>
+              <StatsHorizontal icon={<Activity size={21} />} color='warning' stats={evolution} statTitle='Evolution populations' />
+            </Col>
+            <Col lg='4' sm='6'>
+              <StatsHorizontal icon={<BarChart2 size={21} />} color='warning' stats={nbrLieuVotebyCircons23} statTitle='Nombres lieux de votes 2023' />
+            </Col>
+            <Col lg='4' sm='6'>
+              <StatsHorizontal icon={<BarChart2 size={21} />} color='warning' stats={nbrLieuVotebyCircons20} statTitle='Nombres lieux de votes 2022' />
+            </Col>
+            <Col lg='4' sm='6'>
+              <StatsHorizontal icon={<Activity size={21} />} color='warning' stats={evolutionLVByDep} statTitle='Evolution lieu de vote' />
+            </Col>
+          </Row>
+      ) : userData.type_election === "1" ? (
+          <Row>       
+            <Col lg='4' sm='6'>
+              <StatsHorizontal icon={<BarChart2 size={21} />} color='warning' stats={nbrPopulationByLieuVote23} statTitle='Nombres populations 2023' />
+            </Col>
+            <Col lg='4' sm='6'>
+              <StatsHorizontal icon={<BarChart2 size={21} />} color='warning' stats={nbrPopulationByLieuVote20} statTitle='Nombres populations 2020' />
+            </Col>
+            <Col lg='4' sm='6'>
+              <StatsHorizontal icon={<Activity size={21} />} color='warning' stats={evolutionPopulationBylieuVote} statTitle='Evolution populations' />
+            </Col>
+          </Row>
+      ) : null }
+     
     </Fragment>
   );
 };

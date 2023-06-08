@@ -18,7 +18,7 @@ const CandidantInfo = ({ stepper }) => {
   const userRegister = useSelector(state => state.infoCandidat.user)
 
   const user = {...userRegister, id_candidat: candidatInfo?.cod_candidat}
-
+  //localStorage.setItem('userRegister', JSON.stringify(user))
   
   return (
     <Fragment>

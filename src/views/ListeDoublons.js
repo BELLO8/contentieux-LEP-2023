@@ -34,6 +34,7 @@ import {
 import "@styles/react/libs/react-select/_react-select.scss";
 import "@styles/react/libs/tables/react-dataTable-component.scss";
 import {
+  doublonbycommune,
   getDoublons
 } from "../redux/store/Election";
 import { getUserData } from "../utility/Utils";
@@ -60,6 +61,7 @@ const ListeDoublons = () => {
   // // ** Get data on mount
   useEffect(() => {
     dispatch(getDoublons(userData.id_circons_er)).then(() => setPending(false));
+    dispatch(doublonbycommune(userData.id_circons_em)).then(() => setPending(false));
   }, [dispatch]);
 
   // ** Function in get data on page change

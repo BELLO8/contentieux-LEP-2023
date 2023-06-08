@@ -299,6 +299,7 @@ const SecondPage = () => {
           <DataTable
             pagination
             responsive
+            noDataComponent='aucune données'
             columns={columns}
             sortIcon={<ChevronDown />}
             className="react-dataTable"

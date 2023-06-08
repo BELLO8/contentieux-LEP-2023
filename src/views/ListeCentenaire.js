@@ -37,6 +37,7 @@ import "@styles/react/libs/tables/react-dataTable-component.scss";
 import {
   changeRegionByRegion,
   conservRegionChangeDepByRegion,
+  electeurCentenaireByCommune,
   electeurCentenaireByRegion,
   getDoublons,
   newinscritbyRegion
@@ -64,11 +65,17 @@ const ListeCentenaire = () => {
   // // ** Get data on mount
   useEffect(() => {
     dispatch(electeurCentenaireByRegion({idRegion: userData.id_circons_er})).then(() => setPending(false));
+    dispatch(electeurCentenaireByCommune({idCom: userData.id_circons_em})).then(() => setPending(false));
+
   }, [dispatch]);
 
   // ** Function in get data on page change
   const handlePagination = (page) => {
     setPending(true)
+    dispatch(electeurCentenaireByCommune({
+      idCom: userData.id_circons_em,
+      page: page.selected + 1,
+     })).then(() => setPending(false))
    dispatch(electeurCentenaireByRegion({
     idRegion: userData.id_circons_er,
     page: page.selected + 1,

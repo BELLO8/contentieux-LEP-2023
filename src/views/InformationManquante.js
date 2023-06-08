@@ -304,6 +304,7 @@ const InformationMaquante = () => {
             pagination
             responsive
             columns={columns}
+            noDataComponent='aucune données'
             sortIcon={<ChevronDown />}
             className="react-dataTable"
             paginationPerPage={100}

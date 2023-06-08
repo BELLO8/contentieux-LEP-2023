@@ -38,6 +38,7 @@ import {
   changeRegionByRegion,
   conservRegionChangeDepByRegion,
   getDoublons,
+  newinscritbyCircons,
   newinscritbyRegion
 } from "../redux/store/Election";
 import { getUserData } from "../utility/Utils";
@@ -63,11 +64,17 @@ const ListeNouveauInscrit = () => {
   // // ** Get data on mount
   useEffect(() => {
     dispatch(newinscritbyRegion({idRegion: userData.id_circons_er})).then(() => setPending(false));
+    dispatch(newinscritbyCircons({idCom: userData.id_circons_em})).then(() => setPending(false));
+
   }, [dispatch]);
 
   // ** Function in get data on page change
   const handlePagination = (page) => {
     setPending(true)
+    dispatch(newinscritbyCircons({
+      idCom: userData.id_circons_em,
+      page: page.selected + 1,
+     })).then(() => setPending(false))
    dispatch(newinscritbyRegion({
     idRegion: userData.id_circons_er,
     page: page.selected + 1,
