@@ -25,6 +25,9 @@ import ListeChangementDep from "../../views/ListeChangementDep"
 import ListeNouveauInscrit from "../../views/ListeNouveauInscrit"
 import ListeCentenaire from "../../views/ListeCentenaire"
 import ListeMineur from "../../views/ListeMineur"
+import Register from "../../views/Register"
+import Process from "../../views/Process"
+import CheckoutPDCI from "../../views/CheckoutPDCI"
 
 const getLayout = {
   blank: <BlankLayout />,
@@ -36,21 +39,15 @@ const getLayout = {
 const TemplateTitle = "%s - Vuexy React Admin Template"
 
 // ** Default Route
-const DefaultRoute = "/liste-electorale"
+const DefaultRoute = "/comment-ça-marche"
 
-const Home = lazy(() => import("../../views/Home"))
 const SecondPage = lazy(() => import("../../views/SecondPage"))
 const Login = lazy(() => import("../../views/Login"))
-const Register = lazy(() => import("../../views/Register"))
-const ForgotPassword = lazy(() => import("../../views/ForgotPassword"))
+const Checkout = lazy(() => import("../../views/Checkout"))
 const Error = lazy(() => import("../../views/Error"))
 
 // ** Merge Routes
 const Routes = [
-  {
-    path: "/home",
-    element: <Home />
-  },
   {
     path: "/repertoire-electeur-decede",
     element: <SecondPage />
@@ -96,6 +93,14 @@ const Routes = [
     element: <ListeMineur />
   },
   {
+    path: "/comment-ca-marche",
+    element: <Process />,
+    meta: {
+      layout: "blank",
+      publicRoute: true
+    }
+  },
+  {
     path: "/login",
     element: <Login />,
     meta: {
@@ -107,15 +112,7 @@ const Routes = [
     element: <UsersList />
   },
   {
-    path: "/stepper",
-    element: <Wizard />,
-    meta: {
-      publicRoute: true,
-      layout: "blank"
-    }
-  },
-  {
-    path: "/register",
+    path: "/inscription",
     element: <Register />,
     meta: {
       publicRoute: true,
@@ -123,8 +120,16 @@ const Routes = [
     }
   },
   {
-    path: "/forgot-password",
-    element: <ForgotPassword />,
+    path: "/paiement-candidat",
+    element: <Checkout />,
+    meta: {
+      publicRoute: true,
+      layout: "blank"
+    }
+  },
+  {
+    path: "/paiement-candidat-pdci",
+    element: <CheckoutPDCI />,
     meta: {
       publicRoute: true,
       layout: "blank"

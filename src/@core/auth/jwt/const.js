@@ -8,6 +8,10 @@ export const register = async (...args) => {
    return axios.post(`${urlBase}RegisterCandidat`, ...args)
   }
 
+export const verifyPayment = async (...args) => {
+    return axios.post(`${urlBase}api/status-payment`, ...args)
+   }
+
 export const login = async (...args) => {
     return axios.post(`${urlBase}loginCandidat`, ...args)
    }

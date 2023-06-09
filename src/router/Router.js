@@ -22,7 +22,7 @@ const Router = () => {
       console.log(user)
       return getHomeRouteForLoggedInUser(user.role)
     } else {
-      return '/login'
+      return '/comment-ca-marche'
     }
   }
 

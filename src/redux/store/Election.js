@@ -144,6 +144,11 @@ export const getDepartementParAnnee = createAsyncThunk('departementParAnne/getDe
     return response.data
   })
 
+  export const RegisterCandidant = createAsyncThunk('registerCandidant/register', async(data) => {
+    const response = await client.post('RegisterCandidat', data)
+    return response.data
+  })
+
   export const getElecteurDecedeByDep = createAsyncThunk('electeurDecedeByDep/getElecteurDecedeByDep', async(params) => {
     const response = await client.get(
         `electeurDecedebyDep/${params.idDep}/${params.idCand}/?page=${

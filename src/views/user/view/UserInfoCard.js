@@ -20,7 +20,7 @@ const UserInfoCard = ({ selectedUser }) => {
       <Card>
         <CardBody>
           <div className='info-container'>
-            {selectedUser !== null ? (
+            {selectedUser !== undefined ? (
               <ul className='list-unstyled'>
                 <li className='mb-75'>
                   <span className='fw-bolder me-25'>Nom :</span>

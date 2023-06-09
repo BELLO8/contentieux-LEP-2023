@@ -152,7 +152,7 @@ const Login = () => {
             </Form>
             <p className='text-center mt-2'> 
               <span className='me-25'>Nouveau sur notre plateforme?</span>
-              <Link to='/register'>
+              <Link to='/inscription'>
                 <span>créer un compte</span>
               </Link>
             </p>

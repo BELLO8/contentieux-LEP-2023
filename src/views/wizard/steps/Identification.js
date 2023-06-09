@@ -1,4 +1,4 @@
-// ** React Imports
+/* eslint-disable */
 import { Fragment, useEffect, useState } from 'react'
 
 // ** Third Party Components
@@ -48,8 +48,9 @@ const Identification = ({ stepper, type }) => {
   }, [dispatch])
 
   const onSubmit = data => {
-    if (Object.values(data).every(field => field.length > 0)) {
-      dispatch(Register(data))
+    const elect = {idTypeElection:idTypeElection, idcirconscription:idcirconscription}
+    if (Object.values(elect).every(field => field !== undefined)) {
+      // dispatch(Register(data))
       dispatch(getCandidatInfo({idTypeElection, idcirconscription}))
       stepper.next()
     } else {
@@ -76,7 +77,6 @@ const Identification = ({ stepper, type }) => {
               className='react-select'
               classNamePrefix='select'
               options={typeElectionData}
-              defaultValue={typeElectionData[0]}
               onChange={(event) => {
                 setIdTypeElection(event.value)
                 console.log(idTypeElection)
@@ -94,7 +94,6 @@ const Identification = ({ stepper, type }) => {
               theme={selectThemeColors}
               id={`language-${type}`}
               options={circonscriptionData}
-              defaultValue={circonscriptionData[0]}
               className='react-select'
               classNamePrefix='select'
               onChange={(event) => {
@@ -105,7 +104,7 @@ const Identification = ({ stepper, type }) => {
             />
           </Col>
         </Row>
-        <Row>
+        {/* <Row>
             <Col md='6' className='mb-1'>
               <Label className='form-label' for='username'>
               Nom d'utilisateur
@@ -118,14 +117,14 @@ const Identification = ({ stepper, type }) => {
               </Label>
               <input className='form-control' type='password' { ...register("password", { required: true})} required/>
             </Col>
-        </Row>
+        </Row> */}
         <div className='d-flex justify-content-between'>
           <Button color='secondary' className='btn-prev' outline disabled>
             <ArrowLeft size={14} className='align-middle me-sm-25 me-0'></ArrowLeft>
-            <span className='align-middle d-sm-inline-block d-none'>Previous</span>
+            <span className='align-middle d-sm-inline-block d-none'>Précédent</span>
           </Button>
           <Button typec='submit' color='primary' className='btn-next'>
-            <span className='align-middle d-sm-inline-block d-none'>Next</span>
+            <span className='align-middle d-sm-inline-block d-none'>Suivant</span>
             <ArrowRight size={14} className='align-middle ms-sm-25 ms-0'></ArrowRight>
           </Button>
         </div>
