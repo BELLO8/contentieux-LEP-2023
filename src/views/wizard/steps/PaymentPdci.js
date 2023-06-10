@@ -14,7 +14,7 @@ const PaymentPdci = ({ stepper }) => {
   const navigate = useNavigate()
   const userRegister = useSelector(state => state.infoCandidat.user)
   const candidat = useSelector(state => state.infoCandidat.data)
-  const url = `https://pay.apaym.com/institutjamawue/m=${candidat?.montant}/i=225/t=/n=/p=/e=b@gmail.com/r=paiement/k=${candidat?.cod_candidat}/l=1`
+  //const url = `https://pay.apaym.com/institutjamawue/m=${candidat?.montant}/i=225/t=/n=/p=/e=b@gmail.com/r=paiement/k=${candidat?.cod_candidat}/l=1`
   console.log(userRegister)
   const {
     handleSubmit
@@ -22,7 +22,6 @@ const PaymentPdci = ({ stepper }) => {
 
   const onSubmit = () => {
     localStorage.setItem('candidatInfo', JSON.stringify(candidat))
-    location. replace(url)
     verifyPayment({
       id_order:candidat?.montant,
       status_order:"success",
