@@ -50,7 +50,7 @@ import {
 } from "../redux/store/Election";
 
 
-const SecondPage = () => {
+const ListeDecede = () => {
   // ** Store Vars
   const dispatch = useDispatch();
   const store = useSelector((state) => state.election.electeur);
@@ -293,7 +293,7 @@ const SecondPage = () => {
           </Col>
         </Row>
         </div>
-        <h5>{electeur.meta?.total === undefined ? '' : electeur.meta?.total +' '+'élements trouvés' } </h5>
+        <h5>{electeur?.meta?.total === undefined ? '' : electeur?.meta?.total +' '+'élements trouvés' } </h5>
       <Card className="overflow-hidden">
         <div className="react-dataTable" id="electeur">
           <DataTable
@@ -305,7 +305,7 @@ const SecondPage = () => {
             className="react-dataTable"
             paginationPerPage={100}
             paginationRowsPerPageOptions={[25, 50, 75, 100]}
-            data={electeur.data}
+            data={electeur?.data}
           />
         </div>
       </Card>
@@ -313,4 +313,4 @@ const SecondPage = () => {
   );
 };
 
-export default SecondPage;
+export default ListeDecede;

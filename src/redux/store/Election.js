@@ -35,7 +35,21 @@ export const changeRegionByRegion = createAsyncThunk('ChangeRegionByRegion/chang
     return response.data.data
   })
 
+  export const conservDepChangeCirconsByRegion = createAsyncThunk('ConservDepChangeCirconsByRegion/conservDepChangeCirconsByRegion', async(params) => {
+    const response = await client.get(`conservDepChangeCirconsByRegion/${params.idRegion}/?page=${
+      params.page === null ? 1 : params.page
+    }`)
+    return response.data.data
+  })
 
+  export const conservDepChangeCirconsByCommune = createAsyncThunk('ConservDepChangeCirconsByCommune/conservDepChangeCirconsByCommune', async(params) => {
+    const response = await client.get(`conservDepChangeCirconsByCommune/${params.idCom}/?page=${
+      params.page === null ? 1 : params.page
+    }`)
+    return response.data.data
+  })
+
+  
   export const newinscritbyRegion = createAsyncThunk('NewinscritbyRegion/newinscritbyRegion', async(params) => {
     const response = await client.get(`newinscritbyRegion/${params.idRegion}/?page=${
       params.page === null ? 1 : params.page
@@ -279,6 +293,7 @@ export const ElectionSlice = createSlice({
         synthese20:[],
         evolution: [],
         conservRegionChangeDepByRegion:[],
+        conservDepChangeCirconsByRegion:[],
         evolutionCirconsByDep:[],
         nbrPopulationByDep23:[],
         nbrPopulationByDep20:[],
@@ -450,6 +465,14 @@ export const ElectionSlice = createSlice({
         state.status = "succeeded"
         state.electeurMineurByRegion = action.payload
         })
+        .addCase(conservDepChangeCirconsByRegion.fulfilled, (state, action) => {
+          state.status = "succeeded"
+          state.conservDepChangeCirconsByRegion = action.payload
+          })
+          .addCase(conservDepChangeCirconsByCommune.fulfilled, (state, action) => {
+            state.status = "succeeded"
+            state.conservDepChangeCirconsByRegion = action.payload
+            })
       
     }
 })

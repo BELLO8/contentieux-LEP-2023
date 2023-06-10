@@ -28,6 +28,8 @@ import ListeMineur from "../../views/ListeMineur"
 import Register from "../../views/Register"
 import Process from "../../views/Process"
 import CheckoutPDCI from "../../views/CheckoutPDCI"
+import ListeDecede from "../../views/ListeDecede"
+import ListeChangementLv from "../../views/ListeChangementLv"
 
 const getLayout = {
   blank: <BlankLayout />,
@@ -41,7 +43,7 @@ const TemplateTitle = "%s - Vuexy React Admin Template"
 // ** Default Route
 const DefaultRoute = "/comment-ça-marche"
 
-const SecondPage = lazy(() => import("../../views/SecondPage"))
+const SecondPage = lazy(() => import("../../views/ListeDecede"))
 const Login = lazy(() => import("../../views/Login"))
 const Checkout = lazy(() => import("../../views/Checkout"))
 const Error = lazy(() => import("../../views/Error"))
@@ -50,7 +52,7 @@ const Error = lazy(() => import("../../views/Error"))
 const Routes = [
   {
     path: "/repertoire-electeur-decede",
-    element: <SecondPage />
+    element: <ListeDecede />
   },
    {
     path: "/repertoire-information-manquante",
@@ -79,6 +81,10 @@ const Routes = [
   {
     path: "/changement-departement",
     element: <ListeChangementDep />
+  },
+   {
+    path: "/changement-lieu-vote",
+    element: <ListeChangementLv />
   },
   {
     path: "/nouveau-inscrit",

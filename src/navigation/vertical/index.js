@@ -61,6 +61,12 @@ export default [
         icon: <Circle size={12} />,
         navLink: '/changement-departement'
       },
+      {
+        id: 'changeLv',
+        title: 'Changement de lieux de vote',
+        icon: <Circle size={12} />,
+        navLink: '/changement-lieu-vote'
+      },
        {
         id: 'newinscritbyRegion',
         title: 'Nouveau inscrit',

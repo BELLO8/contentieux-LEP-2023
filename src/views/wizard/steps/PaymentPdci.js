@@ -10,11 +10,11 @@ import { useForm } from 'react-hook-form'
 import { register, verifyPayment } from '../../../@core/auth/jwt/const'
 import { useNavigate } from 'react-router-dom'
 import PlanCard from '../../user/view/PlanCard'
+
 const PaymentPdci = ({ stepper }) => {
   const navigate = useNavigate()
   const userRegister = useSelector(state => state.infoCandidat.user)
   const candidat = useSelector(state => state.infoCandidat.data)
-  //const url = `https://pay.apaym.com/institutjamawue/m=${candidat?.montant}/i=225/t=/n=/p=/e=b@gmail.com/r=paiement/k=${candidat?.cod_candidat}/l=1`
   console.log(userRegister)
   const {
     handleSubmit

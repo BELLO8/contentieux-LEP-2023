@@ -10,7 +10,7 @@ import {
   Input,
   Button
 } from "reactstrap"
-import { AlertCircle } from 'react-feather'
+import { AlertCircle, Check } from 'react-feather'
 import Avatar from '@components/avatar'
 import "@styles/react/pages/page-authentication.scss"
 import InputPasswordToggle from "@components/input-password-toggle"
