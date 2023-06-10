@@ -164,7 +164,7 @@ const Register = () => {
                 </div>
              
               <Button type='submit' color='primary' block>
-                Se connecter
+                Créer mon compte
               </Button>
             </Form>
             <p className="text-center mt-2">
