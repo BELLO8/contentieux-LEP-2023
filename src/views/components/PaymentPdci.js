@@ -1,15 +1,15 @@
 /* eslint-disable */
 
 // ** Reactstrap Imports
-import { Button, Form, Alert  } from 'reactstrap'
+import { Button, Form } from 'reactstrap'
 import { ArrowLeft, Check, AlertCircle } from 'react-feather'
 import Avatar from '@components/avatar'
 import { useSelector } from 'react-redux'
 import toast from 'react-hot-toast'
 import { useForm } from 'react-hook-form'
-import { register, verifyPayment } from '../../../@core/auth/jwt/const'
+import { verifyPayment } from '../../@core/auth/jwt/const'
 import { useNavigate } from 'react-router-dom'
-import PlanCard from '../../user/view/PlanCard'
+import PlanCard from './PlanCard'
 
 const PaymentPdci = ({ stepper }) => {
   const navigate = useNavigate()

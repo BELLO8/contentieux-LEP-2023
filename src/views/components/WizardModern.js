@@ -5,15 +5,14 @@ import { useRef, useState } from 'react'
 import Wizard from '@components/wizard'
 
 // ** Steps
-import PayementInfo from './steps/Payment'
-import CandidantInfo from './steps/CandidantInfo'
-import Identification from '@src/views/wizard/steps/Identification'
+import PayementInfo from './Payment'
+import CandidantInfo from './CandidantInfo'
+import Identification from './Identification'
 
 // ** Icons Imports
 import { FileText, User, CreditCard } from 'react-feather'
-import PaymentPdci from './steps/PaymentPdci'
 
-const Steps = () => {
+const WizardModern = () => {
   // ** Ref
   const ref = useRef(null)
 
@@ -41,7 +40,7 @@ const Steps = () => {
       title: 'Paiement',
       subtitle: 'Passer au paiement',
       icon: <CreditCard size={18} />,
-      content: <PaymentPdci stepper={stepper} />
+      content: <PayementInfo stepper={stepper} />
     }
   ]
 
@@ -56,4 +55,4 @@ const Steps = () => {
   )
 }
 
-export default Steps
+export default WizardModern

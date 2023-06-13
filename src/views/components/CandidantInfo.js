@@ -5,11 +5,9 @@ import { Fragment } from 'react'
 import { ArrowLeft, ArrowRight } from 'react-feather'
 
 // ** Reactstrap Imports
-import { Label, Row, Col, Input, Form, Button } from 'reactstrap'
-import UserInfoCard from '../../user/view/UserInfoCard'
-import PlanCard from '../../user/view/PlanCard'
+import { Row, Col, Form, Button } from 'reactstrap'
 import { useDispatch, useSelector } from 'react-redux'
-import { Register } from '../../../redux/store/InfoCandidat'
+import UserInfoCard from './UserInfoCard'
 
 const CandidantInfo = ({ stepper }) => {
 

@@ -1,4 +1,4 @@
-// ** React Imports
+/* eslint-disable */
 import { useEffect } from "react"
 import { NavLink } from "react-router-dom"
 
@@ -60,21 +60,19 @@ const VerticalMenuHeader = (props) => {
             to={user ? getHomeRouteForLoggedInUser(user.role) : "/"}
             className="navbar-brand"
           >
-            <span className="brand-logo">
-              <img src={themeConfig.app.appLogoImage} alt="logo" />
-            </span>
-            <h2 className="brand-text mb-0">{themeConfig.app.appName}</h2>
+              <img src={themeConfig.app.appLogoImage} alt="logo" width={100} />
+            {/* <h2 className="brand-text mb-0">{themeConfig.app.appName}</h2> */}
           </NavLink>
         </li>
         <li className="nav-item nav-toggle">
-          <div className="nav-link modern-nav-toggle cursor-pointer">
+          {/* <div className="nav-link modern-nav-toggle cursor-pointer">
             <Toggler />
             <X
               onClick={() => setMenuVisibility(false)}
               className="toggle-icon icon-x d-block d-xl-none"
               size={20}
             />
-          </div>
+          </div> */}
         </li>
       </ul>
     </div>

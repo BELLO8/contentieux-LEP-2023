@@ -1,15 +1,12 @@
 /* eslint-disable */
 
 // ** Reactstrap Imports
-import { Button, Form, Alert  } from 'reactstrap'
-import { ArrowLeft, Check, AlertCircle } from 'react-feather'
-import Avatar from '@components/avatar'
+import { Button, Form, Alert } from 'reactstrap'
+import { ArrowLeft } from 'react-feather'
 import { useSelector } from 'react-redux'
-import toast from 'react-hot-toast'
 import { useForm } from 'react-hook-form'
-import { register } from '../../../@core/auth/jwt/const'
 import { useNavigate } from 'react-router-dom'
-import PlanCard from '../../user/view/PlanCard'
+import PlanCard from './PlanCard'
 const PaymentInfo = ({ stepper }) => {
   const navigate = useNavigate()
   const userRegister = useSelector(state => state.infoCandidat.user)

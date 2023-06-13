@@ -9,14 +9,14 @@ import { ArrowLeft, ArrowRight } from 'react-feather'
 import { selectThemeColors } from '@utils'
 
 // ** Reactstrap Imports
-import { Label, Row, Col, Form, Input, Button } from 'reactstrap'
-import { useForm, Controller } from 'react-hook-form'
+import { Label, Row, Col, Form, Button } from 'reactstrap'
+import { useForm } from 'react-hook-form'
 // ** Styles
 import '@styles/react/libs/react-select/_react-select.scss'
 import { useDispatch, useSelector } from 'react-redux'
-import { getTypeElection } from '../../../redux/store/TypeElection'
-import { getCirconscription } from '../../../redux/store/Circonscription'
-import { Register, getCandidatInfo } from '../../../redux/store/InfoCandidat'
+import { getTypeElection } from '../../redux/store/TypeElection'
+import { getCirconscription } from '../../redux/store/Circonscription'
+import { getCandidatInfo } from '../../redux/store/InfoCandidat'
 
 const Identification = ({ stepper, type }) => {
   const {

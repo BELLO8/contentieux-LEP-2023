@@ -1,6 +1,5 @@
 // ** React Imports
 import { Fragment, lazy } from "react"
-import { Navigate } from "react-router-dom"
 // ** Layouts
 import BlankLayout from "@layouts/BlankLayout"
 import VerticalLayout from "@src/layouts/VerticalLayout"
@@ -13,8 +12,7 @@ import PrivateRoute from '@components/routes/PrivateRoute'
 
 // ** Utils
 import { isObjEmpty } from "@utils"
-import Wizard from "../../views/wizard"
-import UsersList from "../../views/user/list"
+import ListeElectorale from "../../views/ListeElectorale"
 import ListeElecteur from "../../views/ListeElecteur"
 import InformationMaquante from "../../views/InformationManquante"
 import EditElecteur from "../../views/EditElecteur"
@@ -43,7 +41,6 @@ const TemplateTitle = "%s - Vuexy React Admin Template"
 // ** Default Route
 const DefaultRoute = "/comment-ça-marche"
 
-const SecondPage = lazy(() => import("../../views/ListeDecede"))
 const Login = lazy(() => import("../../views/Login"))
 const Checkout = lazy(() => import("../../views/Checkout"))
 const Error = lazy(() => import("../../views/Error"))
@@ -115,7 +112,7 @@ const Routes = [
   },
   {
     path: "/liste-electorale",
-    element: <UsersList />
+    element: <ListeElectorale />
   },
   {
     path: "/inscription",

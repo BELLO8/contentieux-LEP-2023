@@ -3,7 +3,7 @@
 //Template config options
 const themeConfig = {
   app: {
-    appName: "Cont-LEP-2023",
+    appName: "JamElec",
     appLogoImage: require('../assets/images/logo/logo1.png').default
   },
   layout: {

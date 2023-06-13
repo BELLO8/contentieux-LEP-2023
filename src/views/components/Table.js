@@ -42,7 +42,7 @@ import {
 // ** Styles
 import "@styles/react/libs/react-select/_react-select.scss";
 import "@styles/react/libs/tables/react-dataTable-component.scss";
-import { getUserData } from "../../../utility/Utils";
+import { getUserData } from "../../utility/Utils";
 import {
   getCirconscriptionAdmin,
   getDepartement,
@@ -51,8 +51,8 @@ import {
   getElecteurByLieuVote,
   getLieuxVote,
   showElecteur
-} from "../../../redux/store/Election";
-import "./style.css"
+} from "../../redux/store/Election";
+import "../style.css"
 
 const UsersList = () => {
   // ** Store Vars
@@ -66,6 +66,8 @@ const UsersList = () => {
   const electeur = useSelector((state) => state.election.electeur);
   const bureauVote = useSelector((state) => state.election.bureauVote)
   const componentRef = useRef();
+
+  const electeurData = electeur.data === undefined ? [] : electeur.data
 
   const lieuxVoteData = [];
   const departementData = [];
@@ -399,7 +401,7 @@ const UsersList = () => {
                 className="ms-50 w-100"
                 type="text"
                 value={searchTerm}
-                // onChange={(e) => handleFilter(e.target.value)}
+                onChange={(e) => setSearchTerm(e.target.value)}
               />
             </div>
           </Col>
@@ -418,7 +420,15 @@ const UsersList = () => {
             className="react-dataTable"
             paginationPerPage={100}
             paginationRowsPerPageOptions={[100]}
-            data={electeur.data}
+            data={electeurData.filter((item) => {
+              if( searchTerm == "") {
+                return item
+              }else if (
+                JSON.stringify(item).toLowerCase().indexOf(searchTerm.toLowerCase()) !=-1
+              ) {
+                return item;
+              }
+            })}
           />
         </div>
       </Card>

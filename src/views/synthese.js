@@ -19,40 +19,39 @@ import { selectThemeColors } from "@utils";
 
 // ** Reactstrap Imports
 import {
-    Card,
-    CardBody,
-    CardHeader,
-    CardTitle,
-    Col,
-    Label,
-    Row
+  Card,
+  CardBody,
+  CardHeader,
+  CardTitle,
+  Col,
+  Label,
+  Row
 } from "reactstrap";
 
 // ** Utils
 
 // ** Context
 import {
-    Activity, BarChart2
+  Activity, BarChart2
 } from 'react-feather';
   
 // ** Styles
 import "@styles/react/libs/react-select/_react-select.scss";
 import "@styles/react/libs/tables/react-dataTable-component.scss";
 import {
-    EvolutionCirconsByDep,
-    EvolutionLVByDep,
-    EvolutionPopulationByDep, EvolutionPopulationBylieuVote, NbrCirconsDep,
-    NbrCirconsDep20,
-    NbrLieuVotebyCircons20,
-    NbrLieuVotebyCircons23,
-    NbrPopulationByDep20,
-    NbrPopulationByDep23,
-    NbrPopulationByLieuVote20,
-    NbrPopulationByLieuVote23,
-    clearStore, getDepartement, getLieuxVote
+  EvolutionCirconsByDep,
+  EvolutionLVByDep,
+  EvolutionPopulationByDep, EvolutionPopulationBylieuVote, NbrCirconsDep,
+  NbrCirconsDep20,
+  NbrLieuVotebyCircons20,
+  NbrLieuVotebyCircons23,
+  NbrPopulationByDep20,
+  NbrPopulationByDep23,
+  NbrPopulationByLieuVote20,
+  NbrPopulationByLieuVote23, getDepartement, getLieuxVote
 } from "../redux/store/Election";
 import { getUserData } from "../utility/Utils";
-import StatsHorizontal from "./StatsHorizontal";
+import StatsHorizontal from "./components/StatsHorizontal";
 
 const Synthese = () => {
   // ** Store Vars

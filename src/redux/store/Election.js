@@ -36,14 +36,14 @@ export const changeRegionByRegion = createAsyncThunk('ChangeRegionByRegion/chang
   })
 
   export const conservDepChangeCirconsByRegion = createAsyncThunk('ConservDepChangeCirconsByRegion/conservDepChangeCirconsByRegion', async(params) => {
-    const response = await client.get(`conservDepChangeCirconsByRegion/${params.idRegion}/?page=${
+    const response = await client.get(`conservCirconsChangeLieuVoteByRegion/${params.idRegion}/?page=${
       params.page === null ? 1 : params.page
     }`)
     return response.data.data
   })
 
   export const conservDepChangeCirconsByCommune = createAsyncThunk('ConservDepChangeCirconsByCommune/conservDepChangeCirconsByCommune', async(params) => {
-    const response = await client.get(`conservDepChangeCirconsByCommune/${params.idCom}/?page=${
+    const response = await client.get(`conservCirconsChangeLVByCommune/${params.idCom}/?page=${
       params.page === null ? 1 : params.page
     }`)
     return response.data.data

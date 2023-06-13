@@ -15,7 +15,7 @@ import {
 
 // ** Styles
 import "@styles/react/pages/page-authentication.scss"
-import WizardModern from "./wizard/WizardModern"
+import WizardModern from "./components/WizardModern"
 import { useEffect } from "react"
 import { isUserLoggedIn } from "../utility/Utils"
 
@@ -51,7 +51,11 @@ const Checkout = () => {
             <p className="text-center mt-2">
               <span className="me-25">Vous avez déjà faire le paiement ?</span>
               <Link to="/inscription">
-                <span>Créer votre compte maintenant</span>
+                <span className="m-1">Créer votre compte maintenant</span>
+              </Link>
+              |
+              <Link to="/login">
+                <span className="m-1">Connectez vous</span>
               </Link>
             </p>
           </Col>

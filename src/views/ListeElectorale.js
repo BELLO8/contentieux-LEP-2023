@@ -1,20 +1,18 @@
 // ** User List Component
-import Table from './Table'
+import Table from './components/Table'
 
 // ** Reactstrap Imports
-import { Row, Col, Badge } from 'reactstrap'
+import { Badge } from 'reactstrap'
 
 // ** Custom Components
-import StatsHorizontal from '@components/widgets/stats/StatsHorizontal'
 
 // ** Icons Imports
-import { User, UserPlus, UserCheck, UserX } from 'react-feather'
 
 // ** Styles
 import '@styles/react/apps/app-users.scss'
-import { getUserData } from '../../../utility/Utils'
+import { getUserData } from '../utility/Utils'
 
-const UsersList = () => {
+const ListeElectorale = () => {
   const user = getUserData()
 
   return (
@@ -25,4 +23,4 @@ const UsersList = () => {
   )
 }
 
-export default UsersList
+export default ListeElectorale

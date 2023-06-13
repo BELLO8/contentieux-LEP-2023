@@ -6,7 +6,7 @@ import { Fragment, useState, useEffect } from "react";
 // ** Invoice List Sidebar
 
 // ** Table Columns
-import { columns } from "./user/list/columns";
+import { columns } from "./components/columns";
 
 // ** Store & Actions
 // import { getAllData, getData } from '../store'
@@ -59,6 +59,7 @@ const InformationMaquante = () => {
   const electeur = useSelector((state) => state.election.electeur);
   const bureauVote = useSelector((state) => state.election.bureauVote)
 
+  const electeurData = electeur.data === undefined ? [] : electeur.data
   const lieuxVoteData = [];
   const departementData = [];
   const comData = [];
@@ -291,7 +292,7 @@ const InformationMaquante = () => {
               className="ms-50 w-100"
               type="text"
               value={searchTerm}
-              // onChange={(e) => handleFilter(e.target.value)}
+              onChange={(e) => setSearchTerm(e.target.value)}
             />
           </div>
         </Col>
@@ -309,7 +310,15 @@ const InformationMaquante = () => {
             className="react-dataTable"
             paginationPerPage={100}
             paginationRowsPerPageOptions={[100]}
-            data={electeur.data}
+            data={electeurData.filter((item) => {
+              if( searchTerm == "") {
+                return item
+              }else if (
+                JSON.stringify(item).toLowerCase().indexOf(searchTerm.toLowerCase()) !=-1
+              ) {
+                return item;
+              }
+            })}
           />
         </div>
       </Card>

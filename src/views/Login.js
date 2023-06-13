@@ -99,7 +99,7 @@ const Login = () => {
         <Card className='mb-0'>
           <CardBody>
             <CardTitle tag='h4' className='mb-1'>
-              Bienvenue sur Contentieux-LEP-2023 ! 👋
+              Bienvenue sur JamElec ! 👋
             </CardTitle>
             <CardText className='mb-2'>Connectez-vous à votre compte et commencez l'aventure</CardText>
             <Form className='auth-login-form mt-2' onSubmit={handleSubmit(onSubmit)}>

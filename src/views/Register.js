@@ -20,7 +20,6 @@ import { isUserLoggedIn } from "../utility/Utils"
 import { useDispatch } from "react-redux"
 import { useEffect } from "react"
 import toast from 'react-hot-toast'
-import { RegisterCandidant } from "../redux/store/Election"
 
 const defaultValues = {
 
@@ -116,7 +115,7 @@ const Register = () => {
         <Card className='mb-0'>
           <CardBody>
             <CardTitle tag='h4' className='mb-1'>
-              Inscription sur Contentieux-LEP-2023 ! 👋
+              Inscription sur JamElec ! 👋
             </CardTitle>
             <CardText className='mb-2'>Créer votre compte et commencez votre aventure</CardText>
             <Form className='auth-login-form mt-2' onSubmit={handleSubmit(onSubmit)}>

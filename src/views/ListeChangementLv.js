@@ -151,21 +151,29 @@ const ListeChangementLv = () => {
       selector: row => row.profession,
       cell: row => row.profession
     },
-    {
-      name: 'Departement 2020',
+     {
+      name: 'Commune',
       minWidth: '138px',
       sortable: true,
-      sortField: 'region2020',
-      selector: row => row.dep2020,
-      cell: row => row.dep2020
+      sortField: 'commune2023',
+      selector: row => row.commune2023,
+      cell: row => row.commune2023
     },
     {
-      name: 'Departement 2023',
+      name: 'Ancien lieu de vote',
       minWidth: '138px',
       sortable: true,
-      sortField: 'region2023',
-      selector: row => row.dep2023,
-      cell: row => row.dep2023
+      sortField: 'lv2020',
+      selector: row => row.lieu_vote_2020,
+      cell: row => row.lieu_vote_2020
+    },
+    {
+      name: ' Nouveau lieu de vote',
+      minWidth: '138px',
+      sortable: true,
+      sortField: 'lv2023',
+      selector: row => row.lieu_vote_2023,
+      cell: row => row.lieu_vote_2023
     }
   ]
 

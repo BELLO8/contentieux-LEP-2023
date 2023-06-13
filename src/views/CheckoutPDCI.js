@@ -15,10 +15,9 @@ import {
 
 // ** Styles
 import "@styles/react/pages/page-authentication.scss"
-import WizardModern from "./wizard/WizardModern"
 import { useEffect } from "react"
 import { isUserLoggedIn } from "../utility/Utils"
-import Steps from "./wizard/Steps"
+import Steps from "./components/Steps"
 
 const CheckoutPDCI = () => {
   const navigate = useNavigate()

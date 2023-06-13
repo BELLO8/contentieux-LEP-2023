@@ -6,7 +6,7 @@ import { Fragment, useState, useEffect } from "react";
 // ** Invoice List Sidebar
 
 // ** Table Columns
-import { columns } from "./user/list/columns";
+import { columns } from "./components/columns";
 
 // ** Store & Actions
 // import { getAllData, getData } from '../store'

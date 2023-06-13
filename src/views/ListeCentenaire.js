@@ -25,9 +25,7 @@ import {
   CardHeader,
   CardTitle,
   Col,
-  Input,
-  Progress,
-  Row,
+  Input, Row,
   Spinner
 } from "reactstrap";
 
@@ -35,12 +33,8 @@ import {
 import "@styles/react/libs/react-select/_react-select.scss";
 import "@styles/react/libs/tables/react-dataTable-component.scss";
 import {
-  changeRegionByRegion,
-  conservRegionChangeDepByRegion,
   electeurCentenaireByCommune,
-  electeurCentenaireByRegion,
-  getDoublons,
-  newinscritbyRegion
+  electeurCentenaireByRegion
 } from "../redux/store/Election";
 import { getUserData } from "../utility/Utils";
 
@@ -55,6 +49,7 @@ const ListeCentenaire = () => {
   const userData = getUserData();
   const lieux = useSelector((state) => state.election.lieuxVote);
   const electeur = useSelector((state) => state.election.electeurCentenaireByRegion);
+  const electeurData = electeur.data === undefined ? [] : electeur.data
 
 
   const [searchTerm, setSearchTerm] = useState("");
@@ -222,7 +217,7 @@ const ListeCentenaire = () => {
                 className="ms-50 w-100"
                 type="text"
                 value={searchTerm}
-                // onChange={(e) => handleFilter(e.target.value)}
+                onChange={(e) => setSearchTerm(e.target.value)}
               />
             </div>
           </Col>
@@ -242,7 +237,15 @@ const ListeCentenaire = () => {
             className="react-dataTable"
             paginationPerPage={100}
             paginationRowsPerPageOptions={[100]}
-            data={electeur.data}
+            data={electeurData.filter((item) => {
+              if( searchTerm == "") {
+                return item
+              }else if (
+                JSON.stringify(item).toLowerCase().indexOf(searchTerm.toLowerCase()) !=-1
+              ) {
+                return item;
+              }
+            })}
           />
         </div>
       </Card>
