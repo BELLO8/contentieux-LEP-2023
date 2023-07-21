@@ -16,6 +16,10 @@ export const login = async (...args) => {
     return axios.post(`${urlBase}loginCandidat`, ...args)
    }
 
+export const loginAdmin = async (...args) => {
+    return axios.post(`${urlBase}admins/login`, ...args)
+   }
+
 export const client = (user) ? axios.create({
     baseURL: `${urlBase}`,
     headers: {

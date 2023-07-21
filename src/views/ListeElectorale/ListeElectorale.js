@@ -1,5 +1,5 @@
 // ** User List Component
-import Table from './components/Table'
+import Table from '../components/Table'
 
 // ** Reactstrap Imports
 import { Badge } from 'reactstrap'
@@ -10,14 +10,12 @@ import { Badge } from 'reactstrap'
 
 // ** Styles
 import '@styles/react/apps/app-users.scss'
-import { getUserData } from '../utility/Utils'
+import Circons from '../components/circons'
 
 const ListeElectorale = () => {
-  const user = getUserData()
-
   return (
     <div className='app-user-list'>
-      <Badge color='warning'>  {user.lib_circons} </Badge>
+     <Circons/>
       <Table />
     </div>
   )

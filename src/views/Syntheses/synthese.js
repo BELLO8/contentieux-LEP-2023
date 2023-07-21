@@ -49,9 +49,10 @@ import {
   NbrPopulationByDep23,
   NbrPopulationByLieuVote20,
   NbrPopulationByLieuVote23, getDepartement, getLieuxVote
-} from "../redux/store/Election";
-import { getUserData } from "../utility/Utils";
-import StatsHorizontal from "./components/StatsHorizontal";
+} from "../../redux/store/Election";
+import { getUserData } from "../../utility/Utils";
+import StatsHorizontal from "../components/StatsHorizontal";
+import Circons from "../components/circons";
 
 const Synthese = () => {
   // ** Store Vars
@@ -101,6 +102,7 @@ const Synthese = () => {
 
   return (
     <Fragment>
+      <Circons/>
       <Card>
         <CardHeader>
           <CardTitle tag="h4">Synthèse de données</CardTitle>

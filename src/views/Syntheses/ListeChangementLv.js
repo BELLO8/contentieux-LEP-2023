@@ -35,23 +35,27 @@ import {
 import "@styles/react/libs/react-select/_react-select.scss";
 import "@styles/react/libs/tables/react-dataTable-component.scss";
 import {
-  changeRegionByCommune,
   changeRegionByRegion,
+  conservDepChangeCirconsByCommune,
+  conservDepChangeCirconsByRegion,
+  conservRegionChangeDepByCommune,
+  conservRegionChangeDepByRegion,
   getDoublons
-} from "../redux/store/Election";
-import { getUserData } from "../utility/Utils";
+} from "../../redux/store/Election";
+import { getUserData } from "../../utility/Utils";
+import Circons from "../components/circons";
 
 // ** Table Header
 
 
-const ListeChangementRegion = () => {
+const ListeChangementLv = () => {
   // ** Store Vars
   const dispatch = useDispatch();
-  const store = useSelector((state) => state.election.Electeur);
+  const store = useSelector((state) => state.election.conservDepChangeCirconsByRegion);
 
   const userData = getUserData();
   const lieux = useSelector((state) => state.election.lieuxVote);
-  const electeur = useSelector((state) => state.election.Electeur);
+  const electeur = useSelector((state) => state.election.conservDepChangeCirconsByRegion);
 
 
   const [searchTerm, setSearchTerm] = useState("");
@@ -61,19 +65,18 @@ const ListeChangementRegion = () => {
 
   // // ** Get data on mount
   useEffect(() => {
-    dispatch(changeRegionByRegion({idRegion: userData.id_circons_er})).then(() => setPending(false));
-    dispatch(changeRegionByCommune({idCom: userData.id_circons_em})).then(() => setPending(false));
+    dispatch(conservDepChangeCirconsByRegion({idRegion: userData.id_circons_er})).then(() => setPending(false));
+    dispatch(conservDepChangeCirconsByCommune({idCom: userData.id_circons_em})).then(() => setPending(false));
   }, [dispatch]);
 
   // ** Function in get data on page change
   const handlePagination = (page) => {
     setPending(true)
-    dispatch(changeRegionByCommune({
+    dispatch(conservDepChangeCirconsByCommune({
       idCom: userData.id_circons_em,
       page: page.selected + 1,
      })).then(() => setPending(false))
-
-   dispatch(changeRegionByRegion({
+   dispatch(conservDepChangeCirconsByRegion({
     idRegion: userData.id_circons_er,
     page: page.selected + 1,
    })).then(() => setPending(false))
@@ -149,21 +152,29 @@ const ListeChangementRegion = () => {
       selector: row => row.profession,
       cell: row => row.profession
     },
-    {
-      name: 'Region 2020',
+     {
+      name: 'Commune',
       minWidth: '138px',
       sortable: true,
-      sortField: 'region2020',
-      selector: row => row.region2020,
-      cell: row => row.region2020
+      sortField: 'commune2023',
+      selector: row => row.commune2023,
+      cell: row => row.commune2023
     },
     {
-      name: 'Region 2023',
+      name: 'Ancien lieu de vote',
       minWidth: '138px',
       sortable: true,
-      sortField: 'region2023',
-      selector: row => row.region2023,
-      cell: row => row.region2023
+      sortField: 'lv2020',
+      selector: row => row.lieu_vote_2020,
+      cell: row => row.lieu_vote_2020
+    },
+    {
+      name: ' Nouveau lieu de vote',
+      minWidth: '138px',
+      sortable: true,
+      sortField: 'lv2023',
+      selector: row => row.lieu_vote_2023,
+      cell: row => row.lieu_vote_2023
     }
   ]
 
@@ -194,9 +205,10 @@ const ListeChangementRegion = () => {
 
   return (
     <Fragment>
+      <Circons/>
       <Card>
         <CardHeader>
-          <CardTitle tag="h4">Liste des électeurs qui ont changé de région</CardTitle>
+          <CardTitle tag="h4">Liste des électeurs qui ont conservé la circonscription et changé de lieu de vote</CardTitle>
         </CardHeader>
       </Card>
       <CustomPagination />
@@ -255,4 +267,4 @@ const ListeChangementRegion = () => {
   );
 };
 
-export default ListeChangementRegion;
+export default ListeChangementLv;

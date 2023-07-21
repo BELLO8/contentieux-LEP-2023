@@ -12,22 +12,25 @@ import PrivateRoute from '@components/routes/PrivateRoute'
 
 // ** Utils
 import { isObjEmpty } from "@utils"
-import ListeElectorale from "../../views/ListeElectorale"
-import ListeElecteur from "../../views/ListeElecteur"
-import InformationMaquante from "../../views/InformationManquante"
-import EditElecteur from "../../views/EditElecteur"
-import Synthese from "../../views/synthese"
-import ListeDoublons from "../../views/ListeDoublons"
-import ListeChangementRegion from "../../views/ListeChangementRegion"
-import ListeChangementDep from "../../views/ListeChangementDep"
-import ListeNouveauInscrit from "../../views/ListeNouveauInscrit"
-import ListeCentenaire from "../../views/ListeCentenaire"
-import ListeMineur from "../../views/ListeMineur"
-import Register from "../../views/Register"
+import ListeElectorale from "../../views/ListeElectorale/ListeElectorale"
+import ListeElecteur from "../../views/RepertoireElecteur/ListeElecteur"
+import InformationMaquante from "../../views/RepertoireElecteur/InformationManquante"
+import EditElecteur from "../../views/ListeElectorale/EditElecteur"
+import Synthese from "../../views/Syntheses/synthese"
+import Anomalies from "../../views/Syntheses/Anomalie"
+import ListeChangementRegion from "../../views/Syntheses/ListeChangementRegion"
+import ListeChangementDep from "../../views/Syntheses/ListeChangementDep"
+import ListeNouveauInscrit from "../../views/Syntheses/ListeNouveauInscrit"
+import ListeCentenaire from "../../views/Syntheses/ListeCentenaire"
+import ListeMineur from "../../views/Syntheses/ListeMineur"
+import Register from "../../views/Auth/Register"
 import Process from "../../views/Process"
-import CheckoutPDCI from "../../views/CheckoutPDCI"
-import ListeDecede from "../../views/ListeDecede"
-import ListeChangementLv from "../../views/ListeChangementLv"
+import CheckoutPDCI from "../../views/Auth/CheckoutPDCI"
+import ListeDecede from "../../views/RepertoireElecteur/ListeDecede"
+import ListeChangementLv from "../../views/Syntheses/ListeChangementLv"
+import AdminLogin from "../../views/Auth/AdminLogin"
+import ListeAnomalies from "../../views/Syntheses/ListeAnomalies"
+import ListeParentsEnfant from "../../views/Syntheses/ListeParentsEnfants"
 
 const getLayout = {
   blank: <BlankLayout />,
@@ -41,8 +44,8 @@ const TemplateTitle = "%s - Vuexy React Admin Template"
 // ** Default Route
 const DefaultRoute = "/comment-ça-marche"
 
-const Login = lazy(() => import("../../views/Login"))
-const Checkout = lazy(() => import("../../views/Checkout"))
+const Login = lazy(() => import("../../views/Auth/Login"))
+const Checkout = lazy(() => import("../../views/Auth/Checkout"))
 const Error = lazy(() => import("../../views/Error"))
 
 // ** Merge Routes
@@ -68,8 +71,8 @@ const Routes = [
     element: <Synthese />
   },
   {
-    path: "/doublons",
-    element: <ListeDoublons />
+    path: "/anomalies",
+    element: <Anomalies />
   },
   {
     path: "/changement-region",
@@ -86,6 +89,14 @@ const Routes = [
   {
     path: "/nouveau-inscrit",
     element: <ListeNouveauInscrit />
+  },
+  {
+    path: "/Liste-anomalies",
+    element: <ListeAnomalies />
+  },
+  {
+    path: "/Liste-plus-20-enfants",
+    element: <ListeParentsEnfant />
   },
    {
     path: "/centenaire",
@@ -117,6 +128,14 @@ const Routes = [
   {
     path: "/inscription",
     element: <Register />,
+    meta: {
+      publicRoute: true,
+      layout: "blank"
+    }
+  },
+  {
+    path: "/JamElec-admin-panel-login",
+    element: <AdminLogin />,
     meta: {
       publicRoute: true,
       layout: "blank"

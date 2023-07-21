@@ -25,7 +25,9 @@ import {
   CardHeader,
   CardTitle,
   Col,
-  Input, Row,
+  Input,
+  Progress,
+  Row,
   Spinner
 } from "reactstrap";
 
@@ -33,23 +35,29 @@ import {
 import "@styles/react/libs/react-select/_react-select.scss";
 import "@styles/react/libs/tables/react-dataTable-component.scss";
 import {
+  changeRegionByRegion,
+  conservRegionChangeDepByRegion,
   electeurCentenaireByCommune,
-  electeurCentenaireByRegion
-} from "../redux/store/Election";
-import { getUserData } from "../utility/Utils";
+  electeurCentenaireByRegion,
+  electeurMineurByCommune,
+  electeurMineurByRegion,
+  getDoublons,
+  newinscritbyRegion
+} from "../../redux/store/Election";
+import { getUserData } from "../../utility/Utils";
+import Circons from "../components/circons";
 
 // ** Table Header
 
 
-const ListeCentenaire = () => {
+const ListeMineur = () => {
   // ** Store Vars
   const dispatch = useDispatch();
-  const store = useSelector((state) => state.election.electeurCentenaireByRegion);
+  const store = useSelector((state) => state.election.electeurMineurByRegion);
 
   const userData = getUserData();
   const lieux = useSelector((state) => state.election.lieuxVote);
-  const electeur = useSelector((state) => state.election.electeurCentenaireByRegion);
-  const electeurData = electeur.data === undefined ? [] : electeur.data
+  const electeur = useSelector((state) => state.election.electeurMineurByRegion);
 
 
   const [searchTerm, setSearchTerm] = useState("");
@@ -59,19 +67,19 @@ const ListeCentenaire = () => {
 
   // // ** Get data on mount
   useEffect(() => {
-    dispatch(electeurCentenaireByRegion({idRegion: userData.id_circons_er})).then(() => setPending(false));
-    dispatch(electeurCentenaireByCommune({idCom: userData.id_circons_em})).then(() => setPending(false));
+    dispatch(electeurMineurByRegion({idRegion: userData.id_circons_er})).then(() => setPending(false));
+    dispatch(electeurMineurByCommune({idCom: userData.id_circons_em})).then(() => setPending(false));
 
   }, [dispatch]);
 
   // ** Function in get data on page change
   const handlePagination = (page) => {
     setPending(true)
-    dispatch(electeurCentenaireByCommune({
+    dispatch(electeurMineurByCommune({
       idCom: userData.id_circons_em,
       page: page.selected + 1,
      })).then(() => setPending(false))
-   dispatch(electeurCentenaireByRegion({
+   dispatch(electeurMineurByRegion({
     idRegion: userData.id_circons_er,
     page: page.selected + 1,
    })).then(() => setPending(false))
@@ -184,9 +192,10 @@ const ListeCentenaire = () => {
 
   return (
     <Fragment>
+      <Circons/>
       <Card>
         <CardHeader>
-          <CardTitle tag="h4">Liste des électeurs centenaire </CardTitle>
+          <CardTitle tag="h4">Liste des électeurs mineurs</CardTitle>
         </CardHeader>
       </Card>
       <CustomPagination />
@@ -217,7 +226,7 @@ const ListeCentenaire = () => {
                 className="ms-50 w-100"
                 type="text"
                 value={searchTerm}
-                onChange={(e) => setSearchTerm(e.target.value)}
+                // onChange={(e) => handleFilter(e.target.value)}
               />
             </div>
           </Col>
@@ -237,15 +246,7 @@ const ListeCentenaire = () => {
             className="react-dataTable"
             paginationPerPage={100}
             paginationRowsPerPageOptions={[100]}
-            data={electeurData.filter((item) => {
-              if( searchTerm == "") {
-                return item
-              }else if (
-                JSON.stringify(item).toLowerCase().indexOf(searchTerm.toLowerCase()) !=-1
-              ) {
-                return item;
-              }
-            })}
+            data={electeur.data}
           />
         </div>
       </Card>
@@ -253,4 +254,4 @@ const ListeCentenaire = () => {
   );
 };
 
-export default ListeCentenaire;
+export default ListeMineur;

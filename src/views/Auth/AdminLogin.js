@@ -10,22 +10,24 @@ import {
   Input,
   Button
 } from "reactstrap"
-import { AlertCircle, Check } from 'react-feather'
+import { AlertCircle } from 'react-feather'
 import Avatar from '@components/avatar'
 import "@styles/react/pages/page-authentication.scss"
 import InputPasswordToggle from "@components/input-password-toggle"
-import { register } from "../@core/auth/jwt/const"
+import { loginAdmin } from "../../@core/auth/jwt/const"
 import { useForm, Controller } from "react-hook-form"
-import { isUserLoggedIn } from "../utility/Utils"
+import { getHomeRouteForLoggedInUser, isUserLoggedIn } from "../../utility/Utils"
+import { handleLogin } from "../../redux/auth"
 import { useDispatch } from "react-redux"
 import { useEffect } from "react"
 import toast from 'react-hot-toast'
 
 const defaultValues = {
-
+  password: "",
+  username: ""
 }
 
-const Register = () => {
+const AdminLogin = () => {
   const navigate = useNavigate()
   const dispatch = useDispatch()
   const {
@@ -42,41 +44,23 @@ const Register = () => {
   }, [])
 
   const onSubmit = (data) => {
-  const CodeCand = JSON.parse(localStorage.getItem('candidatInfo'))
     if (Object.values(data).every((field) => field.length > 0)) {
-      register({
+      loginAdmin({
           username: data.username,
-          password: data.password,
-          id_candidat: CodeCand?.cod_candidat
+          password: data.password
         })
         .then((res) => {
+          console.log(res)
+          const Token = res.data.data.token
           if (res.data.status === "success") {
-            localStorage.removeItem('candidatInfo')
-            toast(
-              <div className='d-flex'>
-                <div className='me-1'>
-                  <Avatar size='sm' color='success' icon={<Check size={12} />} />
-                </div>
-                <div className='d-flex flex-column'>
-                  <h6>{res.data.message}</h6>
-                </div>
-              </div>
-            )
-            navigate('/login')
-          }else if(res.data.status === "error"){
-              toast(
-                <div className='d-flex'>
-                  <div className='me-1'>
-                    <Avatar size='sm' color='danger' icon={<AlertCircle size={12}/>} />
-                  </div>
-                  <div className='d-flex flex-column'>
-                    <h6>{res.data.message}</h6>
-                    <Link to='/paiement-candidat'>
-                    payer maintenant
-                  </Link>
-                  </div>
-                </div>
-              )
+            const data = {
+              ...res.data.data.candidat,
+              role:"admin",
+              accessToken: Token,
+              refreshToken: res.data.refreshToken
+            }
+            dispatch(handleLogin(data))
+            navigate(getHomeRouteForLoggedInUser("admin"))
           }
         })
         .catch((err) => {
@@ -115,9 +99,9 @@ const Register = () => {
         <Card className='mb-0'>
           <CardBody>
             <CardTitle tag='h4' className='mb-1'>
-              Inscription sur JamElec ! 👋
+              Bienvenue sur JamElec ! 👋
             </CardTitle>
-            <CardText className='mb-2'>Créer votre compte et commencez votre aventure</CardText>
+            <CardText className='mb-2'>Connectez-vous à votre compte</CardText>
             <Form className='auth-login-form mt-2' onSubmit={handleSubmit(onSubmit)}>
               <div className='mb-1'>
                 <Label className='form-label' for='login-username'>
@@ -163,21 +147,9 @@ const Register = () => {
                 </div>
              
               <Button type='submit' color='primary' block>
-                Créer mon compte
+                Se connecter
               </Button>
             </Form>
-            <p className="text-center mt-2">
-              <span className="me-25">Vous avez déjà un compte ?</span>
-              <Link to="/login">
-                <span>Se connecter</span>
-              </Link>
-            </p>
-            <p className="text-center mt-2">
-              <span className="me-25">Pas encore payé ?</span>
-              <Link to="/paiement-candidat">
-                <span>Payer maintenant</span>
-              </Link>
-            </p>
           </CardBody>
         </Card>
       </div>
@@ -185,4 +157,4 @@ const Register = () => {
   )
 }
 
-export default Register
+export default AdminLogin

@@ -38,6 +38,18 @@ export default [
     icon: <FileText size={20} />,
     children:[
       {
+        id: 'anomalies',
+        title: 'Parents inconnus',
+        icon: <Circle size={12} />,
+        navLink: '/Liste-anomalies'
+      },
+      {
+        id: 'parent',
+        title: 'Parents plus 20 enfant',
+        icon: <Circle size={12} />,
+        navLink: '/Liste-plus-20-enfants'
+      },
+      {
         id: 'listesynthese',
         title: 'Synthèses',
         icon: <Circle size={12} />,
@@ -45,46 +57,46 @@ export default [
       },
       {
         id: 'doublon',
-        title: 'Liste des doublons',
+        title: 'Les anomalies',
         icon: <Circle size={12} />,
-        navLink: '/doublons'
-      },
-      {
-        id: 'changeRegion',
-        title: 'Changement de région',
-        icon: <Circle size={12} />,
-        navLink: '/changement-region'
-      },
-      {
-        id: 'changeDep',
-        title: 'Changement de departement',
-        icon: <Circle size={12} />,
-        navLink: '/changement-departement'
-      },
-      {
-        id: 'changeLv',
-        title: 'Changement de lieux de vote',
-        icon: <Circle size={12} />,
-        navLink: '/changement-lieu-vote'
-      },
-       {
-        id: 'newinscritbyRegion',
-        title: 'Nouveau inscrit',
-        icon: <Circle size={12} />,
-        navLink: '/nouveau-inscrit'
-      },
-      {
-        id: 'electeurCentenaireByRegion',
-        title: 'Centenaire',
-        icon: <Circle size={12} />,
-        navLink: '/centenaire'
-      },
-      {
-        id: 'electeurMineurByRegion',
-        title: 'Mineur',
-        icon: <Circle size={12} />,
-        navLink: '/mineur'
+        navLink: '/anomalies'
       }
+      // {
+      //   id: 'changeRegion',
+      //   title: 'Changement de région',
+      //   icon: <Circle size={12} />,
+      //   navLink: '/changement-region'
+      // },
+      // {
+      //   id: 'changeDep',
+      //   title: 'Changement de departement',
+      //   icon: <Circle size={12} />,
+      //   navLink: '/changement-departement'
+      // },
+      // {
+      //   id: 'changeLv',
+      //   title: 'Changement de lieux de vote',
+      //   icon: <Circle size={12} />,
+      //   navLink: '/changement-lieu-vote'
+      // },
+      //  {
+      //   id: 'newinscritbyRegion',
+      //   title: 'Nouveau inscrit',
+      //   icon: <Circle size={12} />,
+      //   navLink: '/nouveau-inscrit'
+      // },
+      // {
+      //   id: 'electeurCentenaireByRegion',
+      //   title: 'Centenaire',
+      //   icon: <Circle size={12} />,
+      //   navLink: '/centenaire'
+      // },
+      // {
+      //   id: 'electeurMineurByRegion',
+      //   title: 'Mineur',
+      //   icon: <Circle size={12} />,
+      //   navLink: '/mineur'
+      // }
     ]
   }
 ]

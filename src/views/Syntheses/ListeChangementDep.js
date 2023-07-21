@@ -36,27 +36,24 @@ import "@styles/react/libs/react-select/_react-select.scss";
 import "@styles/react/libs/tables/react-dataTable-component.scss";
 import {
   changeRegionByRegion,
+  conservRegionChangeDepByCommune,
   conservRegionChangeDepByRegion,
-  electeurCentenaireByCommune,
-  electeurCentenaireByRegion,
-  electeurMineurByCommune,
-  electeurMineurByRegion,
-  getDoublons,
-  newinscritbyRegion
-} from "../redux/store/Election";
-import { getUserData } from "../utility/Utils";
+  getDoublons
+} from "../../redux/store/Election";
+import { getUserData } from "../../utility/Utils";
+import Circons from "../components/circons";
 
 // ** Table Header
 
 
-const ListeMineur = () => {
+const ListeChangementDep = () => {
   // ** Store Vars
   const dispatch = useDispatch();
-  const store = useSelector((state) => state.election.electeurMineurByRegion);
+  const store = useSelector((state) => state.election.conservRegionChangeDepByRegion);
 
   const userData = getUserData();
   const lieux = useSelector((state) => state.election.lieuxVote);
-  const electeur = useSelector((state) => state.election.electeurMineurByRegion);
+  const electeur = useSelector((state) => state.election.conservRegionChangeDepByRegion);
 
 
   const [searchTerm, setSearchTerm] = useState("");
@@ -66,19 +63,18 @@ const ListeMineur = () => {
 
   // // ** Get data on mount
   useEffect(() => {
-    dispatch(electeurMineurByRegion({idRegion: userData.id_circons_er})).then(() => setPending(false));
-    dispatch(electeurMineurByCommune({idCom: userData.id_circons_em})).then(() => setPending(false));
-
+    dispatch(conservRegionChangeDepByRegion({idRegion: userData.id_circons_er})).then(() => setPending(false));
+    dispatch(conservRegionChangeDepByCommune({idCom: userData.id_circons_em})).then(() => setPending(false));
   }, [dispatch]);
 
   // ** Function in get data on page change
   const handlePagination = (page) => {
     setPending(true)
-    dispatch(electeurMineurByCommune({
+    dispatch(conservRegionChangeDepByCommune({
       idCom: userData.id_circons_em,
       page: page.selected + 1,
      })).then(() => setPending(false))
-   dispatch(electeurMineurByRegion({
+   dispatch(conservRegionChangeDepByRegion({
     idRegion: userData.id_circons_er,
     page: page.selected + 1,
    })).then(() => setPending(false))
@@ -97,11 +93,11 @@ const ListeMineur = () => {
       sortable: true,
       minWidth: '300px',
       sortField: 'nom',
-      selector: row => row.nom.concat(" ", row.prenoms),
+      selector: row => row.nom.concat(" ", row.prenom),
       cell: row => (
         <div className='d-flex justify-content-left align-items-center'>
           <div className='d-flex flex-column'>
-              <span className='fw-bolder'>{row.nom.concat(" ", row.prenoms)}</span>
+              <span className='fw-bolder'>{row.nom.concat(" ", row.prenom)}</span>
           </div>
         </div>
       )
@@ -131,14 +127,6 @@ const ListeMineur = () => {
       cell: row => <span className='text-capitalize'>{row.Date_naissance}</span>
     },
     {
-      name: 'Age',
-      minWidth: '138px',
-      sortable: true,
-      sortField: 'age',
-      selector: row => row.age,
-      cell: row => <span className='text-capitalize'>{row.age} ans</span>
-    },
-    {
       name: 'Lieu naissance',
       minWidth: '138px',
       sortable: true,
@@ -161,6 +149,22 @@ const ListeMineur = () => {
       sortField: 'profession',
       selector: row => row.profession,
       cell: row => row.profession
+    },
+    {
+      name: 'Departement 2020',
+      minWidth: '138px',
+      sortable: true,
+      sortField: 'region2020',
+      selector: row => row.dep2020,
+      cell: row => row.dep2020
+    },
+    {
+      name: 'Departement 2023',
+      minWidth: '138px',
+      sortable: true,
+      sortField: 'region2023',
+      selector: row => row.dep2023,
+      cell: row => row.dep2023
     }
   ]
 
@@ -191,9 +195,10 @@ const ListeMineur = () => {
 
   return (
     <Fragment>
+      <Circons/>
       <Card>
         <CardHeader>
-          <CardTitle tag="h4">Liste des électeurs mineurs</CardTitle>
+          <CardTitle tag="h4">Liste des électeurs qui ont conservé leur région et changé de département</CardTitle>
         </CardHeader>
       </Card>
       <CustomPagination />
@@ -252,4 +257,4 @@ const ListeMineur = () => {
   );
 };
 
-export default ListeMineur;
+export default ListeChangementDep;

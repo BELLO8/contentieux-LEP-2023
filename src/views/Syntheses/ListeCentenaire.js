@@ -25,9 +25,7 @@ import {
   CardHeader,
   CardTitle,
   Col,
-  Input,
-  Progress,
-  Row,
+  Input, Row,
   Spinner
 } from "reactstrap";
 
@@ -35,26 +33,24 @@ import {
 import "@styles/react/libs/react-select/_react-select.scss";
 import "@styles/react/libs/tables/react-dataTable-component.scss";
 import {
-  changeRegionByRegion,
-  conservDepChangeCirconsByCommune,
-  conservDepChangeCirconsByRegion,
-  conservRegionChangeDepByCommune,
-  conservRegionChangeDepByRegion,
-  getDoublons
-} from "../redux/store/Election";
-import { getUserData } from "../utility/Utils";
+  electeurCentenaireByCommune,
+  electeurCentenaireByRegion
+} from "../../redux/store/Election";
+import { getUserData } from "../../utility/Utils";
+import Circons from "../components/circons";
 
 // ** Table Header
 
 
-const ListeChangementLv = () => {
+const ListeCentenaire = () => {
   // ** Store Vars
   const dispatch = useDispatch();
-  const store = useSelector((state) => state.election.conservDepChangeCirconsByRegion);
+  const store = useSelector((state) => state.election.electeurCentenaireByRegion);
 
   const userData = getUserData();
   const lieux = useSelector((state) => state.election.lieuxVote);
-  const electeur = useSelector((state) => state.election.conservDepChangeCirconsByRegion);
+  const electeur = useSelector((state) => state.election.electeurCentenaireByRegion);
+  const electeurData = electeur.data === undefined ? [] : electeur.data
 
 
   const [searchTerm, setSearchTerm] = useState("");
@@ -64,18 +60,19 @@ const ListeChangementLv = () => {
 
   // // ** Get data on mount
   useEffect(() => {
-    dispatch(conservDepChangeCirconsByRegion({idRegion: userData.id_circons_er})).then(() => setPending(false));
-    dispatch(conservDepChangeCirconsByCommune({idCom: userData.id_circons_em})).then(() => setPending(false));
+    dispatch(electeurCentenaireByRegion({idRegion: userData.id_circons_er})).then(() => setPending(false));
+    dispatch(electeurCentenaireByCommune({idCom: userData.id_circons_em})).then(() => setPending(false));
+
   }, [dispatch]);
 
   // ** Function in get data on page change
   const handlePagination = (page) => {
     setPending(true)
-    dispatch(conservDepChangeCirconsByCommune({
+    dispatch(electeurCentenaireByCommune({
       idCom: userData.id_circons_em,
       page: page.selected + 1,
      })).then(() => setPending(false))
-   dispatch(conservDepChangeCirconsByRegion({
+   dispatch(electeurCentenaireByRegion({
     idRegion: userData.id_circons_er,
     page: page.selected + 1,
    })).then(() => setPending(false))
@@ -94,11 +91,11 @@ const ListeChangementLv = () => {
       sortable: true,
       minWidth: '300px',
       sortField: 'nom',
-      selector: row => row.nom.concat(" ", row.prenom),
+      selector: row => row.nom.concat(" ", row.prenoms),
       cell: row => (
         <div className='d-flex justify-content-left align-items-center'>
           <div className='d-flex flex-column'>
-              <span className='fw-bolder'>{row.nom.concat(" ", row.prenom)}</span>
+              <span className='fw-bolder'>{row.nom.concat(" ", row.prenoms)}</span>
           </div>
         </div>
       )
@@ -128,6 +125,14 @@ const ListeChangementLv = () => {
       cell: row => <span className='text-capitalize'>{row.Date_naissance}</span>
     },
     {
+      name: 'Age',
+      minWidth: '138px',
+      sortable: true,
+      sortField: 'age',
+      selector: row => row.age,
+      cell: row => <span className='text-capitalize'>{row.age} ans</span>
+    },
+    {
       name: 'Lieu naissance',
       minWidth: '138px',
       sortable: true,
@@ -150,30 +155,6 @@ const ListeChangementLv = () => {
       sortField: 'profession',
       selector: row => row.profession,
       cell: row => row.profession
-    },
-     {
-      name: 'Commune',
-      minWidth: '138px',
-      sortable: true,
-      sortField: 'commune2023',
-      selector: row => row.commune2023,
-      cell: row => row.commune2023
-    },
-    {
-      name: 'Ancien lieu de vote',
-      minWidth: '138px',
-      sortable: true,
-      sortField: 'lv2020',
-      selector: row => row.lieu_vote_2020,
-      cell: row => row.lieu_vote_2020
-    },
-    {
-      name: ' Nouveau lieu de vote',
-      minWidth: '138px',
-      sortable: true,
-      sortField: 'lv2023',
-      selector: row => row.lieu_vote_2023,
-      cell: row => row.lieu_vote_2023
     }
   ]
 
@@ -204,9 +185,11 @@ const ListeChangementLv = () => {
 
   return (
     <Fragment>
+
+     <Circons/>
       <Card>
         <CardHeader>
-          <CardTitle tag="h4">Liste des électeurs qui ont conservé la circonscription et changé de lieu de vote</CardTitle>
+          <CardTitle tag="h4">Liste des électeurs centenaire </CardTitle>
         </CardHeader>
       </Card>
       <CustomPagination />
@@ -237,7 +220,7 @@ const ListeChangementLv = () => {
                 className="ms-50 w-100"
                 type="text"
                 value={searchTerm}
-                // onChange={(e) => handleFilter(e.target.value)}
+                onChange={(e) => setSearchTerm(e.target.value)}
               />
             </div>
           </Col>
@@ -257,7 +240,15 @@ const ListeChangementLv = () => {
             className="react-dataTable"
             paginationPerPage={100}
             paginationRowsPerPageOptions={[100]}
-            data={electeur.data}
+            data={electeurData.filter((item) => {
+              if( searchTerm == "") {
+                return item
+              }else if (
+                JSON.stringify(item).toLowerCase().indexOf(searchTerm.toLowerCase()) !=-1
+              ) {
+                return item;
+              }
+            })}
           />
         </div>
       </Card>
@@ -265,4 +256,4 @@ const ListeChangementLv = () => {
   );
 };
 
-export default ListeChangementLv;
+export default ListeCentenaire;

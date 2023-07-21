@@ -14,10 +14,10 @@ import { AlertCircle } from 'react-feather'
 import Avatar from '@components/avatar'
 import "@styles/react/pages/page-authentication.scss"
 import InputPasswordToggle from "@components/input-password-toggle"
-import { login } from "../@core/auth/jwt/const"
+import { login } from "../../@core/auth/jwt/const"
 import { useForm, Controller } from "react-hook-form"
-import { getHomeRouteForLoggedInUser, isUserLoggedIn } from "../utility/Utils"
-import { handleLogin } from "../redux/auth"
+import { getHomeRouteForLoggedInUser, isUserLoggedIn } from "../../utility/Utils"
+import { handleLogin } from "../../redux/auth"
 import { useDispatch } from "react-redux"
 import { useEffect } from "react"
 import toast from 'react-hot-toast'
@@ -32,7 +32,6 @@ const Login = () => {
   const dispatch = useDispatch()
   const {
     control,
-    setError,
     handleSubmit,
     formState: { errors }
   } = useForm({ defaultValues })

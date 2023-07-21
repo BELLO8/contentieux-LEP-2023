@@ -26,6 +26,7 @@ import {
   CardTitle,
   Col,
   Input,
+  Progress,
   Row,
   Spinner
 } from "reactstrap";
@@ -34,39 +35,51 @@ import {
 import "@styles/react/libs/react-select/_react-select.scss";
 import "@styles/react/libs/tables/react-dataTable-component.scss";
 import {
-  doublonbycommune,
-  getDoublons
-} from "../redux/store/Election";
-import { getUserData } from "../utility/Utils";
+  changeRegionByRegion,
+  conservRegionChangeDepByRegion,
+  getDoublons,
+  newinscritbyCircons,
+  newinscritbyRegion
+} from "../../redux/store/Election";
+import { getUserData } from "../../utility/Utils";
+import Circons from "../components/circons";
 
 // ** Table Header
 
 
-const ListeDoublons = () => {
+const ListeNouveauInscrit = () => {
   // ** Store Vars
   const dispatch = useDispatch();
-  const store = useSelector((state) => state.election.electeurdoublons);
+  const store = useSelector((state) => state.election.newinscritbyRegion);
 
   const userData = getUserData();
   const lieux = useSelector((state) => state.election.lieuxVote);
-  const electeur = useSelector((state) => state.election.electeurdoublons);
-  
+  const electeur = useSelector((state) => state.election.newinscritbyRegion);
 
-  // ** States
-  const [sort, setSort] = useState("desc");
+
   const [searchTerm, setSearchTerm] = useState("");
   const [currentPage, setCurrentPage] = useState(1);
   const [rowsPerPage, setRowsPerPage] = useState(10);
-  const [pending, setPending] = useState(true)
+  const [pending, setPending] = useState(true);
+
   // // ** Get data on mount
   useEffect(() => {
-    dispatch(getDoublons(userData.id_circons_er)).then(() => setPending(false));
-    dispatch(doublonbycommune(userData.id_circons_em)).then(() => setPending(false));
+    dispatch(newinscritbyRegion({idRegion: userData.id_circons_er})).then(() => setPending(false));
+    dispatch(newinscritbyCircons({idCom: userData.id_circons_em})).then(() => setPending(false));
+
   }, [dispatch]);
 
   // ** Function in get data on page change
   const handlePagination = (page) => {
-   
+    setPending(true)
+    dispatch(newinscritbyCircons({
+      idCom: userData.id_circons_em,
+      page: page.selected + 1,
+     })).then(() => setPending(false))
+   dispatch(newinscritbyRegion({
+    idRegion: userData.id_circons_er,
+    page: page.selected + 1,
+   })).then(() => setPending(false))
     setCurrentPage(page.selected + 1);
   };
 
@@ -96,8 +109,8 @@ const ListeDoublons = () => {
       sortable: true,
       minWidth: '172px',
       sortField: 'num_electeur',
-      selector: row => row.numelecteur,
-      cell: row => (<Badge color='primary'> {row.numelecteur} </Badge>) 
+      selector: row => row.num_electeur,
+      cell: row => (<Badge color='primary'> {row.num_electeur} </Badge>) 
     },
     {
       name: 'Sexe',
@@ -112,16 +125,16 @@ const ListeDoublons = () => {
       minWidth: '230px',
       sortable: true,
       sortField: 'Date_naissance',
-      selector: row => row.datenaiss,
-      cell: row => <span className='text-capitalize'>{row.datenaiss}</span>
+      selector: row => row.Date_naissance,
+      cell: row => <span className='text-capitalize'>{row.Date_naissance}</span>
     },
     {
       name: 'Lieu naissance',
       minWidth: '138px',
       sortable: true,
       sortField: 'Lieu_naissance',
-      selector: row => row.lieunaiss,
-      cell: row => row.lieunaiss
+      selector: row => row.Lieu_naissance,
+      cell: row => row.Lieu_naissance
     },
     {
       name: 'Nom du pere',
@@ -132,12 +145,12 @@ const ListeDoublons = () => {
       cell: row => row.nom_pere
     },
     {
-      name: 'Nom de la mere',
+      name: 'Profession',
       minWidth: '138px',
       sortable: true,
-      sortField: 'nom_mere',
-      selector: row => row.nom_mere,
-      cell: row => row.nom_mere
+      sortField: 'profession',
+      selector: row => row.profession,
+      cell: row => row.profession
     }
   ]
 
@@ -168,9 +181,10 @@ const ListeDoublons = () => {
 
   return (
     <Fragment>
+      <Circons/>
       <Card>
         <CardHeader>
-          <CardTitle tag="h4">Liste des doublons</CardTitle>
+          <CardTitle tag="h4">Liste des électeurs nouvellements inscrits</CardTitle>
         </CardHeader>
       </Card>
       <CustomPagination />
@@ -213,6 +227,7 @@ const ListeDoublons = () => {
           <DataTable
             pagination
             responsive
+            noDataComponent=''
             progressPending={pending}
 			      progressComponent={<Spinner color='primary' size='xl' />}
             columns={columns}
@@ -220,7 +235,7 @@ const ListeDoublons = () => {
             className="react-dataTable"
             paginationPerPage={100}
             paginationRowsPerPageOptions={[100]}
-            data={electeur}
+            data={electeur.data}
           />
         </div>
       </Card>
@@ -228,4 +243,4 @@ const ListeDoublons = () => {
   );
 };
 
-export default ListeDoublons;
+export default ListeNouveauInscrit;

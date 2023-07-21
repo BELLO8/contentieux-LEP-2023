@@ -6,7 +6,7 @@ import { Fragment, useState, useEffect } from "react";
 // ** Invoice List Sidebar
 
 // ** Table Columns
-import { columns } from "./components/columns";
+import { columns } from "../components/columns";
 
 // ** Store & Actions
 // import { getAllData, getData } from '../store'
@@ -45,7 +45,7 @@ import {
 // ** Styles
 import "@styles/react/libs/react-select/_react-select.scss";
 import "@styles/react/libs/tables/react-dataTable-component.scss";
-import { getUserData } from "../utility/Utils";
+import { getUserData } from "../../utility/Utils";
 import {
   clearStore,
   getDepartement,
@@ -55,7 +55,8 @@ import {
   getElecteurContentieux,
   getElecteurNatDouteuseByRegion,
   getLieuxVote
-} from "../redux/store/Election";
+} from "../../redux/store/Election";
+import Circons from "../components/circons";
 
 // ** Table Header
 const CustomHeader = ({
@@ -162,91 +163,30 @@ const ListeElecteur = () => {
   const store = useSelector((state) => state.election.electeur);
 
   const userData = getUserData();
-  const departement = useSelector((state) => state.election.departement);
-  const com = useSelector((state) => state.election.commune);
-  const lieux = useSelector((state) => state.election.lieuxVote);
   const electeur = useSelector((state) => state.election.electeurInfo);
-  const bureauVote = useSelector((state) => state.election.bureauVote)
 
-  const lieuxVoteData = [];
-  const departementData = [];
-  const comData = [];
-  const bureauVoteData = [];
   const dataContentieux = [
     { value: 'electeurNationnaliteDouteuse', label: "Nationnalité douteuse" },
     { value: 'electeurContumace', label: "Contumace" },
     { value: 'electeurNaturaliseEnStage', label: "Naturalisé en periode de stage" },
     { value: 'electeurCondCrime', label: "Comdamné pour crime" }
   ]
-  departement?.map((item) => {
-    departementData.push({ value: item.cod_dep, label: item.lib_dep });
-  });
 
-  com.map((item) => {
-    comData.push({ value: item.cod_circonsAdmin, label: item.lib_circonAdmin });
-  });
-
-  lieux.map((item) => {
-    lieuxVoteData.push({ value: item.cod_lieu, label: item.lib_lvote });
-  });
-
-  bureauVote.map((item) => {
-    bureauVoteData.push({ value: item.cod_bv, label: item.lib_bv });
-  });
-
-
-  // ** States
-  const [sort, setSort] = useState("desc");
   const [searchTerm, setSearchTerm] = useState("");
   const [currentPage, setCurrentPage] = useState(1);
-  const [select, setSelect] = useState("");
-  const [rowsPerPage, setRowsPerPage] = useState(10);
-  const [sidebarOpen, setSidebarOpen] = useState(false);
-  const [idDep, setIdDep] = useState();
-  const [idCom, setIdCom] = useState();
-  const [idLv, setIdLv] = useState();
 
-
-  // // ** Get data on mount
-  useEffect(() => {
-    dispatch(clearStore())
-    dispatch(getDepartement(userData.id_circons_er));
-    dispatch(getLieuxVote(userData.id_circons_em))
-  }, [dispatch]);
+  
+  // // // ** Get data on mount
+  // useEffect(() => {
+  //   dispatch(clearStore())
+  //   dispatch(getDepartement(userData.id_circons_er));
+  //   dispatch(getLieuxVote(userData.id_circons_em))
+  // }, [dispatch]);
 
   // ** Function in get data on page change
   const handlePagination = (page) => {
-    if (select === "selectDep") {
-      dispatch(
-        getElecteur({
-          idDep: idDep,
-          idCand: userData.id_candidat,
-          page: page.selected + 1,
-        })
-      );
-    } else if (select === "selectCom") {
-      dispatch(
-        getElecteurByCommune({
-          idCom: idCom,
-          idCand: userData.id_candidat,
-          page: page.selected + 1,
-        })
-      );
-    } else {
-      dispatch(
-        getElecteurByLieuVote({
-          idLv: idLv,
-          idCand: userData.id_candidat,
-          page: page.selected + 1,
-        })
-      );
-    }
+    
     setCurrentPage(page.selected + 1);
-  };
-
-  const handlePerPage = (e) => {
-    const value = parseInt(e.currentTarget.value);
-    setRowsPerPage(value);
   };
 
   // ** Custom Pagination
@@ -276,6 +216,7 @@ const ListeElecteur = () => {
 
   return (
     <Fragment>
+      <Circons/>
       <Card>
         <CardHeader>
           <CardTitle tag="h4">Répertoire du contentieux</CardTitle>
@@ -322,14 +263,14 @@ const ListeElecteur = () => {
           >
             <div className="d-flex align-items-center mb-sm-0 mb-1 me-1">
               <label className="mb-0" htmlFor="search-invoice">
-                Rechercher:
               </label>
               <Input
                 id="search-invoice"
                 className="ms-50 w-100"
+                placeholder="Recherche par mot clé"
                 type="text"
                 value={searchTerm}
-                // onChange={(e) => handleFilter(e.target.value)}
+                onChange={(e) => setSearchTerm(e.target.value)}
               />
             </div>
           </Col>

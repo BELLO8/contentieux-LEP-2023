@@ -15,11 +15,11 @@ import {
 
 // ** Styles
 import "@styles/react/pages/page-authentication.scss"
-import WizardModern from "./components/WizardModern"
 import { useEffect } from "react"
-import { isUserLoggedIn } from "../utility/Utils"
+import { isUserLoggedIn } from "../../utility/Utils"
+import Steps from "../components/Steps"
 
-const Checkout = () => {
+const CheckoutPDCI = () => {
   const navigate = useNavigate()
   useEffect(() => {
     if (isUserLoggedIn() !== null) {
@@ -42,20 +42,16 @@ const Checkout = () => {
         >
           <Col className="px-xl-2 mx-auto" xs="12" sm="8" md="6" lg="12">
             <CardTitle tag="h2" className="fw-bold mb-1">
-              Effectuez votre paiement pour demarrer 🚀
+              Effectuez un paiement sur place pour vos candidats 🚀
             </CardTitle>
             <CardText className="mb-2">
               {/* Make your app management easy and fun! */}
             </CardText>
-            <WizardModern/>
+            <Steps/>
             <p className="text-center mt-2">
               <span className="me-25">Vous avez déjà faire le paiement ?</span>
               <Link to="/inscription">
-                <span className="m-1">Créer votre compte maintenant</span>
-              </Link>
-              |
-              <Link to="/login">
-                <span className="m-1">Connectez vous</span>
+                <span>Créer votre compte maintenant</span>
               </Link>
             </p>
           </Col>
@@ -69,4 +65,4 @@ const Checkout = () => {
   )
 }
 
-export default Checkout
+export default CheckoutPDCI

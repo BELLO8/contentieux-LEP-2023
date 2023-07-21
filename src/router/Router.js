@@ -8,8 +8,8 @@ import { getRoutes } from "./routes"
 import { useLayout } from "@hooks/useLayout"
 import BlankLayout from "@layouts/BlankLayout"
 import Error from "../views/Error"
-import Login from "../views/Login"
 import { getUserData, getHomeRouteForLoggedInUser } from "../utility/Utils"
+import Login from "../views/Auth/Login"
 
 const Router = () => {
   // ** Hooks

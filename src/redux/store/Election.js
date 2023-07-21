@@ -9,83 +9,89 @@ export const getDepartement = createAsyncThunk('departement/getDepartement', asy
 
 export const changeRegionByRegion = createAsyncThunk('ChangeRegionByRegion/changeRegionByRegion', async(params) => {
     const response = await client.get(`changeRegionByRegion/${params.idRegion}/?page=${
-      params.page === null ? 1 : params.page
+      params.page === undefined ? 1 : params.page
     }`)
     return response.data.data
   })
 
   export const changeRegionByCommune = createAsyncThunk('ChangeRegionByCommune/changeRegionByCommune', async(params) => {
     const response = await client.get(`changeRegionByCommune/${params.idCom}/?page=${
-      params.page === null ? 1 : params.page
+      params.page === undefined ? 1 : params.page
     }`)
     return response.data.data
   })
 
   export const conservRegionChangeDepByRegion = createAsyncThunk('ConservRegionChangeDepByRegion/conservRegionChangeDepByRegion', async(params) => {
     const response = await client.get(`conservRegionChangeDepByRegion/${params.idRegion}/?page=${
-      params.page === null ? 1 : params.page
+      params.page === undefined ? 1 : params.page
     }`)
     return response.data.data
   })
 
   export const conservRegionChangeDepByCommune = createAsyncThunk('ConservRegionChangeDepByCommune/conservRegionChangeDepByCommune', async(params) => {
     const response = await client.get(`conservRegionChangeDepByCommune/${params.idCom}/?page=${
-      params.page === null ? 1 : params.page
+      params.page === undefined ? 1 : params.page
     }`)
     return response.data.data
   })
 
   export const conservDepChangeCirconsByRegion = createAsyncThunk('ConservDepChangeCirconsByRegion/conservDepChangeCirconsByRegion', async(params) => {
     const response = await client.get(`conservCirconsChangeLieuVoteByRegion/${params.idRegion}/?page=${
-      params.page === null ? 1 : params.page
+      params.page === undefined ? 1 : params.page
     }`)
     return response.data.data
   })
 
   export const conservDepChangeCirconsByCommune = createAsyncThunk('ConservDepChangeCirconsByCommune/conservDepChangeCirconsByCommune', async(params) => {
     const response = await client.get(`conservCirconsChangeLVByCommune/${params.idCom}/?page=${
-      params.page === null ? 1 : params.page
+      params.page === undefined ? 1 : params.page
     }`)
     return response.data.data
   })
 
-  
+  export const anomalie = createAsyncThunk('anomalie/anomalie', async(params) => {
+    const response = await client.get(`${params.url}/${params.id}/?page=${
+      params.page === undefined ? 1 : params.page
+    }`)
+    return response.data.data
+  })
+
   export const newinscritbyRegion = createAsyncThunk('NewinscritbyRegion/newinscritbyRegion', async(params) => {
     const response = await client.get(`newinscritbyRegion/${params.idRegion}/?page=${
-      params.page === null ? 1 : params.page
+      params.page === undefined ? 1 : params.page
     }`)
     return response.data.data
   })
 
    export const newinscritbyCircons = createAsyncThunk('NewinscritbyCircons/newinscritbyCircons', async(params) => {
     const response = await client.get(`newinscritbyCircons/${params.idCom}/?page=${
-      params.page === null ? 1 : params.page
+      params.page === undefined ? 1 : params.page
     }`)
     return response.data.data
   })
   
   export const electeurCentenaireByRegion = createAsyncThunk('ElecteurCentenaireByRegion/electeurCentenaireByRegion', async(params) => {
     const response = await client.get(`electeurCentenaireByRegion/${params.idRegion}/?page=${
-      params.page === null ? 1 : params.page
+      params.page === undefined ? 1 : params.page
     }`)
     return response.data.data
   })
   export const electeurCentenaireByCommune = createAsyncThunk('ElecteurCentenaireByCommune/electeurCentenaireByCommune', async(params) => {
     const response = await client.get(`electeurCentenaireByCommune/${params.idCom}/?page=${
-      params.page === null ? 1 : params.page
+      params.page === undefined ? 1 : params.page
     }`)
     return response.data.data
   })
   
   export const electeurMineurByRegion = createAsyncThunk('ElecteurMineurByRegion/electeurMineurByRegion', async(params) => {
     const response = await client.get(`electeurMineurByRegion/${params.idRegion}/?page=${
-      params.page === null ? 1 : params.page
+      params.page === undefined ? 1 : params.page
     }`)
     return response.data.data
   })
   export const electeurMineurByCommune = createAsyncThunk('ElecteurMineurByCommune/electeurMineurByCommune', async(params) => {
     const response = await client.get(`electeurMineurByCommune/${params.idCom}/?page=${
-      params.page === null ? 1 : params.page
+      params.page === undefined ? 1 : params.page
     }`)
     return response.data.data
   })
@@ -128,8 +134,36 @@ export const getDepartementParAnnee = createAsyncThunk('departementParAnne/getDe
 
   export const getElecteur = createAsyncThunk('electeur/getElecteur', async(params) => {
     const response = await client.get(
-        `electeurbydep/2023/${params.idDep}/${params.idCand}/?page=${
-          params.page === null ? 1 : params.page
+        `${params.uri}/${params.id}/${params.idCand}/?page=${
+          params.page === undefined ? 1 : params.page
+        }`
+      )
+    return response.data.data
+  })
+
+
+  export const getParent = createAsyncThunk('electeurParent/getParent', async(params) => {
+    const response = await client.get(
+        `${params.uri}/${params.id}/?page=${
+          params.page === undefined ? 1 : params.page
+        }`
+      )
+    return response.data.data
+  })
+
+  export const getParent20 = createAsyncThunk('electeurParent20/getParent20', async(params) => {
+    const response = await client.get(
+        `${params.uri}/?page=${
+          params.page === undefined ? 1 : params.page
+        }`
+      )
+    return response.data.data
+  })
+
+  export const getElecteurGlobal = createAsyncThunk('electeurAdmin/getElecteuradmin', async(params) => {
+    const response = await client.get(
+        `${params.uri}/${params.id}/?page=${
+          params.page === undefined ? 1 : params.page
         }`
       )
     return response.data.data
@@ -138,7 +172,7 @@ export const getDepartementParAnnee = createAsyncThunk('departementParAnne/getDe
   export const getElecteurByCommune = createAsyncThunk('electeurbycommune/getElecteurByCommune', async(params) => {
     const response = await client.get(
         `electeurbycommune/2023/${params.idCom}/${params.idCand}/?page=${
-          params.page === null ? 1 : params.page
+          params.page === undefined ? 1 : params.page
         }`
       )
     return response.data.data
@@ -147,7 +181,7 @@ export const getDepartementParAnnee = createAsyncThunk('departementParAnne/getDe
   export const getElecteurByLieuVote = createAsyncThunk('electeurbyLieuVote/getElecteurByLieuVote', async(params) => {
     const response = await client.get(
         `electeurbyLieuVote/2023/${params.idLv}/${params.idCand}/?page=${
-          params.page === null ? 1 : params.page
+          params.page === undefined ? 1 : params.page
         }`
       )
     return response.data.data
@@ -166,7 +200,7 @@ export const getDepartementParAnnee = createAsyncThunk('departementParAnne/getDe
   export const getElecteurDecedeByDep = createAsyncThunk('electeurDecedeByDep/getElecteurDecedeByDep', async(params) => {
     const response = await client.get(
         `electeurDecedebyDep/${params.idDep}/${params.idCand}/?page=${
-          params.page === null ? 1 : params.page
+          params.page === undefined ? 1 : params.page
         }`
       )
     return response.data.data
@@ -175,7 +209,7 @@ export const getDepartementParAnnee = createAsyncThunk('departementParAnne/getDe
   export const getElecteurDecedeByCom = createAsyncThunk('electeurDecedeByCom/getElecteurDecedeByCom', async(params) => {
     const response = await client.get(
         `electeurDecedebyCommune/${params.idCom}/${params.idCand}/?page=${
-          params.page === null ? 1 : params.page
+          params.page === undefined ? 1 : params.page
         }`
       )
     return response.data.data
@@ -184,7 +218,7 @@ export const getDepartementParAnnee = createAsyncThunk('departementParAnne/getDe
   export const getElecteurDecedeByLv = createAsyncThunk('electeurDecedeByLv/getElecteurDecedeByLv', async(params) => {
     const response = await client.get(
         `electeurDecedebyLieuvote/${params.idLv}/${params.idCand}/?page=${
-          params.page === null ? 1 : params.page
+          params.page === undefined ? 1 : params.page
         }`
       )
     return response.data.data
@@ -194,7 +228,7 @@ export const getDepartementParAnnee = createAsyncThunk('departementParAnne/getDe
   export const getElecteurContentieux = createAsyncThunk('electeurContentieux/getElecteurContentieux', async(params) => {
     const response = await client.get(
         `${params.url}/${params.idCand}/?page=${
-          params.page === null ? 1 : params.page
+          params.page === undefined ? 1 : params.page
         }`
       )
     return response.data.data
@@ -203,7 +237,7 @@ export const getDepartementParAnnee = createAsyncThunk('departementParAnne/getDe
   export const getElecteurInformationManquante = createAsyncThunk('electeurInformationManquante/getElecteurInformationManquante', async(params) => {
     const response = await client.get(
         `${params.url}/${params.id}/${params.idCand}/?page=${
-          params.page === null ? 1 : params.page
+          params.page === undefined ? 1 : params.page
         }`
       )
     return response.data.data
@@ -280,9 +314,11 @@ export const ElectionSlice = createSlice({
     initialState:{
         status: null,
         departement: [],
+        parent:[],
         commune: [],
         lieuxVote: [],
         electeur:[],
+        anomalie:[],
         Electeur:[],
         bureauVote: [],
         electeurDecede: [],
@@ -293,6 +329,7 @@ export const ElectionSlice = createSlice({
         synthese20:[],
         evolution: [],
         conservRegionChangeDepByRegion:[],
+        electeurInfoManq:[],
         conservDepChangeCirconsByRegion:[],
         evolutionCirconsByDep:[],
         nbrPopulationByDep23:[],
@@ -317,6 +354,10 @@ export const ElectionSlice = createSlice({
             state.status = "succeeded"
             state.departement = action.payload
             })
+            .addCase(anomalie.fulfilled, (state, action) => {
+              state.status = "succeeded"
+              state.anomalie = action.payload
+              })
             .addCase(getCirconscriptionAdmin.fulfilled, (state, action) => {
                 state.status = "succeeded"
                 state.commune = action.payload
@@ -329,10 +370,22 @@ export const ElectionSlice = createSlice({
                         state.status = "succeeded"
                         state.electeur = action.payload
                     })
+            .addCase(getParent.fulfilled, (state, action) => {
+                      state.status = "succeeded"
+                      state.parent = action.payload
+                  })
+              .addCase(getParent20.fulfilled, (state, action) => {
+                    state.status = "succeeded"
+                    state.parent = action.payload
+                })
             .addCase(getElecteurByCommune.fulfilled, (state, action) => {
                 state.status = "succeeded"
                 state.electeur = action.payload
             })
+            .addCase(getElecteurGlobal.fulfilled, (state, action) => {
+              state.status = "succeeded"
+              state.electeur = action.payload
+          })
             .addCase(getElecteurByLieuVote.fulfilled, (state, action) => {
                 state.status = "succeeded"
                 state.electeur = action.payload
@@ -375,7 +428,7 @@ export const ElectionSlice = createSlice({
             })
             .addCase(getElecteurInformationManquante.fulfilled, (state, action) => {
                 state.status = "succeeded"
-                state.electeur = action.payload
+                state.electeurInfoManq = action.payload
             })
             .addCase(showElecteur.fulfilled, (state, action) => {
                 state.status = "succeeded"
