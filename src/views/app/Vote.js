@@ -1,9 +1,9 @@
 import React from 'react'
 
-export default function AdminSelect() {
+export default function Vote() {
   return (
     <div>
-      
+      vote
     </div>
   )
 }

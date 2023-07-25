@@ -5,7 +5,7 @@ const user = getUserData()
 const urlBase = 'https://jellyfish-app-wxyzd.ondigitalocean.app/'
 
 export const register = async (...args) => {
-   return axios.post(`${urlBase}RegisterCandidat`, ...args)
+   return axios.post(`${urlBase}RegisterCandidatApp`, ...args)
   }
 
 export const verifyPayment = async (...args) => {
@@ -13,7 +13,7 @@ export const verifyPayment = async (...args) => {
    }
 
 export const login = async (...args) => {
-    return axios.post(`${urlBase}loginCandidat`, ...args)
+    return axios.post(`${urlBase}loginCandidatApp`, ...args)
    }
 
 export const loginAdmin = async (...args) => {

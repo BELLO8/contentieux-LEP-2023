@@ -19,10 +19,9 @@ const Router = () => {
   const getHomeRoute = () => {
     const user = getUserData()
     if (user) {
-      console.log(user)
       return getHomeRouteForLoggedInUser(user.role)
     } else {
-      return '/comment-ca-marche'
+      return '/login'
     }
   }
 

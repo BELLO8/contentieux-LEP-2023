@@ -1,102 +1,35 @@
-import { Mail, Home, Circle, FileText, AlignJustify, BookOpen } from "react-feather"
+import { AlignJustify, CheckSquare, Monitor, Package, Settings, Table, Users } from "react-feather"
 
 export default [
   {
     id: "home",
-    title: "Liste électorale",
-    icon: <AlignJustify size={20} />,
-    navLink: "/liste-electorale"
+    title: "Tableau de bord",
+    icon: <Monitor size={20} />,
+    navLink: "/home"
   },
   {
-    id: "Répertoire",
-    title: "Répertoire électeur",
-    icon: <BookOpen size={20} />,
-    children: [
-      {
-        id: 'decede',
-        title: 'Liste décédé',
-        icon: <Circle size={12} />,
-        navLink: '/repertoire-electeur-decede'
-      },
-      {
-        id: 'info',
-        title: 'Information manquante',
-        icon: <Circle size={12} />,
-        navLink: '/repertoire-information-manquante'
-      },
-      {
-        id: 'contentieux',
-        title: 'Résultats du contentieux',
-        icon: <Circle size={12} />,
-        navLink: '/repertoire-electeur'
-      }
-    ]
+    id: "params",
+    title: "Répresentants ",
+    icon: <Users size={20} />,
+    navLink: "/parametre"
   },
   {
-    id: "synthese",
-    title: "Synthèse",
-    icon: <FileText size={20} />,
-    children:[
-      {
-        id: 'anomalies',
-        title: 'Parents inconnus',
-        icon: <Circle size={12} />,
-        navLink: '/Liste-anomalies'
-      },
-      {
-        id: 'parent',
-        title: 'Parents plus 20 enfant',
-        icon: <Circle size={12} />,
-        navLink: '/Liste-plus-20-enfants'
-      },
-      {
-        id: 'listesynthese',
-        title: 'Synthèses',
-        icon: <Circle size={12} />,
-        navLink: '/syntheses'
-      },
-      {
-        id: 'doublon',
-        title: 'Les anomalies',
-        icon: <Circle size={12} />,
-        navLink: '/anomalies'
-      }
-      // {
-      //   id: 'changeRegion',
-      //   title: 'Changement de région',
-      //   icon: <Circle size={12} />,
-      //   navLink: '/changement-region'
-      // },
-      // {
-      //   id: 'changeDep',
-      //   title: 'Changement de departement',
-      //   icon: <Circle size={12} />,
-      //   navLink: '/changement-departement'
-      // },
-      // {
-      //   id: 'changeLv',
-      //   title: 'Changement de lieux de vote',
-      //   icon: <Circle size={12} />,
-      //   navLink: '/changement-lieu-vote'
-      // },
-      //  {
-      //   id: 'newinscritbyRegion',
-      //   title: 'Nouveau inscrit',
-      //   icon: <Circle size={12} />,
-      //   navLink: '/nouveau-inscrit'
-      // },
-      // {
-      //   id: 'electeurCentenaireByRegion',
-      //   title: 'Centenaire',
-      //   icon: <Circle size={12} />,
-      //   navLink: '/centenaire'
-      // },
-      // {
-      //   id: 'electeurMineurByRegion',
-      //   title: 'Mineur',
-      //   icon: <Circle size={12} />,
-      //   navLink: '/mineur'
-      // }
-    ]
+    id: "vote",
+    title: "Vote",
+    icon: <Package size={20} />,
+    navLink: "/vote"
+  },
+  {
+    id: "depouillement",
+    title: "Dépouillement",
+    icon: <Table size={20} />,
+    navLink: "/depouillement"
+  },
+  {
+    id: "resultat",
+    title: "Resultat",
+    icon: <CheckSquare size={20} />,
+    navLink: "/resultat"
   }
+   
 ]

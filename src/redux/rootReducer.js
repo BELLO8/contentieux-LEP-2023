@@ -4,16 +4,14 @@ import navbar from "./navbar"
 import auth from './auth'
 import typeElection from "./store/TypeElection"
 import circonscription from "./store/Circonscription"
-import infoCandidat from "./store/InfoCandidat"
-import election from "./store/Election"
+import parti from "./store/Parti"
 const rootReducer = {
     auth,
     navbar,
     layout,
     typeElection,
     circonscription,
-    infoCandidat,
-    election
+    parti
   }
 
 export default rootReducer

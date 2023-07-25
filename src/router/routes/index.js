@@ -12,25 +12,12 @@ import PrivateRoute from '@components/routes/PrivateRoute'
 
 // ** Utils
 import { isObjEmpty } from "@utils"
-import ListeElectorale from "../../views/ListeElectorale/ListeElectorale"
-import ListeElecteur from "../../views/RepertoireElecteur/ListeElecteur"
-import InformationMaquante from "../../views/RepertoireElecteur/InformationManquante"
-import EditElecteur from "../../views/ListeElectorale/EditElecteur"
-import Synthese from "../../views/Syntheses/synthese"
-import Anomalies from "../../views/Syntheses/Anomalie"
-import ListeChangementRegion from "../../views/Syntheses/ListeChangementRegion"
-import ListeChangementDep from "../../views/Syntheses/ListeChangementDep"
-import ListeNouveauInscrit from "../../views/Syntheses/ListeNouveauInscrit"
-import ListeCentenaire from "../../views/Syntheses/ListeCentenaire"
-import ListeMineur from "../../views/Syntheses/ListeMineur"
 import Register from "../../views/Auth/Register"
-import Process from "../../views/Process"
-import CheckoutPDCI from "../../views/Auth/CheckoutPDCI"
-import ListeDecede from "../../views/RepertoireElecteur/ListeDecede"
-import ListeChangementLv from "../../views/Syntheses/ListeChangementLv"
-import AdminLogin from "../../views/Auth/AdminLogin"
-import ListeAnomalies from "../../views/Syntheses/ListeAnomalies"
-import ListeParentsEnfant from "../../views/Syntheses/ListeParentsEnfants"
+import Home from "../../views/Home"
+import Vote from "../../views/app/Vote"
+import Depouillement from "../../views/app/Depouillement"
+import Resultat from "../../views/app/Resultat"
+import SettingCandidat from "../../views/app/SettingCandidat"
 
 const getLayout = {
   blank: <BlankLayout />,
@@ -42,77 +29,32 @@ const getLayout = {
 const TemplateTitle = "%s - Vuexy React Admin Template"
 
 // ** Default Route
-const DefaultRoute = "/comment-ça-marche"
+const DefaultRoute = "/home"
 
 const Login = lazy(() => import("../../views/Auth/Login"))
-const Checkout = lazy(() => import("../../views/Auth/Checkout"))
 const Error = lazy(() => import("../../views/Error"))
 
 // ** Merge Routes
 const Routes = [
   {
-    path: "/repertoire-electeur-decede",
-    element: <ListeDecede />
-  },
-   {
-    path: "/repertoire-information-manquante",
-    element: <InformationMaquante />
+    path: "/home",
+    element: <Home />
   },
   {
-    path: "/repertoire-electeur",
-    element: <ListeElecteur />
+    path: "/vote",
+    element: <Vote />
   },
   {
-    path: "/modification-electeur",
-    element: <EditElecteur />
+    path: "/depouillement",
+    element: <Depouillement />
   },
   {
-    path: "/syntheses",
-    element: <Synthese />
+    path: "/resultat",
+    element: <Resultat />
   },
   {
-    path: "/anomalies",
-    element: <Anomalies />
-  },
-  {
-    path: "/changement-region",
-    element: <ListeChangementRegion />
-  },
-  {
-    path: "/changement-departement",
-    element: <ListeChangementDep />
-  },
-   {
-    path: "/changement-lieu-vote",
-    element: <ListeChangementLv />
-  },
-  {
-    path: "/nouveau-inscrit",
-    element: <ListeNouveauInscrit />
-  },
-  {
-    path: "/Liste-anomalies",
-    element: <ListeAnomalies />
-  },
-  {
-    path: "/Liste-plus-20-enfants",
-    element: <ListeParentsEnfant />
-  },
-   {
-    path: "/centenaire",
-    element: <ListeCentenaire />
-  },
-  {
-    path: "/mineur",
-    element: <ListeMineur />
-  },
-  {
-    path: "/comment-ca-marche",
-    element: <Process />,
-    meta: {
-      layout: "blank",
-      publicRoute: true
-    }
+    path: "/parametre",
+    element: <SettingCandidat />
   },
   {
     path: "/login",
@@ -122,36 +64,8 @@ const Routes = [
     }
   },
   {
-    path: "/liste-electorale",
-    element: <ListeElectorale />
-  },
-  {
     path: "/inscription",
     element: <Register />,
-    meta: {
-      publicRoute: true,
-      layout: "blank"
-    }
-  },
-  {
-    path: "/JamElec-admin-panel-login",
-    element: <AdminLogin />,
-    meta: {
-      publicRoute: true,
-      layout: "blank"
-    }
-  },
-  {
-    path: "/paiement-candidat",
-    element: <Checkout />,
-    meta: {
-      publicRoute: true,
-      layout: "blank"
-    }
-  },
-  {
-    path: "/paiement-candidat-pdci",
-    element: <CheckoutPDCI />,
     meta: {
       publicRoute: true,
       layout: "blank"
@@ -197,8 +111,9 @@ const MergeLayoutRoutes = (layout, defaultLayout) => {
         ((route.meta === undefined || route.meta.layout === undefined) &&
           defaultLayout === layout)
       ) {
+        
         let RouteTag = PrivateRoute
-
+        // let RouteTag = PublicRoute
         // ** Check for public or private route
         if (route.meta) {
           route.meta.layout === "blank" ? (isBlank = true) : (isBlank = false)
