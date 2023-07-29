@@ -3,7 +3,9 @@
 import React, { useEffect } from "react";
 import {io} from "socket.io-client"
 
-const socket = io.connect('https://jellyfish-app-wxyzd.ondigitalocean.app/')
+const socket = io.connect('https://jellyfish-app-wxyzd.ondigitalocean.app/',{
+  transports:["polling"]
+})
 
 export default function Vote() {
   useEffect(() => {
