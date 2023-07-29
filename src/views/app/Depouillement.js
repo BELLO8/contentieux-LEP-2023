@@ -101,7 +101,7 @@ export default function Depouillement() {
           <StatsHorizontal
             icon={<Users size={21} />}
             color="primary"
-            stats="86%"
+            stats="786"
             statTitle="Electeur inscrit"
           />
         </Col>
