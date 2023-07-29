@@ -1,52 +1,59 @@
 /* eslint-disable */
-import { useState } from "react";
-import { Link, useNavigate } from "react-router-dom";
+
+import { useState, useEffect } from "react";
 import {
-  Card,
-  CardBody,
-  CardTitle,
-  CardText,
-  Form,
-  Label,
-  Input,
-  Button,
+    Button,
+    Modal,
+    ModalHeader,
+    ModalBody, Label,
+    Input,
+    Form
 } from "reactstrap";
+import { Link, useNavigate } from "react-router-dom";
 import "@styles/react/pages/page-authentication.scss";
 import InputPasswordToggle from "@components/input-password-toggle";
 import { useForm, Controller } from "react-hook-form";
-import { isUserLoggedIn } from "../../utility/Utils";
+import { getUserData } from "../../utility/Utils";
 import { useDispatch, useSelector } from "react-redux";
-import { useEffect } from "react";
 import { selectThemeColors } from "@utils";
 import Select from "react-select";
 import { getCirconscription } from "../../redux/store/Circonscription";
-import { getParti } from "../../redux/store/Parti";
 import { getTypeElection } from "../../redux/store/TypeElection";
-import { register } from "../../@core/auth/jwt/const";
+import { getBureauVote, getLieuxVote } from "../../redux/store/Election";
+import { addRepresentant } from "../../@core/auth/jwt/const";
 import toast from 'react-hot-toast'
 import { Check } from "react-feather";
 import Avatar from "@components/avatar";
+import { getRepresentant } from "../../redux/store/Representant";
 
-const defaultValues = {};
-
-const Register = () => {
-  const navigate = useNavigate();
+const ModalForm = () => {
+  const [formModal, setFormModal] = useState(false);
   const dispatch = useDispatch();
-  const [idTypeElection, setIdTypeElection] = useState();
-  const [idParti, setParti] = useState();
-  const [idcirconscription, setIdcirconscription] = useState();
+  const navigate = useNavigate();
 
+  const [idTypeElection, setIdTypeElection] = useState();
+  const [idcirconscription, setIdcirconscription] = useState();
+  const [idLieuxVote, setLieuxVote] = useState()
+  const [idBureauVote, setBureauVote] = useState()
+
+  const lieuxVote = useSelector((state) => state.election.lieuxVote)
+  const bureauVote = useSelector((state) => state.election.bureauVote)
+
+  const lieuxVoteData = []
+  const bureauVoteData = []
+
+  lieuxVote.map((item) => {
+    lieuxVoteData.push({ value: item.cod_lieu, label: item.lib_lvote })
+  })
+
+  bureauVote.map((item) => {
+    bureauVoteData.push({ value: item.cod_bv, label: item.lib_bv })
+  })
   const typeElection = useSelector((state) => state.typeElection.data);
   const circonscription = useSelector((state) => state.circonscription.data);
-  const parti = useSelector((state) => state.parti.data);
 
   const typeElectionData = [];
   const circonscriptionData = [];
-  const partiData = [];
-
-  parti.map((item) => {
-    partiData.push({ value: item.id, label: item.libelle });
-  });
 
   typeElection.map((item) => {
     typeElectionData.push({ value: item.id_type, label: item.type_election });
@@ -61,25 +68,25 @@ const Register = () => {
     setError,
     handleSubmit,
     formState: { errors },
-  } = useForm({ defaultValues });
+  } = useForm();
+  const user = getUserData()
 
   useEffect(() => {
-    dispatch(getTypeElection());
-    dispatch(getParti());
-    if (isUserLoggedIn() !== null) {
-      navigate("/home");
-    }
-  }, []);
+    dispatch(getCirconscription(user.id_type_election));
+  }, [dispatch]);
 
   const onSubmit = (data) => {
-
-    const CodeCand = JSON.parse(localStorage.getItem("candidatInfo"));
+    
     if (Object.values(data).every((field) => field.length > 0)) {
-      register({
+      addRepresentant({
         ...data,
-        id_type: idTypeElection,
+        id_type_election: user.id_type_election,
         id_circons: idcirconscription,
-        id_parti: idParti,
+        id_parti: user.id_parti,
+        id_candidat:user.id_candidat,
+        id_lieu_vote:idLieuxVote,
+        id_bureau_vote:idBureauVote,
+        id_role:"1"
       })
         .then((res) => {
           if (res.data.status === "success") {
@@ -98,7 +105,8 @@ const Register = () => {
                 </div>
               </div>
             );
-            navigate("/login");
+            setFormModal(!formModal)
+            dispatch(getRepresentant(user.id_candidat))
           } else if (res.data.status === "error") {
             toast(
               <div className="d-flex">
@@ -156,16 +164,23 @@ const Register = () => {
   };
 
   return (
-    <div className="auth-wrapper auth-basic px-2">
-      <div className="auth-inner my-2">
-        <Card className="mb-0">
-          <CardBody>
-            <CardTitle tag="h4" className="mb-1">
-              Inscription sur JamElec ! 👋
-            </CardTitle>
-            <CardText className="mb-2">
-              Créer votre compte et commencez votre aventure
-            </CardText>
+    <div className="demo-inline-spacing">
+      <div>
+        <Button
+          color="primary"
+          onClick={() => setFormModal(!formModal)}
+        >
+          Ajouter un répresentant
+        </Button>
+        <Modal
+          isOpen={formModal}
+          toggle={() => setFormModal(!formModal)}
+          className="modal-dialog-centered modal-lg"
+        >
+          <ModalHeader toggle={() => setFormModal(!formModal)}>
+            Ajout d'un representant dans un bureau de vote
+          </ModalHeader>
+          <ModalBody>
             <Form
               className="auth-login-form mt-2"
               onSubmit={handleSubmit(onSubmit)}
@@ -192,18 +207,18 @@ const Register = () => {
               </div>
               <div className="mb-1">
                 <Label className="form-label" for="login-nom">
-                  Nom et prenom
+                  Nom
                 </Label>
                 <Controller
-                  id="nom_prenoms"
-                  name="nom_prenoms"
+                  id="nom"
+                  name="nom"
                   control={control}
                   render={({ field }) => (
                     <Input
                       autoFocus
                       type="text"
-                      placeholder="Entrer votre nom et prenom"
-                      invalid={errors.nom_prenoms && true}
+                      placeholder="Entrer votre nom"
+                      invalid={errors.nom && true}
                       {...field}
                       required
                     />
@@ -211,26 +226,46 @@ const Register = () => {
                 />
               </div>
               <div className="mb-1">
-                <Label className="form-label" for="login-contact">
+                <Label className="form-label" for="login-prenoms">
+                  Prenom
+                </Label>
+                <Controller
+                  id="prenoms"
+                  name="prenoms"
+                  control={control}
+                  render={({ field }) => (
+                    <Input
+                      autoFocus
+                      type="text"
+                      placeholder="Entrer votre prenom"
+                      invalid={errors.prenoms && true}
+                      {...field}
+                      required
+                    />
+                  )}
+                />
+              </div>
+              <div className="mb-1">
+                <Label className="form-label" for="login-telephone">
                   Contact
                 </Label>
                 <Controller
-                  id="contact"
-                  name="contact"
+                  id="telephone"
+                  name="telephone"
                   control={control}
                   render={({ field }) => (
                     <Input
                       autoFocus
                       type="text"
                       placeholder="Entrer votre numéro de telephone"
-                      invalid={errors.contact && true}
+                      invalid={errors.telephone && true}
                       {...field}
                       required
                     />
                   )}
                 />
               </div>
-              <div className="mb-1">
+              {/* <div className="mb-1">
                 <Label className="form-label" for="type-elec">
                   Selectionner le type d'élection
                 </Label>
@@ -246,7 +281,7 @@ const Register = () => {
                     dispatch(getCirconscription(event.value));
                   }}
                 />
-              </div>
+              </div> */}
               <div className="mb-1">
                 <Label className="form-label" for="circons">
                   Selectionner une circonscription
@@ -260,26 +295,44 @@ const Register = () => {
                   classNamePrefix="select"
                   onChange={(event) => {
                     setIdcirconscription(event.value);
+                    dispatch(getLieuxVote(event.value))
                   }}
                 />
               </div>
               <div className="mb-1">
-                <Label className="form-label" for="parti">
-                  Selectionner votre parti politique
+                <Label className="form-label" for="type-elec">
+                    Selectionner un lieu de vote
                 </Label>
                 <Select
-                  theme={selectThemeColors}
-                  isClearable={false}
-                  id="parti"
-                  className="react-select"
-                  classNamePrefix="select"
-                  options={partiData}
-                  onChange={(event) => {
-                    setParti(event.value);
-                  }}
+                    theme={selectThemeColors}
+                    isClearable={false}
+                    id="type-election"
+                    className="react-select"
+                    classNamePrefix="select"
+                    options={lieuxVoteData}
+                    onChange={(event) => {
+                    setLieuxVote(event.value)
+                    dispatch(getBureauVote(event.value))
+                    }}
                 />
-              </div>
-              <div className="mb-1">
+                </div>
+                <div className="mb-1">
+                <Label className="form-label" for="type-elec">
+                    Selectionner un bureau de vote
+                </Label>
+                <Select
+                    theme={selectThemeColors}
+                    isClearable={false}
+                    id="type-election"
+                    className="react-select"
+                    classNamePrefix="select"
+                    options={bureauVoteData}
+                    onChange={(event) => {
+                    setBureauVote(event.value)
+                    }}
+                />
+                </div>
+             <div className="mb-1">
                 <div className="d-flex justify-content-between">
                   <Label className="form-label" for="login-password">
                     Password
@@ -302,20 +355,13 @@ const Register = () => {
               </div>
 
               <Button type="submit" color="primary" block>
-                Créer mon compte
+                Ajouter le representant
               </Button>
             </Form>
-            <p className="text-center mt-2">
-              <span className="me-25">Vous avez déjà un compte ?</span>
-              <Link to="/login">
-                <span>Se connecter</span>
-              </Link>
-            </p>
-          </CardBody>
-        </Card>
+          </ModalBody>
+        </Modal>
       </div>
     </div>
   );
 };
-
-export default Register;
+export default ModalForm;

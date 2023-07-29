@@ -58,7 +58,7 @@ const Login = () => {
           const Token = res.data.data.token
           if (res.data.status === "success") {
             const data = {
-              ...res.data.data.candidat,
+              ...res.data.data.user,
               role:"candidat",
               accessToken: Token,
               refreshToken: res.data.refreshToken

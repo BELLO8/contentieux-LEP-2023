@@ -2,11 +2,14 @@ import { getUserData } from "../../../utility/Utils"
 import axios from "axios"
 
 const user = getUserData()
-const urlBase = 'https://jellyfish-app-wxyzd.ondigitalocean.app/'
+export const urlBase = 'https://jellyfish-app-wxyzd.ondigitalocean.app/'
 
 export const register = async (...args) => {
    return axios.post(`${urlBase}RegisterCandidatApp`, ...args)
   }
+export const addRepresentant = async (...args) => {
+    return axios.post(`${urlBase}UserRegister`, ...args)
+   }
 
 export const verifyPayment = async (...args) => {
     return axios.post(`${urlBase}api/status-payment`, ...args)
