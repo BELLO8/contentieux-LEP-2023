@@ -12,6 +12,7 @@ import {
 import StatsCard from "./Components/StatsCard"
 import TableBasic from "./Components/TableBasic"
 import CardTransactions from "./Components/CardTransactions"
+import TableVote from "./Components/TableVote"
 
 
 const Home = () => {
@@ -24,20 +25,19 @@ const Home = () => {
       
       <Card>
         <CardHeader>
-          <CardTitle>Liste des répresentants</CardTitle>
+          <CardTitle>Liste des électeurs qui ont votés </CardTitle>
         </CardHeader>
         <CardBody>
-          <TableBasic />
+          <TableVote />
         </CardBody>
       </Card>
       <Row>
         <Col lg='8' md='6' sm='12'>
         <Card>
           <CardHeader>
-            <CardTitle>Liste des votants</CardTitle>
+            <CardTitle>Resultat d'élection</CardTitle>
           </CardHeader>
           <CardBody>
-            <TableBasic />
           </CardBody>
         </Card>
         </Col>

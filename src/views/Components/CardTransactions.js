@@ -14,6 +14,7 @@ import {
   getLieuxVote,
   nombreElecteurBv,
   nombreVotant,
+  tauxParticipation,
 } from "../../redux/store/Election";
 import { getUserData } from "../../utility/Utils";
 
@@ -25,12 +26,12 @@ const CardTransactions = () => {
 
   const lieuxVote = useSelector((state) => state.election.lieuxVote);
   const bureauVote = useSelector((state) => state.election.bureauVote);
+  const taux = useSelector((state) => state.election.taux);
+
   const nbreElectBv = useSelector(
     (state) => state.election.nbreElectBv.population
   );
-  const nbrevotant = useSelector(
-    (state) => state.election.nbrVotant.data
-  );
+  const nbrevotant = useSelector((state) => state.election.nbrVotant.data);
 
   const lieuxVoteData = [];
   const bureauVoteData = [];
@@ -50,7 +51,7 @@ const CardTransactions = () => {
 
   const transactionsArr = [
     {
-      title: "Electeur",
+      title: "Electeurs",
       color: "light-primary",
       subtitle: "Nombre de l'electeur sur la liste",
       amount: nbreElectBv,
@@ -58,7 +59,7 @@ const CardTransactions = () => {
       down: true,
     },
     {
-      title: "Votant",
+      title: "Votants",
       color: "light-success",
       subtitle: "Nombre de votants",
       amount: nbrevotant,
@@ -68,7 +69,7 @@ const CardTransactions = () => {
       title: "Taux de participation",
       color: "light-danger",
       subtitle: "Pourcentage d'évolution de votants",
-      amount: "+59,20%",
+      amount: `${taux}%`,
       Icon: Icon["Percent"],
     },
   ];
@@ -143,6 +144,13 @@ const CardTransactions = () => {
                   id_bv: event.value,
                   id_type: user.id_type_election,
                   id_parti: user.id_parti,
+                })
+              );
+              dispatch(
+                tauxParticipation({
+                  id_bv: event.value,
+                  id_type: user?.id_type_election,
+                  id_parti: user?.id_parti,
                 })
               );
             }}

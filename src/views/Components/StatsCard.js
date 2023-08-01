@@ -30,19 +30,19 @@ const StatsCard = ({ cols }) => {
   const data = [
     {
       title: nbreLV,
-      subtitle: 'Lieu de vote',
+      subtitle: 'Lieux de vote',
       color: 'light-primary',
       icon: <MapPin size={24} />
     },
     {
       title: nbreBV,
-      subtitle: 'Bureau de vote',
+      subtitle: 'Bureaux de vote',
       color: 'light-info',
       icon: <Archive size={24} />
     },
     {
       title: nbreRep,
-      subtitle: 'Representant',
+      subtitle: 'Représentants',
       color: 'light-danger',
       icon: <Users size={24} />
     },

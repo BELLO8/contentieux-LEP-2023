@@ -72,7 +72,7 @@ const ModalForm = () => {
   const user = getUserData()
 
   useEffect(() => {
-    dispatch(getCirconscription(user.id_type_election));
+    dispatch(getLieuxVote(user.id_circons));
   }, [dispatch]);
 
   const onSubmit = (data) => {
@@ -81,7 +81,7 @@ const ModalForm = () => {
       addRepresentant({
         ...data,
         id_type_election: user.id_type_election,
-        id_circons: idcirconscription,
+        id_circons: user.id_circons,
         id_parti: user.id_parti,
         id_candidat:user.id_candidat,
         id_lieu_vote:idLieuxVote,
@@ -282,23 +282,6 @@ const ModalForm = () => {
                   }}
                 />
               </div> */}
-              <div className="mb-1">
-                <Label className="form-label" for="circons">
-                  Selectionner une circonscription
-                </Label>
-                <Select
-                  isClearable={false}
-                  theme={selectThemeColors}
-                  id="circons"
-                  options={circonscriptionData}
-                  className="react-select"
-                  classNamePrefix="select"
-                  onChange={(event) => {
-                    setIdcirconscription(event.value);
-                    dispatch(getLieuxVote(event.value))
-                  }}
-                />
-              </div>
               <div className="mb-1">
                 <Label className="form-label" for="type-elec">
                     Selectionner un lieu de vote

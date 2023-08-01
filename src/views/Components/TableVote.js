@@ -21,6 +21,7 @@ import { Label } from "reactstrap";
 import { useDispatch, useSelector } from "react-redux";
 import {
   getBureauVote,
+  getElecteurVotant,
   getLieuxVote,
   nombreElecteurBv,
   nombreVotant,
@@ -35,19 +36,14 @@ const socket = io.connect("https://jellyfish-app-wxyzd.ondigitalocean.app/", {
   transports: ["websocket"],
 });
 
-export default function Vote() {
+export default function TableVote() {
   const dispatch = useDispatch();
-  const [data, setData] = useState([]);
   const [idLieuxVote, setLieuxVote] = useState();
   const [idBureauVote, setBureauVote] = useState();
 
   const lieuxVote = useSelector((state) => state.election.lieuxVote);
   const bureauVote = useSelector((state) => state.election.bureauVote);
-  const taux = useSelector((state) => state.election.taux);
-  const nbreElectBv = useSelector(
-    (state) => state.election.nbreElectBv.population
-  );
-  const nbrevotant = useSelector((state) => state.election.nbrVotant.data);
+  const data = useSelector((state) => state.election.votants);
 
   const lieuxVoteData = [];
   const bureauVoteData = [];
@@ -60,10 +56,6 @@ export default function Vote() {
     bureauVoteData.push({ value: item.cod_bv, label: item.lib_bv });
   });
   const user = getUserData();
-
-  socket.on("insertedvote", (data) => {
-    setData([JSON.parse(data)]);
-  });
 
   useEffect(() => {
     dispatch(getLieuxVote(user.id_circons));
@@ -105,58 +97,20 @@ export default function Vote() {
               options={bureauVoteData}
               onChange={(event) => {
                 setBureauVote(event.value);
-                dispatch(nombreElecteurBv(event.value));
                 dispatch(
-                  nombreVotant({
+                  getElecteurVotant({
                     id_bv: event.value,
                     id_type: user?.id_type_election,
-                    id_parti: user?.id_parti,
+                    parti: user?.id_parti
                   })
                 );
-                  
-                dispatch(
-                  tauxParticipation({
-                    id_bv: event.value,
-                    id_type: user?.id_type_election,
-                    id_parti: user?.id_parti,
-                  })
-                );
-
               }}
             />
           </div>
         </Col>
-        {/* Stats With Icons Horizontal */}
-        <Col lg="3" sm="6">
-          <StatsHorizontal
-            icon={<Users size={21} />}
-            color="primary"
-            stats={nbreElectBv}
-            statTitle="Electeur inscrit"
-          />
-        </Col>
-        <Col lg="3" sm="6">
-          <StatsHorizontal
-            icon={<Archive size={21} />}
-            color="success"
-            stats={nbrevotant}
-            statTitle="Votant"
-          />
-        </Col>
-        <Col lg="3" sm="6">
-          <StatsHorizontal
-            icon={<Percent size={21} />}
-            color="danger"
-            stats={taux + "%"}
-            statTitle="Taux de participation"
-          />
-        </Col>
       </Row>
 
       <Card className="overflow-hidden mt-2">
-        <CardHeader>
-          <CardTitle>Vote en temps réel</CardTitle>
-        </CardHeader>
         <div className="react-dataTable" id="electeur">
           <DataTable
             pagination
@@ -165,8 +119,8 @@ export default function Vote() {
             columns={votants}
             sortIcon={<ChevronDown />}
             className="react-dataTable"
-            paginationPerPage={100}
-            paginationRowsPerPageOptions={[100]}
+            paginationPerPage={6}
+            paginationRowsPerPageOptions={[6]}
             data={data}
           />
         </div>
