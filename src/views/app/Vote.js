@@ -14,7 +14,7 @@ import {
   Percent,
   Users,
 } from "react-feather";
-import { CardHeader, Col, Row, CardTitle } from "reactstrap";
+import { CardHeader, Col, Row, CardTitle, Button } from "reactstrap";
 import { selectThemeColors } from "@utils";
 import Select from "react-select";
 import { Label } from "reactstrap";
@@ -25,11 +25,13 @@ import {
   nombreElecteurBv,
   nombreVotant,
   tauxParticipation,
+  vote,
 } from "../../redux/store/Election";
 import { getUserData } from "../../utility/Utils";
 import { Card } from "reactstrap";
 import DataTable from "react-data-table-component";
 import { votants } from "../Components/columns";
+import { Link } from "react-router-dom";
 
 const socket = io.connect("https://jellyfish-app-wxyzd.ondigitalocean.app/", {
   transports: ["websocket"],
@@ -37,13 +39,13 @@ const socket = io.connect("https://jellyfish-app-wxyzd.ondigitalocean.app/", {
 
 export default function Vote() {
   const dispatch = useDispatch();
-  const [data, setData] = useState([]);
   const [idLieuxVote, setLieuxVote] = useState();
   const [idBureauVote, setBureauVote] = useState();
 
   const lieuxVote = useSelector((state) => state.election.lieuxVote);
   const bureauVote = useSelector((state) => state.election.bureauVote);
   const taux = useSelector((state) => state.election.taux);
+  const data = useSelector((state) => state.election.votants);
   const nbreElectBv = useSelector(
     (state) => state.election.nbreElectBv.population
   );
@@ -61,13 +63,15 @@ export default function Vote() {
   });
   const user = getUserData();
 
-  socket.on("insertedvote", (data) => {
-    setData([JSON.parse(data)]);
-  });
+ 
 
   useEffect(() => {
+    socket.on("insertedvote", (data) => {
+      console.log(JSON.parse(data));
+      dispatch(vote(JSON.parse(data)));
+    });
     dispatch(getLieuxVote(user.id_circons));
-  }, [dispatch]);
+  }, [dispatch, socket]);
 
   return (
     <>
@@ -113,7 +117,7 @@ export default function Vote() {
                     id_parti: user?.id_parti,
                   })
                 );
-                  
+
                 dispatch(
                   tauxParticipation({
                     id_bv: event.value,
@@ -121,7 +125,6 @@ export default function Vote() {
                     id_parti: user?.id_parti,
                   })
                 );
-
               }}
             />
           </div>
@@ -155,7 +158,7 @@ export default function Vote() {
 
       <Card className="overflow-hidden mt-2">
         <CardHeader>
-          <CardTitle>Vote en temps réel</CardTitle>
+          <CardTitle>Vote en temps réel <Button color="primary" className="btn-sm" tag={Link} to='/vote/Liste-votants'>Voir la liste des votants</Button></CardTitle>
         </CardHeader>
         <div className="react-dataTable" id="electeur">
           <DataTable

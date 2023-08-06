@@ -1,22 +1,27 @@
 /* eslint-disable */
 
 import React, { useEffect } from "react";
-import StatsHorizontal from "../Components/StatsHorizontal";
-import { Activity, AlertOctagon, Archive, Cpu, Percent, Server, Users } from "react-feather";
 import { Col, Row } from "reactstrap";
 import { selectThemeColors } from "@utils";
 import Select from "react-select";
-// ** Reactstrap Imports
+import { io } from "socket.io-client";
 import { Label } from "reactstrap";
 import { useDispatch, useSelector } from "react-redux";
 import { useState } from "react";
 import {
   getBureauVote,
+  getCandidats,
   getLieuxVote,
   nombreElecteurBv,
   nombreVotant,
+  voice,
 } from "../../redux/store/Election";
 import { getUserData } from "../../utility/Utils";
+import Candidat from "../Components/Candidant";
+
+const socket = io.connect("https://jellyfish-app-wxyzd.ondigitalocean.app/", {
+  transports: ["websocket"],
+});
 
 export default function Depouillement() {
   const dispatch = useDispatch();
@@ -44,9 +49,13 @@ export default function Depouillement() {
   const user = getUserData();
 
   useEffect(() => {
-    dispatch(getLieuxVote(user.id_circons));
-  }, [dispatch]);
+    socket.on("insertedvoix", (data) => {
+      console.log(data);
+      dispatch(voice(data));
+    });
 
+    dispatch(getLieuxVote(user.id_circons));
+  }, [dispatch, socket]);
 
   return (
     <>
@@ -92,44 +101,17 @@ export default function Depouillement() {
                     id_parti: user.id_parti,
                   })
                 );
+                dispatch(
+                  getCandidats({
+                    bv: event.value,
+                    type: user?.id_type_election,
+                  })
+                );
               }}
             />
           </div>
         </Col>
-        {/* Stats With Icons Horizontal */}
-        <Col lg="3" sm="6">
-          <StatsHorizontal
-            icon={<Users size={21} />}
-            color="primary"
-            stats="786"
-            statTitle="Electeur inscrit"
-          />
-        </Col>
-        <Col lg="3" sm="6">
-          <StatsHorizontal
-            icon={<Archive size={21} />}
-            color="success"
-            stats="12"
-            statTitle="Votant"
-          />
-        </Col>
-        <Col lg="3" sm="6">
-          <StatsHorizontal
-            icon={<Percent size={21} />}
-            color="danger"
-            stats="0.1%"
-            statTitle="Taux de participation"
-          />
-        </Col>
-        <Col lg="3" sm="6">
-          <StatsHorizontal
-            icon={<AlertOctagon size={21} />}
-            color="warning"
-            stats="13"
-            statTitle="Bulletins nuls"
-          />
-        </Col>
-        {/* Stats With Icons Horizontal */}
+        <Candidat />
       </Row>
     </>
   );

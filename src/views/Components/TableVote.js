@@ -14,7 +14,7 @@ import {
   Percent,
   Users,
 } from "react-feather";
-import { CardHeader, Col, Row, CardTitle } from "reactstrap";
+import { CardHeader, Col, Row, CardTitle, Spinner } from "reactstrap";
 import { selectThemeColors } from "@utils";
 import Select from "react-select";
 import { Label } from "reactstrap";
@@ -40,10 +40,11 @@ export default function TableVote() {
   const dispatch = useDispatch();
   const [idLieuxVote, setLieuxVote] = useState();
   const [idBureauVote, setBureauVote] = useState();
+  const [pending, setPending] = useState();
 
   const lieuxVote = useSelector((state) => state.election.lieuxVote);
   const bureauVote = useSelector((state) => state.election.bureauVote);
-  const data = useSelector((state) => state.election.votants);
+  const data = useSelector((state) => state.election.Listvotants);
 
   const lieuxVoteData = [];
   const bureauVoteData = [];
@@ -97,13 +98,16 @@ export default function TableVote() {
               options={bureauVoteData}
               onChange={(event) => {
                 setBureauVote(event.value);
+                setPending(true);
                 dispatch(
                   getElecteurVotant({
                     id_bv: event.value,
                     id_type: user?.id_type_election,
-                    parti: user?.id_parti
+                    parti: user?.id_parti,
                   })
-                );
+                ).then(() => {
+                  setPending(false);
+                });
               }}
             />
           </div>
@@ -115,12 +119,14 @@ export default function TableVote() {
           <DataTable
             pagination
             responsive
+            progressPending={pending}
+            progressComponent={<Spinner color="primary" size="sm" />}
             noDataComponent="aucune données pour le moment"
             columns={votants}
             sortIcon={<ChevronDown />}
             className="react-dataTable"
             paginationPerPage={6}
-            paginationRowsPerPageOptions={[6]}
+            paginationRowsPerPageOptions={[6, 10, 25, 50, 75, 100]}
             data={data}
           />
         </div>

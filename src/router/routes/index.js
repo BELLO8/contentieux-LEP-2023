@@ -18,6 +18,7 @@ import Vote from "../../views/app/Vote"
 import Depouillement from "../../views/app/Depouillement"
 import Resultat from "../../views/app/Resultat"
 import SettingCandidat from "../../views/app/SettingCandidat"
+import TableVote from "../../views/Components/TableVote"
 
 const getLayout = {
   blank: <BlankLayout />,
@@ -43,6 +44,10 @@ const Routes = [
   {
     path: "/vote",
     element: <Vote />
+  },
+  {
+    path: "/vote/liste-votants",
+    element: <TableVote />
   },
   {
     path: "/depouillement",

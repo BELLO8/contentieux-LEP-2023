@@ -110,6 +110,16 @@ export const getElecteurByLieuVote = createAsyncThunk(
   }
 );
 
+export const getCandidats = createAsyncThunk(
+  "Candidats/getCandidats",
+  async (params) => {
+    const response = await client.get(
+      `ListCandidatByBv/${params.bv}/${params.type}`
+    );
+    return response.data.data;
+  }
+);
+
 export const RegisterCandidant = createAsyncThunk(
   "registerCandidant/register",
   async (data) => {
@@ -129,11 +139,17 @@ export const ElectionSlice = createSlice({
     nbrVotant: [],
     nbreElectBv: [],
     votants: [],
+    Listvotants: [],
+    voix: [],
     taux: [],
+    candidats: [],
   },
   reducers: {
-    clearStore: (state) => {
-      state.electeur = [];
+    vote: (state, action) => {
+      state.votants.unshift(action.payload);
+    },
+    voice: (state, action) => {
+      state.voix = action.payload;
     },
   },
   extraReducers: (builder) => {
@@ -164,15 +180,19 @@ export const ElectionSlice = createSlice({
       })
       .addCase(getElecteurVotant.fulfilled, (state, action) => {
         state.status = "succeeded";
-        state.votants = action.payload;
+        state.Listvotants = action.payload;
       })
       .addCase(tauxParticipation.fulfilled, (state, action) => {
         state.status = "succeeded";
         state.taux = action.payload;
+      })
+      .addCase(getCandidats.fulfilled, (state, action) => {
+        state.status = "succeeded";
+        state.candidats = action.payload;
       });
   },
 });
 
-export const { clearStore } = ElectionSlice.actions;
+export const { vote, voice } = ElectionSlice.actions;
 
 export default ElectionSlice.reducer;
