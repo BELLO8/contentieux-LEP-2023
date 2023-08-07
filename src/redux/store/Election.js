@@ -120,6 +120,16 @@ export const getCandidats = createAsyncThunk(
   }
 );
 
+export const getResult = createAsyncThunk(
+  "result/getResult",
+  async (params) => {
+    const response = await client.get(
+      `ResultatGlobal/${params.id_circons}/${params.id_parti}/${params.type}`
+    );
+    return response.data.data;
+  }
+);
+
 export const RegisterCandidant = createAsyncThunk(
   "registerCandidant/register",
   async (data) => {
@@ -143,6 +153,7 @@ export const ElectionSlice = createSlice({
     voix: [],
     taux: [],
     candidats: [],
+    resultat: [],
   },
   reducers: {
     vote: (state, action) => {
@@ -189,6 +200,10 @@ export const ElectionSlice = createSlice({
       .addCase(getCandidats.fulfilled, (state, action) => {
         state.status = "succeeded";
         state.candidats = action.payload;
+      })
+      .addCase(getResult.fulfilled, (state, action) => {
+        state.status = "succeeded";
+        state.resultat = action.payload;
       });
   },
 });

@@ -47,10 +47,10 @@ const StatsCard = ({ cols }) => {
       icon: <Users size={24} />
     },
     {
-      title: '%',
-      subtitle: 'Taux de participation',
+      title: '',
+      subtitle: 'Nombre candidats',
       color: 'light-success',
-      icon: <Percent size={24} />
+      icon: <User size={24} />
     }
   ]
 

@@ -4,11 +4,11 @@ import Avatar from "@components/avatar";
 import { useEffect } from "react";
 import { Check } from "react-feather";
 import { useDispatch, useSelector } from "react-redux";
-import { Badge, Card, CardBody, Col, Row } from "reactstrap";
+import { Badge, Button, Card, CardBody, Col, Row } from "reactstrap";
 import { io } from "socket.io-client";
 import { voice } from "../../redux/store/Election";
 import { getUserData } from "../../utility/Utils";
-import { useState } from "react";
+import { Link } from "react-router-dom";
 
 const socket = io.connect("https://jellyfish-app-wxyzd.ondigitalocean.app/", {
   transports: ["websocket"],
@@ -18,13 +18,12 @@ const Candidat = () => {
   const dispatch = useDispatch();
   const listCandidat = useSelector((state) => state.election.candidats);
   const voix = useSelector((state) => state.election.voix);
-  const lastVoice = [];
   const listCandidatData = [];
 
   listCandidat.map((item) => {
     listCandidatData.push(item);
   });
-  
+
   useEffect(() => {
     socket.on("insertedvoix", (data) => {
       console.log(data);
@@ -74,7 +73,9 @@ const Candidat = () => {
   return (
     <>
       <Row className="mt-5">
-        <h3 className="mb-3">Comptage de voix</h3>
+        <h3 className="mb-3">
+          Comptage de voix <Button className="btn-sm" color="primary" tag={Link} to="/resultat">Afficher les résultats</Button>
+        </h3>
         {renderCandidatList()}
       </Row>
     </>
