@@ -2,11 +2,11 @@
 
 import Avatar from "@components/avatar";
 import { useEffect } from "react";
-import { Check } from "react-feather";
+import { Check, User } from "react-feather";
 import { useDispatch, useSelector } from "react-redux";
 import { Badge, Button, Card, CardBody, Col, Row } from "reactstrap";
 import { io } from "socket.io-client";
-import { voice } from "../../redux/store/Election";
+import { getCandidats, voice } from "../../redux/store/Election";
 import { getUserData } from "../../utility/Utils";
 import { Link } from "react-router-dom";
 
@@ -39,17 +39,13 @@ const Candidat = () => {
             <div className="d-flex align-items-center flex-column">
               <Avatar
                 color="light-primary"
-                content={item.nom}
-                initials
+                icon={<User size={14}/>}
                 size="xl"
               />
               <div className="d-flex flex-column align-items-center text-center">
                 <div className="user-info mt-2">
-                  <h4>{item.nom}</h4>
-                  <Badge color="primary">
-                    {getUserData().lib_type_election}
-                  </Badge>
-                </div>
+                  <h5>{item.nom}</h5>
+                 </div>
                 <div className="d-flex align-items-start me-2 m-2">
                   <Badge color="light-primary" className="rounded p-75">
                     <Check className="font-medium-2" />
@@ -73,9 +69,9 @@ const Candidat = () => {
   return (
     <>
       <Row className="mt-5">
-        <h3 className="mb-3">
-          Comptage de voix <Button className="btn-sm" color="primary" tag={Link} to="/resultat">Afficher les résultats</Button>
-        </h3>
+        <h5 className="mb-1">Les candidats à l'élection
+          {/*  <Button className="btn-sm" color="primary" tag={Link} to="/resultat">Afficher les résultats</Button> */}
+        </h5>
         {renderCandidatList()}
       </Row>
     </>

@@ -56,7 +56,7 @@ export const columns = [
       cell: row => row.lib_type_election
     }
   ]
-
+  
   export const votants = [
     {
       name: 'Electeur',
@@ -79,6 +79,14 @@ export const columns = [
       sortField: 'num_electeur',
       selector: row => row.num_electeur,
       cell: row => (<Badge color='primary'> {row.num_electeur} </Badge>) 
+    },
+    {
+      name: 'Status',
+      minWidth: '138px',
+      sortable: true,
+      sortField: 'status',
+      selector: row => row.status,
+      cell: row => <span className='text-capitalize'>{row.statusVote}</span>
     },
     {
       name: 'Sexe',

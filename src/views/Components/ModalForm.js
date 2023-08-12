@@ -2,12 +2,13 @@
 
 import { useState, useEffect } from "react";
 import {
-    Button,
-    Modal,
-    ModalHeader,
-    ModalBody, Label,
-    Input,
-    Form
+  Button,
+  Modal,
+  ModalHeader,
+  ModalBody,
+  Label,
+  Input,
+  Form,
 } from "reactstrap";
 import { Link, useNavigate } from "react-router-dom";
 import "@styles/react/pages/page-authentication.scss";
@@ -21,34 +22,35 @@ import { getCirconscription } from "../../redux/store/Circonscription";
 import { getTypeElection } from "../../redux/store/TypeElection";
 import { getBureauVote, getLieuxVote } from "../../redux/store/Election";
 import { addRepresentant } from "../../@core/auth/jwt/const";
-import toast from 'react-hot-toast'
+import toast from "react-hot-toast";
 import { Check } from "react-feather";
 import Avatar from "@components/avatar";
 import { getRepresentant } from "../../redux/store/Representant";
 
-const ModalForm = () => {
+const ModalForm = ({ idbv, idlv }) => {
+  console.log(idlv);
   const [formModal, setFormModal] = useState(false);
   const dispatch = useDispatch();
   const navigate = useNavigate();
 
   const [idTypeElection, setIdTypeElection] = useState();
   const [idcirconscription, setIdcirconscription] = useState();
-  const [idLieuxVote, setLieuxVote] = useState()
-  const [idBureauVote, setBureauVote] = useState()
+  const [idLieuxVote, setLieuxVote] = useState();
+  const [idBureauVote, setBureauVote] = useState();
 
-  const lieuxVote = useSelector((state) => state.election.lieuxVote)
-  const bureauVote = useSelector((state) => state.election.bureauVote)
+  const lieuxVote = useSelector((state) => state.election.lieuxVote);
+  const bureauVote = useSelector((state) => state.election.bureauVote);
 
-  const lieuxVoteData = []
-  const bureauVoteData = []
+  const lieuxVoteData = [];
+  const bureauVoteData = [];
 
   lieuxVote.map((item) => {
-    lieuxVoteData.push({ value: item.cod_lieu, label: item.lib_lvote })
-  })
+    lieuxVoteData.push({ value: item.cod_lieu, label: item.lib_lvote });
+  });
 
   bureauVote.map((item) => {
-    bureauVoteData.push({ value: item.cod_bv, label: item.lib_bv })
-  })
+    bureauVoteData.push({ value: item.cod_bv, label: item.lib_bv });
+  });
   const typeElection = useSelector((state) => state.typeElection.data);
   const circonscription = useSelector((state) => state.circonscription.data);
 
@@ -69,24 +71,23 @@ const ModalForm = () => {
     handleSubmit,
     formState: { errors },
   } = useForm();
-  const user = getUserData()
+  const user = getUserData();
 
   useEffect(() => {
     dispatch(getLieuxVote(user.id_circons));
   }, [dispatch]);
 
   const onSubmit = (data) => {
-    
     if (Object.values(data).every((field) => field.length > 0)) {
       addRepresentant({
         ...data,
         id_type_election: user.id_type_election,
         id_circons: user.id_circons,
         id_parti: user.id_parti,
-        id_candidat:user.id_candidat,
-        id_lieu_vote:idLieuxVote,
-        id_bureau_vote:idBureauVote,
-        id_role:"1"
+        id_candidat: user.id_candidat,
+        id_lieu_vote: idlv == 'undefined' ? idLieuxVote : idlv,
+        id_bureau_vote: idlv == 'undefined' ? idBureauVote : idbv,
+        id_role: "1",
       })
         .then((res) => {
           if (res.data.status === "success") {
@@ -105,8 +106,8 @@ const ModalForm = () => {
                 </div>
               </div>
             );
-            setFormModal(!formModal)
-            dispatch(getRepresentant(user.id_candidat))
+            setFormModal(!formModal);
+            dispatch(getRepresentant(user.id_candidat));
           } else if (res.data.status === "error") {
             toast(
               <div className="d-flex">
@@ -166,10 +167,7 @@ const ModalForm = () => {
   return (
     <div className="demo-inline-spacing">
       <div>
-        <Button
-          color="primary"
-          onClick={() => setFormModal(!formModal)}
-        >
+        <Button color="primary" onClick={() => setFormModal(!formModal)}>
           Ajouter un répresentant
         </Button>
         <Modal
@@ -282,40 +280,47 @@ const ModalForm = () => {
                   }}
                 />
               </div> */}
+              {idlv === 'undefined' ? (
+                <>
+                  <div className="mb-1">
+                    <Label className="form-label" for="type-elec">
+                      Selectionner un lieu de vote
+                    </Label>
+                    <Select
+                      theme={selectThemeColors}
+                      isClearable={false}
+                      id="type-election"
+                      className="react-select"
+                      classNamePrefix="select"
+                      options={lieuxVoteData}
+                      onChange={(event) => {
+                        setLieuxVote(event.value);
+                        dispatch(getBureauVote(event.value));
+                      }}
+                    />
+                  </div>
+                  <div className="mb-1">
+                    <Label className="form-label" for="type-elec">
+                      Selectionner un bureau de vote
+                    </Label>
+                    <Select
+                      theme={selectThemeColors}
+                      isClearable={false}
+                      id="type-election"
+                      className="react-select"
+                      classNamePrefix="select"
+                      options={bureauVoteData}
+                      onChange={(event) => {
+                        setBureauVote(event.value);
+                      }}
+                    />
+                  </div>
+                </>
+              ) : (
+                ""
+              )}
+
               <div className="mb-1">
-                <Label className="form-label" for="type-elec">
-                    Selectionner un lieu de vote
-                </Label>
-                <Select
-                    theme={selectThemeColors}
-                    isClearable={false}
-                    id="type-election"
-                    className="react-select"
-                    classNamePrefix="select"
-                    options={lieuxVoteData}
-                    onChange={(event) => {
-                    setLieuxVote(event.value)
-                    dispatch(getBureauVote(event.value))
-                    }}
-                />
-                </div>
-                <div className="mb-1">
-                <Label className="form-label" for="type-elec">
-                    Selectionner un bureau de vote
-                </Label>
-                <Select
-                    theme={selectThemeColors}
-                    isClearable={false}
-                    id="type-election"
-                    className="react-select"
-                    classNamePrefix="select"
-                    options={bureauVoteData}
-                    onChange={(event) => {
-                    setBureauVote(event.value)
-                    }}
-                />
-                </div>
-             <div className="mb-1">
                 <div className="d-flex justify-content-between">
                   <Label className="form-label" for="login-password">
                     Password

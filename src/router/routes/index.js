@@ -19,6 +19,9 @@ import Depouillement from "../../views/app/Depouillement"
 import Resultat from "../../views/app/Resultat"
 import SettingCandidat from "../../views/app/SettingCandidat"
 import TableVote from "../../views/Components/TableVote"
+import ListeVotant from "../../views/app/ListeVotant"
+import DepouillementBV from "../../views/app/DepouillementBV"
+import DetailBv from "../../views/app/DetailBv"
 
 const getLayout = {
   blank: <BlankLayout />,
@@ -50,6 +53,14 @@ const Routes = [
     element: <TableVote />
   },
   {
+    path: "/vote/liste-votants/:idbv",
+    element: <ListeVotant />
+  },
+  {
+    path: "/depouillement/depouillement-par-bv/:idbv",
+    element: <DepouillementBV />
+  },
+  {
     path: "/depouillement",
     element: <Depouillement />
   },
@@ -58,8 +69,12 @@ const Routes = [
     element: <Resultat />
   },
   {
-    path: "/parametre",
+    path: "/bureau-vote",
     element: <SettingCandidat />
+  },
+  {
+    path: "/bureau-vote/deroulement/:idlv/:idbv",
+    element: <DetailBv />
   },
   {
     path: "/login",

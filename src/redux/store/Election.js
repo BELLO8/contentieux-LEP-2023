@@ -2,6 +2,7 @@
 
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import { client } from "../../@core/auth/jwt/const";
+import { getUserData } from "../../utility/Utils";
 
 export const getLieuxVote = createAsyncThunk(
   "lieuxVote/getLieuxVote",
@@ -44,13 +45,53 @@ export const nombreElecteurBv = createAsyncThunk(
   }
 );
 
+export const nombreElecteur = createAsyncThunk(
+  "nbreElecteur/nombreElecteur",
+  async () => {
+    const response = await client.get(
+      `NombreElecteurByCirconsElectorale/${getUserData().id_type_election}`
+    );
+    return response.data.data;
+  }
+);
+
+export const nombreElecteurByBvBYCircons = createAsyncThunk(
+  "NombreElecteurByBvBYCircons/nombreElecteurByBvBYCircons",
+  async () => {
+    const response = await client.get(
+      `NombreElecteurByBvBYCircons/${getUserData().id_type_election}`
+    );
+    return response.data.data;
+  }
+);
+
+export const allNombreVotant = createAsyncThunk(
+  "AllNombreVotantByBvByCircons/allNombreVotantByBvByCircons",
+  async () => {
+    const response = await client.get(
+      `AllNombreVotantByBvByCircons/${getUserData().id_type_election}`
+    );
+    return response.data.data;
+  }
+);
+
+export const nombreVotantGlobal = createAsyncThunk(
+  "NombreVotantGlobal/nombreVotantGlobal",
+  async () => {
+    const response = await client.get(
+      `NombreVotantByCirconsElectorale/${getUserData().id_type_election}`
+    );
+    return response.data.data;
+  }
+);
+
 export const nombreVotant = createAsyncThunk(
   "votant/nombrevotant",
-  async (params) => {
+  async () => {
     const response = await client.get(
-      `ElecteurVotant/${params.id_bv}/${params.id_type}/${params.id_parti}`
+      `AllNombreVotantByBvByCircons/${getUserData().id_type_election}`
     );
-    return response.data;
+    return response.data.data;
   }
 );
 
@@ -64,13 +105,21 @@ export const tauxParticipation = createAsyncThunk(
   }
 );
 
-export const getElecteur = createAsyncThunk(
-  "electeur/getElecteur",
+export const getElecteurByBv = createAsyncThunk(
+  "electeur/getElecteurBv",
   async (params) => {
     const response = await client.get(
-      `${params.uri}/${params.id}/${params.idCand}/?page=${
-        params.page === undefined ? 1 : params.page
-      }`
+      `getElecteurbyBvCandidat/${params.bv}`
+    );
+    return response.data.data;
+  }
+);
+
+export const getTimeLineByBv = createAsyncThunk(
+  "timeLine/getTimeLineByBv",
+  async (params) => {
+    const response = await client.get(
+      `EtapeElectionByBv/${params.bv}`
     );
     return response.data.data;
   }
@@ -80,7 +129,9 @@ export const getElecteurVotant = createAsyncThunk(
   "votant/getElecteurVotant",
   async (params) => {
     const response = await client.get(
-      `ListeElecteurVoteBv/${params.id_bv}/${params.id_type}/${params.parti}`
+      `ListeElecteurVoteBv/${params.id_bv}/${getUserData().id_type_election}/${
+        getUserData().id_parti
+      }`
     );
     return response.data.data;
   }
@@ -113,9 +164,7 @@ export const getElecteurByLieuVote = createAsyncThunk(
 export const getCandidats = createAsyncThunk(
   "Candidats/getCandidats",
   async (params) => {
-    const response = await client.get(
-      `ListCandidatByBv/${params.bv}/${params.type}`
-    );
+    const response = await client.get('listCandidatByCircons');
     return response.data.data;
   }
 );
@@ -143,12 +192,18 @@ export const ElectionSlice = createSlice({
   initialState: {
     status: null,
     lieuxVote: [],
+    timeLine:[],
     nbrLv: [],
+    nombreElecteur: [],
+    nombreVotantGlobal: [],
     bureauVote: [],
     nbrBv: [],
     nbrVotant: [],
     nbreElectBv: [],
+    nombreElecteurByBv: [],
+    allNombreVotantByBvByCircons: [],
     votants: [],
+    electeurBv:[],
     Listvotants: [],
     voix: [],
     taux: [],
@@ -204,6 +259,30 @@ export const ElectionSlice = createSlice({
       .addCase(getResult.fulfilled, (state, action) => {
         state.status = "succeeded";
         state.resultat = action.payload;
+      })
+      .addCase(nombreElecteur.fulfilled, (state, action) => {
+        state.status = "succeeded";
+        state.nombreElecteur = action.payload;
+      })
+      .addCase(nombreVotantGlobal.fulfilled, (state, action) => {
+        state.status = "succeeded";
+        state.nombreVotantGlobal = action.payload;
+      })
+      .addCase(nombreElecteurByBvBYCircons.fulfilled, (state, action) => {
+        state.status = "succeeded";
+        state.nombreElecteurByBv = action.payload;
+      })
+      .addCase(getElecteurByBv.fulfilled, (state, action) => {
+        state.status = "succeeded";
+        state.electeurBv = action.payload;
+      })
+      .addCase(getTimeLineByBv.fulfilled, (state, action) => {
+        state.status = "succeeded";
+        state.timeLine = action.payload;
+      })
+      .addCase(allNombreVotant.fulfilled, (state, action) => {
+        state.status = "succeeded";
+        state.allNombreVotantByBvByCircons = action.payload;
       });
   },
 });

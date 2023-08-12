@@ -15,7 +15,7 @@ const StatsHorizontal = ({
   statsMargin
 }) => {
   return (
-    <Card>
+    <Card className='border-secondary shadow-none'>
       <CardBody className={className}>
         <div className="d-flex justify-content-between align-items-center">
           <div>

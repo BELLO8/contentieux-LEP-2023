@@ -1,43 +1,59 @@
 /* eslint-disable */
-
 import React, { useEffect } from "react";
-import { Col, Row } from "reactstrap";
-import { selectThemeColors } from "@utils";
-import Select from "react-select";
-import { io } from "socket.io-client";
-import { Label } from "reactstrap";
-import { useDispatch, useSelector } from "react-redux";
+import "@styles/react/libs/react-select/_react-select.scss";
+import "@styles/react/libs/tables/react-dataTable-component.scss";
+import "../style.css";
 import { useState } from "react";
 import {
+  Button,
+  Card,
+  CardBody,
+  Col,
+  Collapse,
+  Input,
+  Modal,
+  ModalBody,
+  ModalHeader,
+  Row,
+} from "reactstrap";
+import { Label } from "reactstrap";
+import { useDispatch, useSelector } from "react-redux";
+import {
   getBureauVote,
-  getCandidats,
   getLieuxVote,
-  nombreElecteurBv,
-  nombreVotant,
-  voice,
+  nombreElecteurByBvBYCircons,
 } from "../../redux/store/Election";
 import { getUserData } from "../../utility/Utils";
-import Candidat from "../Components/Candidant";
-
-const socket = io.connect("https://jellyfish-app-wxyzd.ondigitalocean.app/", {
-  transports: ["websocket"],
-});
+import { Filter } from "react-feather";
+import Bv from "../Components/BvDepouillement";
 
 export default function Depouillement() {
   const dispatch = useDispatch();
-
   const [idLieuxVote, setLieuxVote] = useState();
   const [idBureauVote, setBureauVote] = useState();
+  const [basicModal, setBasicModal] = useState(false);
+  const [searchTerm, setSearchTerm] = useState("");
+  const [isOpen, setIsOpen] = useState(false)
 
+  const toggle = () => setIsOpen(!isOpen)
   const lieuxVote = useSelector((state) => state.election.lieuxVote);
   const bureauVote = useSelector((state) => state.election.bureauVote);
-  const nbreElectBv = useSelector(
-    (state) => state.election.nbreElectBv.population
+  const taux = useSelector((state) => state.election.taux);
+  const data = useSelector((state) => state.election.votants);
+  const allNombreVotantByBvByCircons = useSelector(
+    (state) => state.election.allNombreVotantByBvByCircons
   );
-  const nbrevotant = useSelector((state) => state.election.nbrVotant.data);
+  const nombreElecteurByBv = useSelector(
+    (state) => state.election.nombreElecteurByBv
+  );
 
+  const electeurbv = [];
   const lieuxVoteData = [];
   const bureauVoteData = [];
+
+  nombreElecteurByBv.map((item) => {
+    electeurbv.push(item);
+  });
 
   lieuxVote.map((item) => {
     lieuxVoteData.push({ value: item.cod_lieu, label: item.lib_lvote });
@@ -49,69 +65,94 @@ export default function Depouillement() {
   const user = getUserData();
 
   useEffect(() => {
-    socket.on("insertedvoix", (data) => {
-      console.log(data);
-      dispatch(voice(data));
-    });
-
+    dispatch(nombreElecteurByBvBYCircons());
     dispatch(getLieuxVote(user.id_circons));
-  }, [dispatch, socket]);
+  }, [dispatch]);
 
   return (
     <>
       <Row>
-        <Col lg="6" sm="6">
-          <div className="mb-1">
-            <Label className="form-label" for="type-elec">
-              Selectionner un lieu de vote
-            </Label>
-            <Select
-              theme={selectThemeColors}
-              isClearable={false}
-              id="type-election"
-              className="react-select"
-              classNamePrefix="select"
-              options={lieuxVoteData}
-              onChange={(event) => {
-                setLieuxVote(event.value);
-                dispatch(getBureauVote(event.value));
-              }}
-            />
-          </div>
+        <Col lg="3" sm="12">
+          <Card>
+            <CardBody>
+              <h4 className="mb-1">
+                <Filter size={17} /> Filtre
+              </h4>
+              <h5 className="filter-title">Lieu de vote</h5>
+              <ul className="list-unstyled categories-list">
+                <li className="mb-1">
+                  <div className="form-check">
+                    <Input
+                      type="checkbox"
+                      id="all"
+                      name="item-radio"
+                      defaultChecked
+                      onClick={() => {
+                        setSearchTerm("");
+                      }}
+                    />
+                    <Label className="form-check-label" for="all">
+                      Tout
+                    </Label>
+                  </div>
+                </li>
+                {lieuxVoteData.map((item) => {
+                  return (
+                    <li key={item.value} className="mb-1">
+                      <div className="form-check">
+                        <Input
+                          type="checkbox"
+                          id={item.value}
+                          onClick={() => {
+                            dispatch(getBureauVote(item.value));
+                            setSearchTerm(item.label);
+                          }}
+                        />
+                        
+                        <Label className="form-check-label" for={item.value}>
+                          {item.label}
+                        </Label>
+                        {/* <Collapse isOpen={isOpen}>
+                          <div className="d-flex p-1">
+                          
+                            <span>
+                              Lorem Ipsum is simply dummy text of the printing
+                            
+                            </span>
+                          </div>
+                        </Collapse> */}
+                      </div>
+                    </li>
+                  );
+                })}
+              </ul>
+            </CardBody>
+          </Card>
         </Col>
-        <Col lg="6" sm="6">
-          <div className="mb-1">
-            <Label className="form-label" for="type-elec">
-              Selectionner un bureau de vote
-            </Label>
-            <Select
-              theme={selectThemeColors}
-              isClearable={false}
-              id="type-election"
-              className="react-select"
-              classNamePrefix="select"
-              options={bureauVoteData}
-              onChange={(event) => {
-                setBureauVote(event.value);
-                dispatch(nombreElecteurBv(event.value));
-                dispatch(
-                  nombreVotant({
-                    id_bv: event.value,
-                    id_type: user.id_type_election,
-                    id_parti: user.id_parti,
-                  })
-                );
-                dispatch(
-                  getCandidats({
-                    bv: event.value,
-                    type: user?.id_type_election,
-                  })
-                );
-              }}
-            />
-          </div>
+        <Col lg="9" sm="12">
+          <Row>
+            {electeurbv
+              .filter((filtre) => {
+                if (searchTerm == "") {
+                  return filtre;
+                } else if (
+                  JSON.stringify(filtre)
+                    .toLowerCase()
+                    .indexOf(searchTerm.toLowerCase()) != -1
+                ) {
+                  return filtre;
+                }
+              })
+              .map((item) => (
+                <Col lg="6" sm="6">
+                  <Bv
+                    idbv={item.id_bureau}
+                    bv={item.lieu_vote + " Bv : " + item.bureau_vote}
+                  />
+                </Col>
+              ))}
+          </Row>
         </Col>
-        <Candidat />
       </Row>
     </>
   );

@@ -1,9 +1,6 @@
 /* eslint-disable */
 import { Bar } from "react-chartjs-2";
-import {
-  Card,
-  CardHeader, CardBody
-} from "reactstrap";
+import { Card, CardHeader, CardBody } from "reactstrap";
 import { useDispatch, useSelector } from "react-redux";
 import { getUserData } from "../../utility/Utils";
 import { getResult } from "../../redux/store/Election";
@@ -16,13 +13,12 @@ const ChartjsHorizontalBarChart = () => {
 
   const candidatData = [];
   const candidat = [];
-  
+
   result.map((item) => {
     candidatData.push(item.total_voix);
     candidat.push(item.nom);
   });
 
-  
   useEffect(() => {
     dispatch(
       getResult({
@@ -34,18 +30,10 @@ const ChartjsHorizontalBarChart = () => {
   }, [dispatch]);
 
   const options = {
-    indexAxis: "y",
+    indexAxis: "x",
     responsive: true,
     maintainAspectRatio: false,
     animation: { duration: 500 },
-    elements: {
-      bar: {
-        borderRadius: {
-          topRight: 15,
-          bottomRight: 15,
-        },
-      },
-    },
     layout: {
       padding: { top: -4 },
     },
@@ -65,8 +53,7 @@ const ChartjsHorizontalBarChart = () => {
     },
     plugins: {
       legend: {
-        align: "end",
-        position: "top",
+        display: false,
       },
     },
   };
@@ -78,9 +65,9 @@ const ChartjsHorizontalBarChart = () => {
       {
         label: user?.lib_type_election,
         backgroundColor: [
-          "rgba(255, 99, 132, 0.2)",
-          "rgba(255, 159, 64, 0.2)",
-          "rgba(255, 205, 86, 0.2)",
+          "rgba(255, 99, 132,0.7)",
+          "rgba(255, 159, 64,0.7)",
+          "rgba(255, 205, 86,0.7)",
           "rgba(75, 192, 192, 0.2)",
           "rgba(54, 162, 235, 0.2)",
           "rgba(153, 102, 255, 0.2)",

@@ -6,8 +6,7 @@ import 'chart.js/auto'
 export default function Resultat() {
   return (
     <div>
-      <CardCongratulations/>
-      <ChartjsHorizontalBarChart />
+      {/* <ChartjsHorizontalBarChart /> */}
     </div>
   )
 }

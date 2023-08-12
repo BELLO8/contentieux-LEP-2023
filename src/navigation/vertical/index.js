@@ -1,4 +1,4 @@
-import { AlignJustify, CheckSquare, Monitor, Package, Settings, Table, Users } from "react-feather"
+import { AlignJustify, Archive, CheckSquare, Monitor, Package, Settings, Table, Users } from "react-feather"
 
 export default [
   {
@@ -8,10 +8,10 @@ export default [
     navLink: "/home"
   },
   {
-    id: "params",
-    title: "Répresentants ",
-    icon: <Users size={20} />,
-    navLink: "/parametre"
+    id: "bv",
+    title: "Bureau de vote ",
+    icon: <Archive size={20} />,
+    navLink: "/bureau-vote"
   },
   {
     id: "vote",

@@ -21,19 +21,19 @@ const Home = () => {
       <Col lg="12" sm="12">
         <StatsCard cols={{ md: "3", sm: "6", xs: "12" }} />
       </Col>
-      <h3>Resultat d'élection</h3>
+      <h3>Résultat de l'élection</h3>
       <ChartjsHorizontalBarChart />
 
       <Row>
         <Col lg="8" md="6" sm="12">
-          <Card>
+          {/* <Card>
             <CardHeader>
-              <CardTitle>Liste des électeurs qui ont votés </CardTitle>
+              <CardTitle>Détails des électeurs dans un bureau de vote</CardTitle>
             </CardHeader>
             <CardBody>
               <TableVote />
             </CardBody>
-          </Card>
+          </Card> */}
         </Col>
         <Col lg="4" md="6" sm="12">
           <CardTransactions />

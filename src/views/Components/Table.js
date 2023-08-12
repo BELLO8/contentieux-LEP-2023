@@ -43,14 +43,17 @@ import { getCirconscription } from "../../redux/store/Circonscription";
 import { columns } from "./columns";
 import { getRepresentant } from "../../redux/store/Representant";
 
-const UsersList = () => {
-  // ** Store Vars
+const UsersList = ({idlv,idbv}) => {
+  // ** Store VUsersListars
   const dispatch = useDispatch();
   const user = getUserData()  
   const store = useSelector((state) => state.representant.representant.data);
 
   const [searchTerm, setSearchTerm] = useState("");
 
+  let data = store?.filter(function(param){
+      return param.id_lieu_vote == idlv && param.id_bureau_vote
+  })
 
   useEffect(() => {
     dispatch(getRepresentant(user.id_candidat));
@@ -88,7 +91,7 @@ const UsersList = () => {
             className="react-dataTable"
             paginationPerPage={100}
             paginationRowsPerPageOptions={[100]}
-            data={store?.filter((item) => {
+            data={data?.filter((item) => {
               if( searchTerm == "") {
                 return item
               }else if (

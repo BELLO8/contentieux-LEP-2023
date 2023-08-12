@@ -9,32 +9,17 @@ import { useDispatch } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import { getElecteurByBv, getElecteurVotant } from "../../redux/store/Election";
 
-const StatsHorizontal = ({ idbv, bv, inscrit, votants }) => {
+const Bv = ({ idbv, bv }) => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
-  const taux = votants === 0 ? 0 : (Number(votants) * 100) / Number(inscrit);
   return (
-    <Card>
+    <Card className=''>
       <CardBody>
         <div className="d-flex justify-content-between align-items-center">
           <div>
             <h6>
               {bv}
-              <Button
-                className="mx-3"
-                color="primary"
-                size="sm"
-                outline
-                onClick={() => {
-                  dispatch(getElecteurByBv({ bv: idbv }));
-                  navigate(`/vote/liste-votants/${idbv}`);
-                  
-                }}
-              >
-                Details
-              </Button>
             </h6>
-
             <div className="d-flex align-items-center mt-3 mb-2">
               <Avatar
                 color="light-primary"
@@ -42,27 +27,41 @@ const StatsHorizontal = ({ idbv, bv, inscrit, votants }) => {
                 className="me-2"
               />
               <div className="my-auto">
-                <h4 className="fw-bolder mb-0">{votants}</h4>
-                <CardText className="font-small-3 mb-0">Votant(s)</CardText>
+                <h4 className="fw-bolder mb-0">0</h4>
+                <CardText className="font-small-3 mb-0">Bulletin(s) valide(s)</CardText>
               </div>
               <div className="mx-3">
-                <h4 className="fw-bolder mb-0">{inscrit}</h4>
-                <CardText className="font-small-3 mb-0">Inscrit(s)</CardText>
+                <h4 className="fw-bolder mb-0">0</h4>
+                <CardText className="font-small-3 mb-0">Bulletin(s) blanc(s)</CardText>
               </div>
-              <div>
+              {/* <div>
                 <span>
-                  Taux de participation… <b>{parseInt(taux)}%</b>
+                  Taux de participation… <b> </b>
                 </span>
                 <Progress animated className="progress-bar-info" value={taux} />
-              </div>
+              </div> */}
             </div>
 
             {/* <Badge color="primary"><h5 className="fw-bolder text-white mb-0">55,125%</h5></Badge> */}
           </div>
+          
+          <Button
+                className="mx-3"
+                color="primary"
+                size="sm"
+                outline
+                onClick={() => {
+                  // dispatch(getElecteurByBv({ bv: idbv }));
+                  navigate(`/depouillement/depouillement-par-bv/${idbv}`);
+                  
+                }}
+              >
+                Details
+              </Button>
         </div>
       </CardBody>
     </Card>
   );
 };
 
-export default StatsHorizontal;
+export default Bv;

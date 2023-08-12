@@ -1,7 +1,7 @@
 // ** Third Party Components
 import Proptypes from "prop-types"
 import classnames from "classnames"
-
+import { Badge } from "reactstrap"
 const Timeline = (props) => {
   // ** Props
   const { data, tag, className } = props
@@ -59,6 +59,20 @@ const Timeline = (props) => {
                 })}
               >
                 {item.content}
+              </p>
+              <Badge color="primary"
+                className={classnames({
+                  "mt-1": i === data.length - 1 && !item.customContent
+                })}
+              >
+                {item.status}
+              </Badge>
+              <p
+                className={classnames({
+                  "mt-1": i === data.length - 1 && !item.customContent
+                })}
+              >
+                {item.comment}
               </p>
               {item.customContent ? item.customContent : null}
             </div>

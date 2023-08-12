@@ -54,16 +54,12 @@ const UserDropdown = () => {
         />
       </DropdownToggle>
       <DropdownMenu end>
-        <DropdownItem tag={Link} to="/" onClick={(e) => e.preventDefault()}>
-          <User size={14} className="me-75" />
-          <span className="align-middle">Profile</span>
-        </DropdownItem>
         <DropdownItem onClick={() => { 
           dispatch(handleLogout())
           navigate('/login')
           }}>
           <Power size={14} className="me-75" />
-          <span className="align-middle">Logout</span>
+          <span className="align-middle">Deconnexion</span>
         </DropdownItem>
       </DropdownMenu>
     </UncontrolledDropdown>
