@@ -7,6 +7,7 @@ import "@styles/react/libs/tables/react-dataTable-component.scss";
 import "../style.css";
 import { useState } from "react";
 import StatsHorizontal from "../Components/StatsHorizontal";
+
 import {
   Button,
   Col,
@@ -34,6 +35,7 @@ import {
 import { getUserData } from "../../utility/Utils";
 import { Filter } from "react-feather";
 import Sidebar from "../Components/Sidebar";
+import BreadCrumbs from "../../@core/components/breadcrumbs";
 
 const socket = io.connect("https://jellyfish-app-wxyzd.ondigitalocean.app/", {
   transports: ["websocket"],
@@ -62,6 +64,31 @@ export default function Vote() {
   const bureauVoteData = [];
 
   nombreElecteurByBv.map((item) => {
+    electeurbv.push({
+      id: item.id_bureau,
+      nb_electeur: item.nb_electeur,
+      bureau_vote: item.bureau_vote,
+      id_lieu_vote: item.id_lieu_vote,
+      lieu_vote: item.lieu_vote,
+    });
+  });
+
+  const nombreVotant = [];
+  allNombreVotantByBvByCircons.map((item) => {
+    nombreVotant.push({
+      id: item.id_bureau_vote,
+      total: item.total_votant,
+      liblvote: item.liblvote,
+      lib_bv: item.lib_bv,
+    });
+  });
+
+  let newArray = electeurbv.map((obj1) => {
+    let obj2 = nombreVotant.find((obj2) => obj2.id === obj1.id);
+    return { ...obj1, ...obj2 };
+  });
+
+  nombreElecteurByBv.map((item) => {
     electeurbv.push(item);
   });
 
@@ -86,11 +113,12 @@ export default function Vote() {
 
   return (
     <>
+    <BreadCrumbs title="Déroulement du vote" url="/" data={[]} />
       <Row>
         <Col lg="6" sm="6">
           <div className="basic-modal">
             <Button
-              className="mb-1 btn-icon rounded-circle"
+              className="mb-1 mt-3 btn-icon rounded-circle"
               outline
               color="primary"
               onClick={() => setBasicModal(!basicModal)}
@@ -153,7 +181,7 @@ export default function Vote() {
           </div>
         </Col>
         <Col lg="6" sm="6"></Col>
-        {electeurbv
+        {newArray
           .filter((filtre) => {
             if (searchTerm == "") {
               return filtre;
@@ -166,22 +194,17 @@ export default function Vote() {
             }
           })
           .map((item) => (
-            <Col lg="6" sm="6">
+            <Col lg="4" sm="6">
               <StatsHorizontal
-                idbv={item.id_bureau}
-                bv={item.lieu_vote + " Bv : " + item.bureau_vote}
+                idbv={item.id}
+                bv={item.bureau_vote}
+                lv={item.lieu_vote}
                 inscrit={item.nb_electeur}
-                votants={allNombreVotantByBvByCircons.map((itemVote) =>
-                  item.id_bureau === itemVote.id_bureau_vote
-                    ? itemVote.total_votant
-                    : 0
-                )}
+                votants={item.total ? item.total : 0}
               />
             </Col>
           ))}
       </Row>
-
-     
     </>
   );
 }

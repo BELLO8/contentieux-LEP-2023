@@ -4,19 +4,26 @@ import React from "react";
 import { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useParams } from "react-router-dom";
-import { getElecteurByBv, getElecteurVotant } from "../../redux/store/Election";
+import { getElecteurByBv, getElecteurVotant, nombreElecteurByBvBYCircons } from "../../redux/store/Election";
 import TableVote from "../Components/TableVote";
 import DataTable from "react-data-table-component";
 import { votants } from "../Components/columns";
-import { ChevronDown } from "react-feather";
+import { ArrowLeft, ChevronDown } from "react-feather";
+import Breadcrumbs from "@components/breadcrumbs";
 
 const ListeVotant = () => {
   const params = useParams();
   const dispatch = useDispatch();
+  const bv = useSelector((state) => state.election.nombreElecteurByBv);
+
+  let bvData = bv?.filter(function (id) {
+    return id.id_bureau == params.idbv;
+  });
 
   useEffect(() => {
     dispatch(getElecteurByBv({ bv: params.idbv }));
     dispatch(getElecteurVotant({ id_bv: params.idbv }));
+    dispatch(nombreElecteurByBvBYCircons());
   }, [dispatch]);
 
   const listeVotants = useSelector((state) => state.election.Listvotants);
@@ -31,40 +38,28 @@ const ListeVotant = () => {
     votantData.push(electeur);
   });
 
-  let data = electeurData?.map((electeur) => {
-    votantData.map((item) => {
-      if (item.num_electeur === electeur.num_electeur) {
-        electeur.statusVote = "voté";
-      } else {
-        Object.preventExtensions(electeur)
-        Object.defineProperty(electeur, "statusVote", {
-          value: "en attente",
-          writable: true,
-          enumerable: true,
-          configurable: true,
-        });
-      }
-    });
-    return electeur;
-  });
-
-  console.log(data);
 
   return (
     <>
-      <div className="react-dataTable" id="electeur">
-        Liste votant (à revoir)
-        {/* <DataTable
+      <Breadcrumbs
+        title={bvData[0]?.lieu_vote}
+        url="/vote"
+        data={[{ title: "vote " }, { title: `Bureau de vote | ${bvData[0]?.bureau_vote}` }]}
+      />
+
+      <div className="react-dataTable mt-3 mb-2" id="electeur">
+        <h6>Liste votant</h6>
+        <DataTable
           pagination
           responsive
-          noDataComponent="aucune données pour le moment"
+          noDataComponent="Aucune données pour le moment"
           columns={votants}
           sortIcon={<ChevronDown />}
           className="react-dataTable"
           paginationPerPage={100}
           paginationRowsPerPageOptions={[6, 10, 25, 50, 75, 100]}
-          data={data}
-        /> */}
+          data={votantData}
+        />
       </div>
     </>
   );

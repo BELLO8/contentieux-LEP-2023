@@ -11,33 +11,33 @@ import {
 } from "reactstrap";
 import StatsCard from "./Components/StatsCard";
 import TableBasic from "./Components/TableBasic";
-import CardTransactions from "./Components/CardTransactions";
+import CandidatVoice from "./Components/CardTransactions";
 import TableVote from "./Components/TableVote";
 import ChartjsHorizontalBarChart from "./Components/ChartjsHorizontalBar";
+import Candidat from "./Components/Candidant";
+import { useDispatch } from "react-redux";
+import { getCandidats } from "../redux/store/Election";
+import { useEffect } from "react";
+import BasicTimeline from "./Components/BasicTimeline";
 
 const Home = () => {
+
+  const dispatch = useDispatch()
+
+  useEffect(() =>{
+    dispatch(getCandidats())
+
+  },[dispatch])
   return (
     <div>
-      <Col lg="12" sm="12">
-        <StatsCard cols={{ md: "3", sm: "6", xs: "12" }} />
-      </Col>
+      <h2 className="mb-3">Tableau de bord</h2>
+      <StatsCard />
+      <BasicTimeline />
+      <Candidat />
       <h3>Résultat de l'élection</h3>
       <ChartjsHorizontalBarChart />
 
       <Row>
-        <Col lg="8" md="6" sm="12">
-          {/* <Card>
-            <CardHeader>
-              <CardTitle>Détails des électeurs dans un bureau de vote</CardTitle>
-            </CardHeader>
-            <CardBody>
-              <TableVote />
-            </CardBody>
-          </Card> */}
-        </Col>
-        <Col lg="4" md="6" sm="12">
-          <CardTransactions />
-        </Col>
       </Row>
     </div>
   );

@@ -1,5 +1,6 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit"
 import { client } from "../../@core/auth/jwt/const"
+import { getUserData } from "../../utility/Utils"
 
 
 export const nombreRepresentant = createAsyncThunk('representant/nombreRepresentant', async(idCandidat) => {
@@ -7,8 +8,8 @@ export const nombreRepresentant = createAsyncThunk('representant/nombreRepresent
     return response.data.data
   })
 
-export const getRepresentant = createAsyncThunk('representant/getRepresentant', async(idCandidat) => {
-    const response = await client.get(`/ListeRepresentatByCandidat/${idCandidat}`)
+export const getRepresentant = createAsyncThunk('representant/getRepresentant', async() => {
+    const response = await client.get(`/ListeRepresentatByCandidat/${getUserData().id_candidat}`)
     return response.data
   })
 

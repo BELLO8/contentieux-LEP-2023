@@ -1,10 +1,17 @@
 /* eslint-disable*/
-import Avatar from "@components/avatar";
 import Timeline from "@components/timeline";
+import { isEmptyObject } from "jquery";
 import { useSelector } from "react-redux";
 
 // ** Reactstrap Imports
-import { Card, CardHeader, CardTitle, CardBody, Button } from "reactstrap";
+import {
+  Card,
+  CardHeader,
+  CardTitle,
+  CardBody,
+  Button,
+  Badge,
+} from "reactstrap";
 
 const BVTimeline = () => {
   const timeLine = useSelector((state) => state.election.timeLine);
@@ -33,15 +40,23 @@ const BVTimeline = () => {
             hour: "numeric",
             minute: "numeric",
           })
+        : item.lib_etape === "Ouverture bureau de vote"
+        ? "Ouvert"
         : "Encours",
       comment: item.commentaire
         ? item.commentaire
         : "Aucun commentaire sur l'étape",
-      customContent: (
-        <div className="d-flex align-items-center">
-          <Button className="btn-sm" color="primary" outline>Voir les details de l'étape</Button>
-        </div>
-      ),
+      // customContent: (
+      //   <div className="d-flex align-items-center">
+      //     {item.lib_etape === "Ouverture bureau de vote" ? (
+      //       ""
+      //     ) : (
+      //       <Button className="btn-sm" color="primary" outline>
+      //         Voir les details de l'étape
+      //       </Button>
+      //     )}
+      //   </div>
+      // ),
     });
   });
 
@@ -53,7 +68,13 @@ const BVTimeline = () => {
         </CardTitle>
       </CardHeader>
       <CardBody className="pt-1">
-        <Timeline data={dataTimeLine} className="ms-50" />
+        {!isEmptyObject(dataTimeLine) ? (
+          <Timeline data={dataTimeLine} className="ms-50" />
+        ) : (
+          <h6>
+            <Badge color="danger">Pas encore debuté</Badge>
+          </h6>
+        )}
       </CardBody>
     </Card>
   );

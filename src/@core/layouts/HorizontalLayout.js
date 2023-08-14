@@ -124,7 +124,7 @@ const HorizontalLayout = (props) => {
         expand="lg"
         container={false}
         className={classnames(
-          "header-navbar navbar-fixed align-items-center navbar-shadow navbar-brand-center",
+          "header-navbar navbar-fixed align-items-center navbar-brand-center",
           {
             "navbar-scrolled": navbarScrolled
           }

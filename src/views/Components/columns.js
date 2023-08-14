@@ -81,14 +81,6 @@ export const columns = [
       cell: row => (<Badge color='primary'> {row.num_electeur} </Badge>) 
     },
     {
-      name: 'Status',
-      minWidth: '138px',
-      sortable: true,
-      sortField: 'status',
-      selector: row => row.status,
-      cell: row => <span className='text-capitalize'>{row.statusVote}</span>
-    },
-    {
       name: 'Sexe',
       minWidth: '138px',
       sortable: true,
@@ -112,22 +104,22 @@ export const columns = [
       selector: row => row.Lieu_naissance,
       cell: row => row.Lieu_naissance
     },
-    {
-      name: 'Nom du pere',
-      minWidth: '138px',
-      sortable: true,
-      sortField: 'nom_pere',
-      selector: row => row.nom_pere,
-      cell: row => row.nom_pere
-    },
-    {
-      name: 'Nom de la mere',
-      minWidth: '138px',
-      sortable: true,
-      sortField: 'nom_mere',
-      selector: row => row.nom_mere,
-      cell: row => row.nom_mere
-    },
+    // {
+    //   name: 'Nom du pere',
+    //   minWidth: '138px',
+    //   sortable: true,
+    //   sortField: 'nom_pere',
+    //   selector: row => row.nom_pere,
+    //   cell: row => row.nom_pere
+    // },
+    // {
+    //   name: 'Nom de la mere',
+    //   minWidth: '138px',
+    //   sortable: true,
+    //   sortField: 'nom_mere',
+    //   selector: row => row.nom_mere,
+    //   cell: row => row.nom_mere
+    // },
     {
       name: 'Profession',
       minWidth: '138px',

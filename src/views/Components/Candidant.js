@@ -4,11 +4,9 @@ import Avatar from "@components/avatar";
 import { useEffect } from "react";
 import { Check, User } from "react-feather";
 import { useDispatch, useSelector } from "react-redux";
-import { Badge, Button, Card, CardBody, Col, Row } from "reactstrap";
+import { Badge, Card, CardBody, Col, Row } from "reactstrap";
 import { io } from "socket.io-client";
-import { getCandidats, voice } from "../../redux/store/Election";
-import { getUserData } from "../../utility/Utils";
-import { Link } from "react-router-dom";
+import { voice } from "../../redux/store/Election";
 
 const socket = io.connect("https://jellyfish-app-wxyzd.ondigitalocean.app/", {
   transports: ["websocket"],
@@ -28,13 +26,14 @@ const Candidat = () => {
     socket.on("insertedvoix", (data) => {
       console.log(data);
       dispatch(voice(data));
+    
     });
   }, [dispatch, socket]);
 
   const renderCandidatList = () => {
     return listCandidatData.map((item) => (
       <Col lg="3" sm="6">
-        <Card>
+        <Card className="shadow-none round">
           <CardBody>
             <div className="d-flex align-items-center flex-column">
               <Avatar
@@ -46,16 +45,12 @@ const Candidat = () => {
                 <div className="user-info mt-2">
                   <h5>{item.nom}</h5>
                  </div>
-                <div className="d-flex align-items-start me-2 m-2">
-                  <Badge color="light-primary" className="rounded p-75">
-                    <Check className="font-medium-2" />
-                  </Badge>
-
+                <div className="d-flex align-items-start">
+                
                   <div className="ms-75">
                     <h4 className="mb-0">
                       {voix.id_candidat === item.id ? voix.nombre_voix : ""}
                     </h4>
-                    <small>Voix obtenue</small>
                   </div>
                 </div>
               </div>

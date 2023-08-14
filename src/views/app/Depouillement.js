@@ -9,7 +9,6 @@ import {
   Card,
   CardBody,
   Col,
-  Collapse,
   Input,
   Modal,
   ModalBody,
@@ -20,12 +19,15 @@ import { Label } from "reactstrap";
 import { useDispatch, useSelector } from "react-redux";
 import {
   getBureauVote,
+  getCandidats,
+  getCandidatsVoiceByDep,
   getLieuxVote,
   nombreElecteurByBvBYCircons,
 } from "../../redux/store/Election";
 import { getUserData } from "../../utility/Utils";
 import { Filter } from "react-feather";
 import Bv from "../Components/BvDepouillement";
+import BreadCrumbs from "../../@core/components/breadcrumbs";
 
 export default function Depouillement() {
   const dispatch = useDispatch();
@@ -33,9 +35,7 @@ export default function Depouillement() {
   const [idBureauVote, setBureauVote] = useState();
   const [basicModal, setBasicModal] = useState(false);
   const [searchTerm, setSearchTerm] = useState("");
-  const [isOpen, setIsOpen] = useState(false)
 
-  const toggle = () => setIsOpen(!isOpen)
   const lieuxVote = useSelector((state) => state.election.lieuxVote);
   const bureauVote = useSelector((state) => state.election.bureauVote);
   const taux = useSelector((state) => state.election.taux);
@@ -66,24 +66,29 @@ export default function Depouillement() {
 
   useEffect(() => {
     dispatch(nombreElecteurByBvBYCircons());
+    dispatch(getCandidats())
+    dispatch(getCandidatsVoiceByDep())
     dispatch(getLieuxVote(user.id_circons));
   }, [dispatch]);
 
   return (
     <>
-      <Row>
+      <BreadCrumbs title="Dépouillement" url="/" data={[]} />
+        
+      <Row className="mt-3">
         <Col lg="3" sm="12">
           <Card>
             <CardBody>
               <h4 className="mb-1">
-                <Filter size={17} /> Filtre
+                <Filter size={17} />
+                Filtre
               </h4>
               <h5 className="filter-title">Lieu de vote</h5>
               <ul className="list-unstyled categories-list">
                 <li className="mb-1">
                   <div className="form-check">
                     <Input
-                      type="checkbox"
+                      type="radio"
                       id="all"
                       name="item-radio"
                       defaultChecked
@@ -101,26 +106,17 @@ export default function Depouillement() {
                     <li key={item.value} className="mb-1">
                       <div className="form-check">
                         <Input
-                          type="checkbox"
+                          type="radio"
                           id={item.value}
+                          name="item-radio"
                           onClick={() => {
                             dispatch(getBureauVote(item.value));
                             setSearchTerm(item.label);
                           }}
                         />
-                        
                         <Label className="form-check-label" for={item.value}>
                           {item.label}
                         </Label>
-                        {/* <Collapse isOpen={isOpen}>
-                          <div className="d-flex p-1">
-                          
-                            <span>
-                              Lorem Ipsum is simply dummy text of the printing
-                            
-                            </span>
-                          </div>
-                        </Collapse> */}
                       </div>
                     </li>
                   );
@@ -147,7 +143,8 @@ export default function Depouillement() {
                 <Col lg="6" sm="6">
                   <Bv
                     idbv={item.id_bureau}
-                    bv={item.lieu_vote + " Bv : " + item.bureau_vote}
+                    bv={item.bureau_vote}
+                    lv={item.lieu_vote}
                   />
                 </Col>
               ))}

@@ -80,7 +80,7 @@ const ChartjsHorizontalBarChart = () => {
   };
 
   return (
-    <Card>
+    <Card className="shadow-none round">
       <CardHeader className="d-flex justify-content-between align-items-sm-center align-items-start flex-sm-row flex-column">
         {/* <div>
           <CardSubtitle className="text-muted mb-25">Balance</CardSubtitle>

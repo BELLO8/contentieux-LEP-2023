@@ -56,8 +56,7 @@ const UsersList = ({idlv,idbv}) => {
   })
 
   useEffect(() => {
-    dispatch(getRepresentant(user.id_candidat));
-
+    dispatch(getRepresentant());
   }, [dispatch]);
 
 
@@ -85,7 +84,7 @@ const UsersList = ({idlv,idbv}) => {
           <DataTable
             pagination
             responsive
-            noDataComponent='aucune données pour le moment'
+            noDataComponent='Aucune données pour le moment'
             columns={columns}
             sortIcon={<ChevronDown />}
             className="react-dataTable"

@@ -3,64 +3,54 @@
 import Avatar from "@components/avatar";
 
 // ** Reactstrap Imports
-import { Button, Card, CardBody, CardText, Progress } from "reactstrap";
-import { Archive } from "react-feather";
-import { useDispatch } from "react-redux";
+import { Row, Col, Card, CardBody } from "reactstrap";
+import { User } from "react-feather";
+import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
-import { getElecteurByBv, getElecteurVotant } from "../../redux/store/Election";
+import { Swiper, SwiperSlide } from "swiper/react";
+import { isEmptyObject } from "jquery";
+import CandidatVoice from "./CardTransactions";
 
-const Bv = ({ idbv, bv }) => {
+const Bv = ({ idbv, bv, lv }) => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
-  return (
-    <Card className=''>
-      <CardBody>
-        <div className="d-flex justify-content-between align-items-center">
-          <div>
-            <h6>
-              {bv}
-            </h6>
-            <div className="d-flex align-items-center mt-3 mb-2">
-              <Avatar
-                color="light-primary"
-                icon={<Archive size={14} />}
-                className="me-2"
-              />
-              <div className="my-auto">
-                <h4 className="fw-bolder mb-0">0</h4>
-                <CardText className="font-small-3 mb-0">Bulletin(s) valide(s)</CardText>
-              </div>
-              <div className="mx-3">
-                <h4 className="fw-bolder mb-0">0</h4>
-                <CardText className="font-small-3 mb-0">Bulletin(s) blanc(s)</CardText>
-              </div>
-              {/* <div>
-                <span>
-                  Taux de participation… <b> </b>
-                </span>
-                <Progress animated className="progress-bar-info" value={taux} />
-              </div> */}
-            </div>
+  const listCandidat = useSelector((state) => state.election.candidats);
+  const candidatVoice = useSelector((state) => state.election.CandidatsVoice);
 
-            {/* <Badge color="primary"><h5 className="fw-bolder text-white mb-0">55,125%</h5></Badge> */}
+  let data = candidatVoice.filter(function (params) {
+    return params.id_bv === idbv;
+  });
+
+  if (isEmptyObject(data)) {
+    data = listCandidat;
+  }
+
+  return (
+    <>
+      <div className="bg-white shadow rounded mb-1">
+        <div>
+          <div className=" ">
+            <div>
+              <div className="border">
+                <Row className=" d-flex justify-content-between align-items-center">
+                  <Col lg="6">
+                    <div className="px-1">{lv}</div>
+                  </Col>
+                  <Col lg="4">
+                    <div className="border" style={{ padding: "10px" }}>
+                      Bv : {bv}
+                    </div>
+                  </Col>
+                </Row>
+              </div>
+              <div className="my-auto">
+              <CandidatVoice data={data} />
+              </div>
+            </div>
           </div>
-          
-          <Button
-                className="mx-3"
-                color="primary"
-                size="sm"
-                outline
-                onClick={() => {
-                  // dispatch(getElecteurByBv({ bv: idbv }));
-                  navigate(`/depouillement/depouillement-par-bv/${idbv}`);
-                  
-                }}
-              >
-                Details
-              </Button>
         </div>
-      </CardBody>
-    </Card>
+      </div>
+    </>
   );
 };
 

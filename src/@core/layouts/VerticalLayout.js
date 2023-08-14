@@ -170,7 +170,7 @@ const VerticalLayout = (props) => {
         className={classnames(
           `header-navbar navbar align-items-center ${
             navbarClasses[navbarType] || "floating-nav"
-          } navbar-shadow`
+          } `
         )}
       >
         <div className="navbar-container d-flex content">

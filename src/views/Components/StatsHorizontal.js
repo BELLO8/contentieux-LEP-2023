@@ -3,65 +3,97 @@
 import Avatar from "@components/avatar";
 
 // ** Reactstrap Imports
-import { Button, Card, CardBody, CardText, Progress } from "reactstrap";
+import {
+  Button,
+  Card,
+  CardBody,
+  Row,
+  Col,
+  Badge,
+  CardText,
+  Progress,
+} from "reactstrap";
 import { Archive } from "react-feather";
 import { useDispatch } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import { getElecteurByBv, getElecteurVotant } from "../../redux/store/Election";
 
-const StatsHorizontal = ({ idbv, bv, inscrit, votants }) => {
+const StatsHorizontal = ({ idbv, bv, lv, inscrit, votants }) => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const taux = votants === 0 ? 0 : (Number(votants) * 100) / Number(inscrit);
   return (
-    <Card>
-      <CardBody>
-        <div className="d-flex justify-content-between align-items-center">
-          <div>
-            <h6>
-              {bv}
-              <Button
-                className="mx-3"
-                color="primary"
-                size="sm"
-                outline
-                onClick={() => {
-                  dispatch(getElecteurByBv({ bv: idbv }));
-                  navigate(`/vote/liste-votants/${idbv}`);
-                  
-                }}
-              >
-                Details
-              </Button>
-            </h6>
+    <>
+      <div className="bg-white shadow rounded mb-1">
+        <div>
+          <div className=" ">
+            <div>
+              <div className="border">
+                <Row className=" d-flex justify-content-between align-items-center">
+                  <Col lg="6">
+                    <div className="px-1">{lv}</div>
+                  </Col>
+                  <Col lg="4">
+                    <div className="border" style={{ padding: "10px" }}>
+                      Bv : {bv}
+                    </div>
+                  </Col>
+                </Row>
+              </div>
 
-            <div className="d-flex align-items-center mt-3 mb-2">
-              <Avatar
-                color="light-primary"
-                icon={<Archive size={14} />}
-                className="me-2"
-              />
-              <div className="my-auto">
-                <h4 className="fw-bolder mb-0">{votants}</h4>
-                <CardText className="font-small-3 mb-0">Votant(s)</CardText>
+              <div className="d-flex align-items-center mt-1 px-1">
+                <div className="my-auto">
+                  <div className="d-flex align-items-center mb-2">
+                    <div className="my-auto">
+                      <h4 className="fw-bolder mb-0">{votants}</h4>
+                      <CardText className="font-small-3 mb-0">
+                        Votant(s)
+                      </CardText>
+                    </div>
+                    <div className="mx-3">
+                      <h4 className="fw-bolder mb-0">{inscrit}</h4>
+                      <CardText className="font-small-3 mb-0">
+                        Inscrit(s)
+                      </CardText>
+                    </div>
+                  </div>
+                </div>
               </div>
-              <div className="mx-3">
-                <h4 className="fw-bolder mb-0">{inscrit}</h4>
-                <CardText className="font-small-3 mb-0">Inscrit(s)</CardText>
-              </div>
-              <div>
-                <span>
-                  Taux de participation… <b>{parseInt(taux)}%</b>
-                </span>
-                <Progress animated className="progress-bar-info" value={taux} />
+              <div className="border">
+                <Row className=" d-flex justify-content-between align-items-center">
+                  <Col lg="8" sm="8">
+                    <div className="px-1">
+                      <span>
+                        Taux de participation… <b>{parseInt(taux)}%</b>
+                      </span>
+                      <Progress
+                        animated
+                        className="progress-bar-info"
+                        value={taux}
+                      />
+                    </div>
+                  </Col>
+                  <Col lg="4" sm="4">
+                    <div className="border" style={{ padding: "10px" }}>
+                      <Button
+                        color="flat-secondary"
+                        size="sm"
+                        onClick={() => {
+                          dispatch(getElecteurByBv({ bv: idbv }));
+                          navigate(`/vote/liste-votants/${idbv}`);
+                        }}
+                      >
+                        Detail
+                      </Button>
+                    </div>
+                  </Col>
+                </Row>
               </div>
             </div>
-
-            {/* <Badge color="primary"><h5 className="fw-bolder text-white mb-0">55,125%</h5></Badge> */}
           </div>
         </div>
-      </CardBody>
-    </Card>
+      </div>
+    </>
   );
 };
 

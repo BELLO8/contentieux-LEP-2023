@@ -108,9 +108,7 @@ export const tauxParticipation = createAsyncThunk(
 export const getElecteurByBv = createAsyncThunk(
   "electeur/getElecteurBv",
   async (params) => {
-    const response = await client.get(
-      `getElecteurbyBvCandidat/${params.bv}`
-    );
+    const response = await client.get(`getElecteurbyBvCandidat/${params.bv}`);
     return response.data.data;
   }
 );
@@ -118,8 +116,16 @@ export const getElecteurByBv = createAsyncThunk(
 export const getTimeLineByBv = createAsyncThunk(
   "timeLine/getTimeLineByBv",
   async (params) => {
+    const response = await client.get(`EtapeElectionByBv/${params.bv}`);
+    return response.data.data;
+  }
+);
+
+export const getTimeLineByCircons = createAsyncThunk(
+  "timeLineByCircons/getTimeLineByCircons",
+  async () => {
     const response = await client.get(
-      `EtapeElectionByBv/${params.bv}`
+      `EtapeBvByCirconsElectorale/${getUserData().id_type_election}`
     );
     return response.data.data;
   }
@@ -163,8 +169,33 @@ export const getElecteurByLieuVote = createAsyncThunk(
 
 export const getCandidats = createAsyncThunk(
   "Candidats/getCandidats",
-  async (params) => {
-    const response = await client.get('listCandidatByCircons');
+  async () => {
+    const response = await client.get("listCandidatByCircons");
+    return response.data.data;
+  }
+);
+
+export const getCandidatsVoiceByDep = createAsyncThunk(
+  "depouille/getCandidatsVoice",
+  async () => {
+    const response = await client.get("DepouillementByBvByCirconsElectorale");
+    return response.data.data;
+  }
+);
+
+export const getNombreBvEtapeEnCours = createAsyncThunk(
+  "NombreEtapeEnCoursEtTermine/NombreEtapeEnCours",
+  async () => {
+    const response = await client.get("NombreEtapeEnCoursEtTermineByCircons");
+    return response.data.data;
+  }
+);
+
+
+export const getAllEtapeBv = createAsyncThunk(
+  "etape/getAllEtapeBv",
+  async () => {
+    const response = await client.get("AllEtape");
     return response.data.data;
   }
 );
@@ -192,18 +223,22 @@ export const ElectionSlice = createSlice({
   initialState: {
     status: null,
     lieuxVote: [],
-    timeLine:[],
+    CandidatsVoice: [],
+    timeLine: [],
+    NombreEtapeEnCoursEtTermineByCircons:[],
+    timeLineCircons: [],
     nbrLv: [],
     nombreElecteur: [],
     nombreVotantGlobal: [],
     bureauVote: [],
+    etape: [],
     nbrBv: [],
     nbrVotant: [],
     nbreElectBv: [],
     nombreElecteurByBv: [],
     allNombreVotantByBvByCircons: [],
     votants: [],
-    electeurBv:[],
+    electeurBv: [],
     Listvotants: [],
     voix: [],
     taux: [],
@@ -232,6 +267,10 @@ export const ElectionSlice = createSlice({
         state.status = "succeeded";
         state.nbrBv = action.payload;
       })
+      .addCase(getNombreBvEtapeEnCours.fulfilled, (state, action) => {
+        state.status = "succeeded";
+        state.NombreEtapeEnCoursEtTermineByCircons = action.payload;
+      })
       .addCase(nombreLV.fulfilled, (state, action) => {
         state.status = "succeeded";
         state.nbrLv = action.payload;
@@ -240,6 +279,10 @@ export const ElectionSlice = createSlice({
         state.status = "succeeded";
         state.nbreElectBv = action.payload;
       })
+      .addCase(getAllEtapeBv.fulfilled, (state, action) => {
+        state.status = "succeeded";
+        state.etape = action.payload;
+      })
       .addCase(nombreVotant.fulfilled, (state, action) => {
         state.status = "succeeded";
         state.nbrVotant = action.payload;
@@ -247,6 +290,10 @@ export const ElectionSlice = createSlice({
       .addCase(getElecteurVotant.fulfilled, (state, action) => {
         state.status = "succeeded";
         state.Listvotants = action.payload;
+      })
+      .addCase(getCandidatsVoiceByDep.fulfilled, (state, action) => {
+        state.status = "succeeded";
+        state.CandidatsVoice = action.payload;
       })
       .addCase(tauxParticipation.fulfilled, (state, action) => {
         state.status = "succeeded";
@@ -279,6 +326,10 @@ export const ElectionSlice = createSlice({
       .addCase(getTimeLineByBv.fulfilled, (state, action) => {
         state.status = "succeeded";
         state.timeLine = action.payload;
+      })
+      .addCase(getTimeLineByCircons.fulfilled, (state, action) => {
+        state.status = "succeeded";
+        state.timeLineCircons = action.payload;
       })
       .addCase(allNombreVotant.fulfilled, (state, action) => {
         state.status = "succeeded";

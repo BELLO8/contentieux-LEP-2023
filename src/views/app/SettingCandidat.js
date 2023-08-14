@@ -11,62 +11,101 @@ import {
   Col,
   Input,
   Modal,
-  ModalBody, ModalHeader,
-  Row
+  ModalBody,
+  ModalHeader,
+  Row,
 } from "reactstrap";
 import { Label } from "reactstrap";
 import { useDispatch, useSelector } from "react-redux";
 import {
   allNombreVotant,
   getBureauVote,
-  getLieuxVote, nombreElecteurByBvBYCircons, vote
+  getLieuxVote,
+  getTimeLineByCircons,
+  nombreElecteurByBvBYCircons,
+  vote,
 } from "../../redux/store/Election";
 import { getUserData } from "../../utility/Utils";
 import { Filter } from "react-feather";
 import BureauVote from "../Components/BureauVote";
+import BreadCrumbs from "../../@core/components/breadcrumbs";
+import { getRepresentant } from "../../redux/store/Representant";
 
 export default function SettingCandidat() {
   const dispatch = useDispatch();
-  const [idLieuxVote, setLieuxVote] = useState();
-  const [idBureauVote, setBureauVote] = useState();
   const [basicModal, setBasicModal] = useState(false);
   const [searchTerm, setSearchTerm] = useState("");
 
   const lieuxVote = useSelector((state) => state.election.lieuxVote);
-  const bureauVote = useSelector((state) => state.election.bureauVote);
-  const taux = useSelector((state) => state.election.taux);
-  const data = useSelector((state) => state.election.votants);
-  const allNombreVotantByBvByCircons = useSelector(
-    (state) => state.election.allNombreVotantByBvByCircons
-  );
+
   const nombreElecteurByBv = useSelector(
     (state) => state.election.nombreElecteurByBv
+  );
+  const timeLine = useSelector((state) => state.election.timeLineCircons);
+  const ListRepresentant = useSelector(
+    (state) => state.representant.representant.data
   );
 
   const electeurbv = [];
   const lieuxVoteData = [];
-  const bureauVoteData = [];
+  const timeLineData = [];
+  const ListRepresentantData = [];
 
-  nombreElecteurByBv.map((item) => {
-    electeurbv.push(item);
+  ListRepresentant?.map((rep) => {
+    ListRepresentantData.push({
+      id: rep.id_bureau_vote,
+      username: rep.username,
+    });
   });
 
+  nombreElecteurByBv.map((item) => {
+    electeurbv.push({
+      id: item.id_bureau,
+      nb_electeur: item.nb_electeur,
+      bureau_vote: item.bureau_vote,
+      id_lieu_vote: item.id_lieu_vote,
+      id_bureau: item.id_bureau,
+      lieu_vote: item.lieu_vote,
+    });
+  });
+
+  timeLine.map((item) => {
+    timeLineData.push({
+      id: item.id_bureau_vote,
+      name: item.lib_etape,
+    });
+  });
+
+  let newArray = electeurbv.map((obj1) => {
+    let obj2 = timeLineData.filter((obj2) => obj2.id === obj1.id);
+    let obj3 = ListRepresentantData.filter((obj3) => obj3.id === obj1.id);
+    return {
+      ...obj1,
+      etape: [...obj2][obj2.length - 1]
+        ? [...obj2][obj2.length - 1].name
+        : "Pas encore debuté",
+      nbrRep: [...obj3].length,
+    };
+  });
+
+  console.log(newArray);
   lieuxVote.map((item) => {
     lieuxVoteData.push({ value: item.cod_lieu, label: item.lib_lvote });
   });
 
-  bureauVote.map((item) => {
-    bureauVoteData.push({ value: item.cod_bv, label: item.lib_bv });
-  });
   const user = getUserData();
 
   useEffect(() => {
+    dispatch(getTimeLineByCircons());
+    dispatch(getRepresentant());
+    dispatch(getRepresentant());
     dispatch(nombreElecteurByBvBYCircons());
     dispatch(getLieuxVote(user.id_circons));
   }, [dispatch]);
 
   return (
     <>
+      <BreadCrumbs title="Bureau de vote" url="/" data={[]} />
       <Row>
         <Col lg="6" sm="6">
           <div className="basic-modal">
@@ -134,7 +173,7 @@ export default function SettingCandidat() {
           </div>
         </Col>
         <Col lg="6" sm="6"></Col>
-        {electeurbv
+        {newArray
           .filter((filtre) => {
             if (searchTerm == "") {
               return filtre;
@@ -147,18 +186,18 @@ export default function SettingCandidat() {
             }
           })
           .map((item) => (
-            <Col lg="6" sm="6">
+            <Col lg="4" sm="6">
               <BureauVote
                 idbv={item.id_bureau}
                 idlv={item.id_lieu_vote}
                 lv={item.lieu_vote}
+                nbrRep={item.nbrRep}
+                etape={item.etape}
                 bv={" Bv : " + item.bureau_vote}
               />
             </Col>
           ))}
       </Row>
-
-     
     </>
   );
 }

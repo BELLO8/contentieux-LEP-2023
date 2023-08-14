@@ -3,8 +3,17 @@
 import Avatar from "@components/avatar";
 
 // ** Reactstrap Imports
-import { Button, Card, CardBody, CardText, Progress } from "reactstrap";
-import { Archive } from "react-feather";
+import {
+  Badge,
+  Button,
+  Card,
+  CardBody,
+  CardText,
+  Col,
+  Progress,
+  Row,
+} from "reactstrap";
+import { Archive, Plus } from "react-feather";
 import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import {
@@ -12,55 +21,70 @@ import {
   getElecteurVotant,
   getTimeLineByBv,
 } from "../../redux/store/Election";
+import ModalForm from "./ModalForm";
 
-const BureauVote = ({ idbv, bv, lv, idlv }) => {
+const BureauVote = ({ idbv, bv, lv, idlv, etape, nbrRep }) => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
 
   return (
-    <Card className="">
-      <CardBody>
-        <div className="d-flex justify-content-between align-items-center">
+    <div className="bg-white shadow rounded mb-1">
+      <div>
+        <div className=" ">
           <div>
-            <h6>
-              {lv} {bv}
-            </h6>
-            <div className="d-flex align-items-center mt-3 mb-2">
-              <Avatar
-                color="light-primary"
-                icon={<Archive size={14} />}
-                className="me-2"
-              />
-              <div className="my-auto">
-                <h4 className="fw-bolder mb-0">0</h4>
-                <CardText className="font-small-3 mb-0">
-                  Répresentant(s)
-                </CardText>
-              </div>
-              {/* <div className="mx-3">
-                <h4 className="fw-bolder mb-0">0</h4>
-                <CardText className="font-small-3 mb-0">Bulletin(s) blanc(s)</CardText>
-              </div> */}
+            <div className="border">
+              <Row className=" d-flex justify-content-between align-items-center">
+                <Col lg="6">
+                  <div className="px-1">{lv}</div>
+                </Col>
+                <Col lg="4">
+                  <div className="border" style={{ padding: "10px" }}>
+                    {bv}
+                  </div>
+                </Col>
+              </Row>
             </div>
 
-            {/* <Badge color="primary"><h5 className="fw-bolder text-white mb-0">55,125%</h5></Badge> */}
+            <div className="d-flex align-items-center mt-1 px-1">
+              <div className="my-auto">
+                <p>
+                  <ModalForm idbv={idbv} idlv={idlv} rep={nbrRep} />
+                </p>
+              </div>
+            </div>
+            <div className="border">
+              <Row className=" d-flex justify-content-between align-items-center">
+                <Col lg="8" sm="8">
+                  <div className="px-1">
+                    <Badge
+                      color={
+                        etape != "Pas encore debuté" ? "success" : "secondary"
+                      }
+                    >
+                      Etape : {etape}
+                    </Badge>{" "}
+                  </div>
+                </Col>
+                <Col lg="4" sm="4">
+                  <div className="border" style={{ padding: "10px" }}>
+                    <Button
+                      color="flat-secondary"
+                      size="sm"
+                      onClick={() => {
+                        dispatch(getTimeLineByBv({ bv: idbv }));
+                        navigate(`/bureau-vote/deroulement/${idlv}/${idbv}`);
+                      }}
+                    >
+                      Detail
+                    </Button>
+                  </div>
+                </Col>
+              </Row>
+            </div>
           </div>
-
-          <Button
-            className="mx-3"
-            color="primary"
-            size="sm"
-            outline
-            onClick={() => {
-              dispatch(getTimeLineByBv({ bv: idbv }));
-              navigate(`/bureau-vote/deroulement/${idlv}/${idbv}`);
-            }}
-          >
-            Voir plus
-          </Button>
         </div>
-      </CardBody>
-    </Card>
+      </div>
+    </div>
   );
 };
 

@@ -1,34 +1,36 @@
-// ** Third Party Components
-import Proptypes from "prop-types"
-import classnames from "classnames"
-import { Badge } from "reactstrap"
+/* eslint-disable */
+
+import Proptypes from "prop-types";
+import classnames from "classnames";
+import { Badge, Button, Modal, ModalBody, ModalHeader } from "reactstrap";
+import { useState } from "react";
 const Timeline = (props) => {
   // ** Props
-  const { data, tag, className } = props
+  const { data, tag, className } = props;
 
   // ** Custom Tagg
-  const Tag = tag ? tag : "ul"
-
+  const Tag = tag ? tag : "ul";
+  const [basicModal, setBasicModal] = useState(false);
   return (
     <Tag
       className={classnames("timeline", {
-        [className]: className
+        [className]: className,
       })}
     >
       {data.map((item, i) => {
-        const ItemTag = item.tag ? item.tag : "li"
+        const ItemTag = item.tag ? item.tag : "li";
 
         return (
           <ItemTag
             key={i}
             className={classnames("timeline-item", {
-              [item.className]: className
+              [item.className]: className,
             })}
           >
             <span
               className={classnames("timeline-point", {
                 [`timeline-point-${item.color}`]: item.color,
-                "timeline-point-indicator": !item.icon
+                "timeline-point-indicator": !item.icon,
               })}
             >
               {item.icon ? item.icon : null}
@@ -38,7 +40,7 @@ const Timeline = (props) => {
                 className={classnames(
                   "d-flex justify-content-between flex-sm-row flex-column",
                   {
-                    "mb-sm-0 mb-1": item.meta
+                    "mb-sm-0 mb-1": item.meta,
                   }
                 )}
               >
@@ -46,7 +48,7 @@ const Timeline = (props) => {
                 {item.meta ? (
                   <span
                     className={classnames("timeline-event-time", {
-                      [item.metaClassName]: item.metaClassName
+                      [item.metaClassName]: item.metaClassName,
                     })}
                   >
                     {item.meta}
@@ -55,39 +57,68 @@ const Timeline = (props) => {
               </div>
               <p
                 className={classnames({
-                  "mb-0": i === data.length - 1 && !item.customContent
+                  "mb-0": i === data.length - 1 && !item.customContent,
                 })}
               >
                 {item.content}
               </p>
-              <Badge color="primary"
+              <Badge
+                color="primary"
                 className={classnames({
-                  "mt-1": i === data.length - 1 && !item.customContent
+                  "mt-1": i === data.length - 1 && !item.customContent,
                 })}
               >
                 {item.status}
               </Badge>
               <p
                 className={classnames({
-                  "mt-1": i === data.length - 1 && !item.customContent
+                  "mt-1": i === data.length - 1 && !item.customContent,
                 })}
               >
                 {item.comment}
               </p>
-              {item.customContent ? item.customContent : null}
+              {/* {item.customContent ? item.customContent : null} */}
+              <div className="d-flex align-items-center">
+                {item.title === "Ouverture bureau de vote" ? (
+                  ""
+                ) : (
+                  <>
+                    <Button
+                      className="btn-sm"
+                      color="primary"
+                      onClick={() => setBasicModal(!basicModal)}
+                      outline
+                    >
+                      Voir les details de l'étape
+                    </Button>
+                    <Modal
+                      isOpen={basicModal}
+                      toggle={() => setBasicModal(!basicModal)}
+                      modalClassName="modal-slide-in event-sidebar"
+                    >
+                      <ModalHeader>
+                        Detail de l'étape
+                      </ModalHeader>
+                      <ModalBody>
+                        
+                      </ModalBody>
+                    </Modal>
+                  </>
+                )}
+              </div>
             </div>
           </ItemTag>
-        )
+        );
       })}
     </Tag>
-  )
-}
+  );
+};
 
-export default Timeline
+export default Timeline;
 
 // ** PropTypes
 Timeline.propTypes = {
   tag: Proptypes.string,
   className: Proptypes.string,
-  data: Proptypes.array.isRequired
-}
+  data: Proptypes.array.isRequired,
+};
