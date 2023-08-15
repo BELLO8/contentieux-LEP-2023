@@ -3,15 +3,12 @@
 // ** React Imports
 import { Fragment, useState, useEffect, useRef } from "react";
 
-
 import { useDispatch, useSelector } from "react-redux";
 
 // ** Third Party Components
 import Select from "react-select";
 import DataTable from "react-data-table-component";
-import {
-  ChevronDown
-} from "react-feather";
+import { ChevronDown } from "react-feather";
 
 // ** Utils
 import { selectThemeColors } from "@utils";
@@ -25,7 +22,8 @@ import {
   Label,
   CardBody,
   CardTitle,
-  CardHeader, Button
+  CardHeader,
+  Button,
 } from "reactstrap";
 
 // ** Styles
@@ -36,65 +34,63 @@ import {
   getCirconscriptionAdmin,
   getDepartement,
   getElecteur,
-  getElecteurGlobal, getLieuxVote
+  getElecteurGlobal,
+  getLieuxVote,
 } from "../../redux/store/Election";
 import "../style.css";
 import { getCirconscription } from "../../redux/store/Circonscription";
 import { columns } from "./columns";
 import { getRepresentant } from "../../redux/store/Representant";
 
-const UsersList = ({idlv,idbv}) => {
+const UsersList = ({ idlv, idbv }) => {
   // ** Store VUsersListars
   const dispatch = useDispatch();
-  const user = getUserData()  
+  const user = getUserData();
   const store = useSelector((state) => state.representant.representant.data);
 
   const [searchTerm, setSearchTerm] = useState("");
 
-  let data = store?.filter(function(param){
-      return param.id_lieu_vote == idlv && param.id_bureau_vote
-  })
+  let data = store?.filter(function (param) {
+    return param.id_lieu_vote == idlv && param.id_bureau_vote == idbv;
+  });
 
   useEffect(() => {
     dispatch(getRepresentant());
   }, [dispatch]);
 
-
   return (
     <Fragment>
-       <Col
-            xl="6"
-          >
-            <div className="d-flex align-items-center mt-2 mb-sm-0 mb-1 me-1">
-              <label className="mb-0" htmlFor="search-invoice">
-              </label>
-              <Input
-                id="search-invoice"
-                className="ms-50 w-100"
-                placeholder="Recherche par mot clé"
-                type="text"
-                value={searchTerm}
-                onChange={(e) => setSearchTerm(e.target.value)}
-              />
-            </div>
-          </Col>
+      <Col xl="6">
+        <div className="d-flex align-items-center mt-2 mb-sm-0 mb-1 me-1">
+          <label className="mb-0" htmlFor="search-invoice"></label>
+          <Input
+            id="search-invoice"
+            className="ms-50 w-100"
+            placeholder="Recherche par mot clé"
+            type="text"
+            value={searchTerm}
+            onChange={(e) => setSearchTerm(e.target.value)}
+          />
+        </div>
+      </Col>
       <Card className="overflow-hidden mt-2">
-      
         <div className="react-dataTable" id="electeur">
           <DataTable
             pagination
             responsive
-            noDataComponent='Aucune données pour le moment'
+            noDataComponent="Aucune données pour le moment"
             columns={columns}
             sortIcon={<ChevronDown />}
             className="react-dataTable"
             paginationPerPage={100}
             paginationRowsPerPageOptions={[100]}
             data={data?.filter((item) => {
-              if( searchTerm == "") {
-                return item
-              }else if (
-                JSON.stringify(item).toLowerCase().indexOf(searchTerm.toLowerCase()) !=-1
+              if (searchTerm == "") {
+                return item;
+              } else if (
+                JSON.stringify(item)
+                  .toLowerCase()
+                  .indexOf(searchTerm.toLowerCase()) != -1
               ) {
                 return item;
               }

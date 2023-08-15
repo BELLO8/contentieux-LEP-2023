@@ -23,6 +23,8 @@ const Bv = ({ idbv, bv, lv }) => {
 
   if (isEmptyObject(data)) {
     data = listCandidat;
+  } else {
+    data = data.sort((a, b) => b.nombre_voix - a.nombre_voix);
   }
 
   return (
@@ -44,7 +46,7 @@ const Bv = ({ idbv, bv, lv }) => {
                 </Row>
               </div>
               <div className="my-auto">
-              <CandidatVoice data={data} />
+                <CandidatVoice data={data} />
               </div>
             </div>
           </div>

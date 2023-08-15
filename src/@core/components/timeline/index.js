@@ -2,8 +2,22 @@
 
 import Proptypes from "prop-types";
 import classnames from "classnames";
-import { Badge, Button, Modal, ModalBody, ModalHeader } from "reactstrap";
+import {
+  Accordion,
+  AccordionBody,
+  AccordionHeader,
+  AccordionItem,
+  Badge,
+  Button,
+  Modal,
+  ModalBody,
+  ModalHeader,
+} from "reactstrap";
 import { useState } from "react";
+import { useParams } from "react-router-dom";
+import { useDispatch } from "react-redux";
+import UsersList from "../../../views/Components/Table";
+import TableVote from "../../../views/Components/TableVote";
 const Timeline = (props) => {
   // ** Props
   const { data, tag, className } = props;
@@ -11,6 +25,14 @@ const Timeline = (props) => {
   // ** Custom Tagg
   const Tag = tag ? tag : "ul";
   const [basicModal, setBasicModal] = useState(false);
+  const [open, setOpen] = useState("1");
+
+  const toggle = (id) => {
+    open === id ? setOpen() : setOpen(id);
+  };
+  const params = useParams();
+  // const dispatch = useDispatch()
+
   return (
     <Tag
       className={classnames("timeline", {
@@ -20,6 +42,7 @@ const Timeline = (props) => {
       {data.map((item, i) => {
         const ItemTag = item.tag ? item.tag : "li";
 
+        console.log(item.materiels);
         return (
           <ItemTag
             key={i}
@@ -63,7 +86,11 @@ const Timeline = (props) => {
                 {item.content}
               </p>
               <Badge
-                color="primary"
+                color={
+                  item.status == "Ouvert" || item.status == "Encours"
+                    ? "primary"
+                    : "success"
+                }
                 className={classnames({
                   "mt-1": i === data.length - 1 && !item.customContent,
                 })}
@@ -81,7 +108,7 @@ const Timeline = (props) => {
               <div className="d-flex align-items-center">
                 {item.title === "Ouverture bureau de vote" ? (
                   ""
-                ) : (
+                ) : item.title === "Vérification matériel" ? (
                   <>
                     <Button
                       className="btn-sm"
@@ -89,21 +116,40 @@ const Timeline = (props) => {
                       onClick={() => setBasicModal(!basicModal)}
                       outline
                     >
-                      Voir les details de l'étape
+                      Voir details
                     </Button>
                     <Modal
                       isOpen={basicModal}
                       toggle={() => setBasicModal(!basicModal)}
                       modalClassName="modal-slide-in event-sidebar"
                     >
-                      <ModalHeader>
-                        Detail de l'étape
-                      </ModalHeader>
+                      <ModalHeader>{item.title}</ModalHeader>
                       <ModalBody>
-                        
+                        <ul>
+                          {item.materiels?.map((item) => {
+                            return (
+                              <li>
+                                {item.id_materiel} : {item.status}
+                              </li>
+                            );
+                          })}
+                        </ul>
                       </ModalBody>
                     </Modal>
                   </>
+                ) : item.title === "Ouverture du scrutin" ? (
+                  <Accordion open={open} toggle={toggle}>
+                    <AccordionItem>
+                      <AccordionHeader targetId="2">
+                      <Button outline size="sm">Voir details</Button>  
+                      </AccordionHeader>
+                      <AccordionBody accordionId="2">
+                      <TableVote idbv={params.idbv}/>
+                      </AccordionBody>
+                    </AccordionItem>
+                  </Accordion>
+                ) : (
+                  ""
                 )}
               </div>
             </div>

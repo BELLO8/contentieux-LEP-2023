@@ -7,37 +7,69 @@ import { Card, CardBody, CardHeader, CardTitle } from "reactstrap";
 
 // ** Timeline Data
 import CustomTimeline from "./Customtimeline";
+import { useSelector } from "react-redux";
 
 const BasicTimeline = () => {
-  const basicData = [
+  const etape = useSelector((state) => state.election.etape);
+  const statusEtape = useSelector(
+    (state) => state.election.NombreEtapeEnCoursEtTermineByCircons
+  );
+
+  const nbreBV = useSelector((state) => state.election.nbrBv);
+  const statusData = [];
+  const color = [
     {
-      title: "Ouverture du scrutin",
-      content: "Invoices have been paid to the company.",
-      meta: "12 min ago",
+      id: "1",
+      color: "danger",
     },
     {
-      title: "Verification materiels",
-      content: "Project meeting with john @10:15am.",
-      meta: "45 min ago",
-      color: "secondary",
+      id: "2",
+      color: "primary",
     },
     {
-      title: "Scrutin",
-      content: "Click the button below to read financial reports",
-      meta: "2 hours ago",
-      color: "success",
+      id: "3",
+      color: "info",
     },
     {
-      title: "depouillemnt",
-      content: "Have to interview Katy Turner for the developer job.",
-      meta: "03:00 PM",
+      id: "5",
       color: "warning",
     },
+    {
+      id: "6",
+      color: "success",
+    },
   ];
+  statusEtape.map((item) => {
+    statusData.push({
+      id: item.id_etape_election,
+      nombre_en_cours: item.nombre_bv_en_cours,
+      nombre_bv_termine: item.nombre_bv_termine,
+    });
+  });
+
+  let data = etape
+    .map((item) => {
+      let nombre = statusData.find((nbr) => nbr.id === item.id);
+      let couleurs = color.find((couleur) => couleur.id === item.id);
+      return { ...item, ...nombre, ...couleurs };
+    })
+    .sort((a, b) => a.id - b.id)
+    .filter(function (param) {
+      return (
+        param.id == 1 ||
+        param.id == 2 ||
+        param.id == 3 ||
+        param.id == 5 ||
+        param.id == 6
+      );
+    });
+
+  //console.log(data);
+
   return (
-    <div className="bg-white p-3 round">
+    <div className="bg-white p-1 round">
       <h5 className="mb-3">Chronologie globale du déroulement de l'élection</h5>
-      <CustomTimeline data={basicData} />
+      <CustomTimeline data={data} />
     </div>
   );
 };

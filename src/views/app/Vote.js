@@ -13,28 +13,18 @@ import {
   Col,
   Input,
   Modal,
-  ModalBody,
-  ModalFooter,
-  ModalHeader,
-  Row,
+  ModalBody, ModalHeader,
+  Row
 } from "reactstrap";
-import { selectThemeColors } from "@utils";
-import Select from "react-select";
 import { Label } from "reactstrap";
 import { useDispatch, useSelector } from "react-redux";
 import {
   allNombreVotant,
   getBureauVote,
-  getLieuxVote,
-  nombreElecteurBv,
-  nombreElecteurByBvBYCircons,
-  nombreVotant,
-  tauxParticipation,
-  vote,
+  getLieuxVote, nombreElecteurByBvBYCircons, vote
 } from "../../redux/store/Election";
 import { getUserData } from "../../utility/Utils";
 import { Filter } from "react-feather";
-import Sidebar from "../Components/Sidebar";
 import BreadCrumbs from "../../@core/components/breadcrumbs";
 
 const socket = io.connect("https://jellyfish-app-wxyzd.ondigitalocean.app/", {
@@ -43,15 +33,13 @@ const socket = io.connect("https://jellyfish-app-wxyzd.ondigitalocean.app/", {
 
 export default function Vote() {
   const dispatch = useDispatch();
-  const [idLieuxVote, setLieuxVote] = useState();
-  const [idBureauVote, setBureauVote] = useState();
   const [basicModal, setBasicModal] = useState(false);
   const [searchTerm, setSearchTerm] = useState("");
 
   const lieuxVote = useSelector((state) => state.election.lieuxVote);
   const bureauVote = useSelector((state) => state.election.bureauVote);
-  const taux = useSelector((state) => state.election.taux);
-  const data = useSelector((state) => state.election.votants);
+  const dataVotant = useSelector((state) => state.election.votants);
+
   const allNombreVotantByBvByCircons = useSelector(
     (state) => state.election.allNombreVotantByBvByCircons
   );
@@ -83,6 +71,7 @@ export default function Vote() {
     });
   });
 
+  console.log(dataVotant);
   let newArray = electeurbv.map((obj1) => {
     let obj2 = nombreVotant.find((obj2) => obj2.id === obj1.id);
     return { ...obj1, ...obj2 };
@@ -102,7 +91,7 @@ export default function Vote() {
   const user = getUserData();
 
   useEffect(() => {
-    socket.on("insertedvote", (data) => {
+    socket.on(`insertedvote${user.id_parti + user.id_circons}`, (data) => {
       console.log(JSON.parse(data));
       dispatch(vote(JSON.parse(data)));
     });
@@ -113,7 +102,7 @@ export default function Vote() {
 
   return (
     <>
-    <BreadCrumbs title="Déroulement du vote" url="/" data={[]} />
+      <BreadCrumbs title="Déroulement du vote" url="/" data={[]} />
       <Row>
         <Col lg="6" sm="6">
           <div className="basic-modal">

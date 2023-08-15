@@ -7,6 +7,7 @@ import BVTimeline from "../Components/BVTimeline";
 import { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import {
+  getListBvConforme,
   getTimeLineByBv,
   nombreElecteurByBvBYCircons,
 } from "../../redux/store/Election";
@@ -21,10 +22,10 @@ const DetailBv = () => {
     return id.id_bureau == params.idbv;
   });
 
-  console.log(data);
   useEffect(() => {
     dispatch(getTimeLineByBv({ bv: params.idbv }));
     dispatch(nombreElecteurByBvBYCircons());
+    dispatch(getListBvConforme())
   }, [dispatch]);
   return (
     <>

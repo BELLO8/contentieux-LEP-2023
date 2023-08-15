@@ -2,10 +2,14 @@
 
 import Proptypes from "prop-types";
 import classnames from "classnames";
+import { useSelector } from "react-redux";
 
 const CustomTimeline = (props) => {
   // ** Props
   const { data, tag, className } = props;
+  const nbreBV = useSelector((state) => state.election.nbrBv);
+  const votant = useSelector((state) => state.election.nombreVotantGlobal);
+  const inscrit = useSelector((state) => state.election.nombreElecteur);
 
   // ** Custom Tagg
 
@@ -16,7 +20,7 @@ const CustomTimeline = (props) => {
         const ItemTag = item.tag ? item.tag : "li";
         return (
           <Tag
-            className={classnames("timeline", {
+            className={classnames("timeline px-1", {
               [className]: className,
             })}
           >
@@ -28,7 +32,7 @@ const CustomTimeline = (props) => {
             >
               <span
                 className={classnames("timeline-point", {
-                  [`timeline-point-${item.color}`]: item.color,
+                  [`timeline-point-${item.color}`]: "item.color",
                   "timeline-point-indicator": !item.icon,
                 })}
               >
@@ -39,19 +43,38 @@ const CustomTimeline = (props) => {
                   className={classnames(
                     "d-flex justify-content-between flex-sm-row flex-column",
                     {
-                      "mb-sm-0 mb-1": item.meta,
+                      "mb-sm-0": item.meta,
                     }
                   )}
                 >
-                  <h6>{item.title}</h6>
+                  <h6>{item.libelle}</h6>
                 </div>
                 <p
                   className={classnames({
                     "mb-0": i === data.length - 1 && !item.customContent,
                   })}
                 >
-                  {item.content}
+                  Bv encours : <b>{item.nombre_en_cours}</b>
                 </p>
+                <p>
+                  Bv terminé : <b >{item.nombre_bv_termine}</b>
+                </p>
+                {item.libelle == "Ouverture du scrutin" ? (
+                  <div>
+                    <p>Votant : {votant[0]?.total_votant}</p>
+                    <p>Inscrit : {inscrit?.nombre}</p>
+                    <p>
+                      Taux :{" "}
+                      {parseInt(
+                        (Number(votant[0]?.total_votant) * 100) /
+                          Number(inscrit?.nombre)
+                      ) + "%"}
+                    </p>
+                  </div>
+                ) : (
+                  ""
+                )}
+
                 {item.customContent ? item.customContent : null}
               </div>
             </ItemTag>

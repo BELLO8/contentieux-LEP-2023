@@ -200,6 +200,15 @@ export const getAllEtapeBv = createAsyncThunk(
   }
 );
 
+export const getListBvConforme = createAsyncThunk(
+  "listBvConforme/getListBvConforme",
+  async () => {
+    const response = await client.get("ListBvConformeNonConforme");
+    return response.data.data;
+  }
+);
+
+
 export const getResult = createAsyncThunk(
   "result/getResult",
   async (params) => {
@@ -224,6 +233,7 @@ export const ElectionSlice = createSlice({
     status: null,
     lieuxVote: [],
     CandidatsVoice: [],
+    listBvConforme:[],
     timeLine: [],
     NombreEtapeEnCoursEtTermineByCircons:[],
     timeLineCircons: [],
@@ -262,6 +272,10 @@ export const ElectionSlice = createSlice({
       .addCase(getBureauVote.fulfilled, (state, action) => {
         state.status = "succeeded";
         state.bureauVote = action.payload;
+      })
+      .addCase(getListBvConforme.fulfilled, (state, action) => {
+        state.status = "succeeded";
+        state.listBvConforme = action.payload;
       })
       .addCase(nombreBV.fulfilled, (state, action) => {
         state.status = "succeeded";

@@ -15,10 +15,21 @@ import {
 
 const BVTimeline = () => {
   const timeLine = useSelector((state) => state.election.timeLine);
+  const bvConform = useSelector((state) => state.election.listBvConforme);
 
+  const verifData = [];
   const dataTimeLine = [];
+
+  bvConform.map((item) => {
+    verifData.push({
+      id: item.id_bureau_vote,
+      materiels: item.materiels,
+    });
+  });
+
   timeLine.map((item) => {
     dataTimeLine.push({
+      id: item.id_bureau_vote,
       title: item.lib_etape,
       content:
         "Date et heure de debut le : " +
@@ -46,30 +57,28 @@ const BVTimeline = () => {
       comment: item.commentaire
         ? item.commentaire
         : "Aucun commentaire sur l'étape",
-      // customContent: (
-      //   <div className="d-flex align-items-center">
-      //     {item.lib_etape === "Ouverture bureau de vote" ? (
-      //       ""
-      //     ) : (
-      //       <Button className="btn-sm" color="primary" outline>
-      //         Voir les details de l'étape
-      //       </Button>
-      //     )}
-      //   </div>
-      // ),
     });
   });
 
+  let dataLine = dataTimeLine.map((item) => {
+    let materiels = verifData.find((materiels) => materiels.id == item.id);
+    if (item.title === "Vérification matériel") {
+      return { ...item, ...materiels };
+    } else {
+      return { ...item };
+    }
+  });
+
   return (
-    <Card>
+    <Card className="shadow-none round">
       <CardHeader>
         <CardTitle tag="h4">
           Chronologie des activités dans le bureau de vote
         </CardTitle>
       </CardHeader>
       <CardBody className="pt-1">
-        {!isEmptyObject(dataTimeLine) ? (
-          <Timeline data={dataTimeLine} className="ms-50" />
+        {!isEmptyObject(dataLine) ? (
+          <Timeline data={dataLine} className="ms-50" />
         ) : (
           <h6>
             <Badge color="danger">Pas encore debuté</Badge>

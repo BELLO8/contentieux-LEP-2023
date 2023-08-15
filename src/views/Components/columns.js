@@ -1,3 +1,5 @@
+/*eslint-disable */
+
 import { Badge } from "reactstrap"
 
 export const columns = [
@@ -134,6 +136,62 @@ export const columns = [
       sortable: true,
       sortField: 'heure_vote',
       selector: row => row.heure_vote,
-      cell: row => row.heure_vote
+      cell: row => new Date(row.heure_vote).toLocaleDateString("fr-FR", {
+        weekday: "long",
+        year: "numeric",
+        month: "short",
+        day: "numeric",
+        hour: "numeric",
+        minute: "numeric",
+      })
+    }
+  ]
+
+
+  export const votantsElect = [
+    {
+      name: 'Electeur',
+      sortable: true,
+      minWidth: '300px',
+      sortField: 'nom',
+      selector: row => (<span>{row.nom} {row.prenoms} </span>),
+      cell: row => (
+        <div className='d-flex justify-content-left align-items-center'>
+          <div className='d-flex flex-column'>
+              <span className='fw-bolder'>{row.nom} {row.prenoms} </span>
+          </div>
+        </div>
+      )
+    },
+    {
+      name: 'Numero electeur',
+      sortable: true,
+      minWidth: '172px',
+      sortField: 'num_electeur',
+      selector: row => row.num_electeur,
+      cell: row => (<Badge color='primary'> {row.num_electeur} </Badge>) 
+    },
+    {
+      name: 'Sexe',
+      minWidth: '138px',
+      sortable: true,
+      sortField: 'sexe',
+      selector: row => row.sexe,
+      cell: row => <span className='text-capitalize'>{row.sexe}</span>
+    },
+    {
+      name: 'Heure de vote',
+      minWidth: '138px',
+      sortable: true,
+      sortField: 'heure_vote',
+      selector: row => row.heure_vote,
+      cell: row => new Date(row.heure_vote).toLocaleDateString("fr-FR", {
+        weekday: "long",
+        year: "numeric",
+        month: "short",
+        day: "numeric",
+        hour: "numeric",
+        minute: "numeric",
+      })
     }
   ]
