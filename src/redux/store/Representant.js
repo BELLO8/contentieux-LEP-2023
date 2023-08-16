@@ -3,8 +3,8 @@ import { client } from "../../@core/auth/jwt/const"
 import { getUserData } from "../../utility/Utils"
 
 
-export const nombreRepresentant = createAsyncThunk('representant/nombreRepresentant', async(idCandidat) => {
-    const response = await client.get(`/NombreRepresentant/${idCandidat}`)
+export const nombreRepresentant = createAsyncThunk('representant/nombreRepresentant', async() => {
+    const response = await client.get(`/NombreRepresentant/${getUserData().id_candidat}`)
     return response.data.data
   })
 

@@ -10,11 +10,16 @@ import { useNavigate } from "react-router-dom";
 import { Swiper, SwiperSlide } from "swiper/react";
 import { isEmptyObject } from "jquery";
 import CandidatVoice from "./CardTransactions";
+import { getCandidats } from "../../utility/Utils";
 
 const Bv = ({ idbv, bv, lv }) => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
-  const listCandidat = useSelector((state) => state.election.candidats);
+  const listCandidat = !isEmptyObject(
+    useSelector((state) => state.election.candidats)
+  )
+    ? useSelector((state) => state.election.candidats)
+    : getCandidats();
   const candidatVoice = useSelector((state) => state.election.CandidatsVoice);
 
   let data = candidatVoice.filter(function (params) {

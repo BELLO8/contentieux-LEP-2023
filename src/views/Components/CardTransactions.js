@@ -33,7 +33,6 @@ const CandidatVoice = ({ data }) => {
       <CardHeader>
         <CardTitle tag="h6">Comptage de voix</CardTitle>
       </CardHeader>
-
       <CardBody>{renderTransactions()}</CardBody>
     </Card>
   );

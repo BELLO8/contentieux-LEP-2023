@@ -1,13 +1,21 @@
 /* eslint-disable */
 
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
-import { client } from "../../@core/auth/jwt/const";
+import { client, urlBase } from "../../@core/auth/jwt/const";
 import { getUserData } from "../../utility/Utils";
+import axios from "axios";
 
 export const getLieuxVote = createAsyncThunk(
   "lieuxVote/getLieuxVote",
-  async (idCircons) => {
-    const response = await client.get(`LieudeVote/2023/${idCircons}`);
+  async () => {
+    const response = await client.get(`${urlBase}LieudeVote`, {
+      headers: {
+        "content-type": "application/json",
+        "Access-Control-Allow-Origin": "*",
+        Authorization: `Bearer ${getUserData().accessToken}`,
+      },
+    });
+    localStorage.setItem("lv", JSON.stringify(response.data.data));
     return response.data.data;
   }
 );
@@ -20,20 +28,24 @@ export const getBureauVote = createAsyncThunk(
   }
 );
 
-export const nombreBV = createAsyncThunk(
-  "bv/nombreBureauVote",
-  async (params) => {
-    const response = await client.get(
-      `NombreBvByCirconsElectorale/${params.idcircons}/${params.type_election}`
-    );
-    return response.data.data;
-  }
-);
-
-export const nombreLV = createAsyncThunk("lv/nombreLV", async (params) => {
+export const nombreBV = createAsyncThunk("bv/nombreBureauVote", async () => {
   const response = await client.get(
-    `NombreLvByCirconsElectorale/${params.idcircons}/${params.type_election}`
+    `NombreBvByCirconsElectorale/${getUserData().id_circons}/${
+      getUserData().id_type_election
+    }`
   );
+  localStorage.setItem("nombreBV", JSON.stringify(response.data.data));
+
+  return response.data.data;
+});
+
+export const nombreLV = createAsyncThunk("lv/nombreLV", async () => {
+  const response = await client.get(
+    `NombreLvByCirconsElectorale/${getUserData().id_circons}/${
+      getUserData().id_type_election
+    }`
+  );
+  localStorage.setItem("nombreLV", JSON.stringify(response.data.data));
   return response.data.data;
 });
 
@@ -49,8 +61,18 @@ export const nombreElecteur = createAsyncThunk(
   "nbreElecteur/nombreElecteur",
   async () => {
     const response = await client.get(
-      `NombreElecteurByCirconsElectorale/${getUserData().id_type_election}`
+      `${urlBase}NombreElecteurByCirconsElectorale/${
+        getUserData().id_type_election
+      }`,
+      {
+        headers: {
+          "content-type": "application/json",
+          "Access-Control-Allow-Origin": "*",
+          Authorization: `Bearer ${getUserData().accessToken}`,
+        },
+      }
     );
+    localStorage.setItem("nombreElecteur", JSON.stringify(response.data.data));
     return response.data.data;
   }
 );
@@ -58,8 +80,19 @@ export const nombreElecteur = createAsyncThunk(
 export const nombreElecteurByBvBYCircons = createAsyncThunk(
   "NombreElecteurByBvBYCircons/nombreElecteurByBvBYCircons",
   async () => {
-    const response = await client.get(
-      `NombreElecteurByBvBYCircons/${getUserData().id_type_election}`
+    const response = await axios.get(
+      `${urlBase}NombreElecteurByBvBYCircons/${getUserData().id_type_election}`,
+      {
+        headers: {
+          "content-type": "application/json",
+          "Access-Control-Allow-Origin": "*",
+          Authorization: `Bearer ${getUserData().accessToken}`,
+        },
+      }
+    );
+    localStorage.setItem(
+      "ElecteurByBvBYCircons",
+      JSON.stringify(response.data.data)
     );
     return response.data.data;
   }
@@ -79,7 +112,16 @@ export const nombreVotantGlobal = createAsyncThunk(
   "NombreVotantGlobal/nombreVotantGlobal",
   async () => {
     const response = await client.get(
-      `NombreVotantByCirconsElectorale/${getUserData().id_type_election}`
+      `${urlBase}NombreVotantByCirconsElectorale/${
+        getUserData().id_type_election
+      }`,
+      {
+        headers: {
+          "content-type": "application/json",
+          "Access-Control-Allow-Origin": "*",
+          Authorization: `Bearer ${getUserData().accessToken}`,
+        },
+      }
     );
     return response.data.data;
   }
@@ -170,7 +212,14 @@ export const getElecteurByLieuVote = createAsyncThunk(
 export const getCandidats = createAsyncThunk(
   "Candidats/getCandidats",
   async () => {
-    const response = await client.get("listCandidatByCircons");
+    const response = await axios.get(`${urlBase}listCandidatByCircons`, {
+      headers: {
+        "content-type": "application/json",
+        "Access-Control-Allow-Origin": "*",
+        Authorization: `Bearer ${getUserData().accessToken}`,
+      },
+    });
+    localStorage.setItem("candidats", JSON.stringify(response.data.data));
     return response.data.data;
   }
 );
@@ -186,11 +235,19 @@ export const getCandidatsVoiceByDep = createAsyncThunk(
 export const getNombreBvEtapeEnCours = createAsyncThunk(
   "NombreEtapeEnCoursEtTermine/NombreEtapeEnCours",
   async () => {
-    const response = await client.get("NombreEtapeEnCoursEtTermineByCircons");
+    const response = await axios.get(
+      `${urlBase}NombreEtapeEnCoursEtTermineByCircons`,
+      {
+        headers: {
+          "content-type": "application/json",
+          "Access-Control-Allow-Origin": "*",
+          Authorization: `Bearer ${getUserData().accessToken}`,
+        },
+      }
+    );
     return response.data.data;
   }
 );
-
 
 export const getAllEtapeBv = createAsyncThunk(
   "etape/getAllEtapeBv",
@@ -208,12 +265,18 @@ export const getListBvConforme = createAsyncThunk(
   }
 );
 
-
 export const getResult = createAsyncThunk(
   "result/getResult",
   async (params) => {
-    const response = await client.get(
-      `ResultatGlobal/${params.id_circons}/${params.id_parti}/${params.type}`
+    const response = await axios.get(
+      `${urlBase}ResultatGlobal/${params.id_circons}/${params.id_parti}/${params.type}`,
+      {
+        headers: {
+          "content-type": "application/json",
+          "Access-Control-Allow-Origin": "*",
+          Authorization: `Bearer ${getUserData().accessToken}`,
+        },
+      }
     );
     return response.data.data;
   }
@@ -233,9 +296,9 @@ export const ElectionSlice = createSlice({
     status: null,
     lieuxVote: [],
     CandidatsVoice: [],
-    listBvConforme:[],
+    listBvConforme: [],
     timeLine: [],
-    NombreEtapeEnCoursEtTermineByCircons:[],
+    NombreEtapeEnCoursEtTermineByCircons: [],
     timeLineCircons: [],
     nbrLv: [],
     nombreElecteur: [],

@@ -11,18 +11,20 @@ import {
 } from "../redux/store/Election";
 import { useEffect } from "react";
 import BasicTimeline from "./Components/BasicTimeline";
+import { getUserData } from "../utility/Utils";
 
 const Home = () => {
   const dispatch = useDispatch();
 
   useEffect(() => {
-    dispatch(getCandidats());
     dispatch(getAllEtapeBv());
     dispatch(getNombreBvEtapeEnCours());
   }, [dispatch]);
   return (
     <div>
-      <h2 className="mb-3">Tableau de bord</h2>
+      <h2 className="mb-3">
+        Tableau de bord 
+      </h2><p>{getUserData().lib_type_election}</p>
       <StatsCard />
       <BasicTimeline />
       <Candidat />

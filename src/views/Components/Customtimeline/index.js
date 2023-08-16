@@ -3,6 +3,8 @@
 import Proptypes from "prop-types";
 import classnames from "classnames";
 import { useSelector } from "react-redux";
+import { getNombreElecteur } from "../../../utility/Utils";
+import { isEmptyObject } from "jquery";
 
 const CustomTimeline = (props) => {
   // ** Props
@@ -54,20 +56,34 @@ const CustomTimeline = (props) => {
                     "mb-0": i === data.length - 1 && !item.customContent,
                   })}
                 >
-                  Bv encours : <b>{item.nombre_en_cours}</b>
+                  Bv encours :{" "}
+                  <b>{item.nombre_en_cours ? item.nombre_en_cours : 0}</b>
                 </p>
                 <p>
-                  Bv terminé : <b >{item.nombre_bv_termine}</b>
+                  Bv terminé :{" "}
+                  <b>{item.nombre_bv_termine ? item.nombre_bv_termine : 0}</b>
                 </p>
                 {item.libelle == "Ouverture du scrutin" ? (
                   <div>
-                    <p>Votant : {votant[0]?.total_votant}</p>
-                    <p>Inscrit : {inscrit?.nombre}</p>
+                    <p>
+                      Votant :{" "}
+                      {votant[0]?.total_votant ? votant[0]?.total_votant : 0}
+                    </p>
+                    <p>
+                      Inscrit :{" "}
+                      {!isEmptyObject(inscrit)
+                        ? inscrit?.nombre
+                        : getNombreElecteur()?.nombre}
+                    </p>
                     <p>
                       Taux :{" "}
                       {parseInt(
                         (Number(votant[0]?.total_votant) * 100) /
-                          Number(inscrit?.nombre)
+                          Number(
+                            inscrit?.nombre
+                              ? inscrit?.nombre
+                              : getNombreElecteur()?.nombre
+                          )
                       ) + "%"}
                     </p>
                   </div>

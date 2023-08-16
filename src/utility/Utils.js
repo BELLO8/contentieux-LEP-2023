@@ -1,3 +1,5 @@
+/* eslint-disable */
+
 import { DefaultRoute } from "../router/routes"
 
 // ** Checks if an object is empty (returns boolean)
@@ -55,6 +57,13 @@ export const formatDateToMonthShort = (value, toTimeForCurrentDay = true) => {
  */
 export const isUserLoggedIn = () => localStorage.getItem("userProfil")
 export const getUserData = () => JSON.parse(localStorage.getItem("userProfil"))
+export const getElecteurByBvBYCircons = () => JSON.parse(localStorage.getItem("ElecteurByBvBYCircons"))
+export const getLv = () => JSON.parse(localStorage.getItem("lv"))
+export const getNombreElecteur = () => JSON.parse(localStorage.getItem("nombreElecteur"))
+export const getNombreLV = () => JSON.parse(localStorage.getItem("nombreLV"))
+export const getNombreBV = () => JSON.parse(localStorage.getItem("nombreBV"))
+export const getCandidats = () => JSON.parse(localStorage.getItem("candidats"))
+export const token = () => JSON.parse(localStorage.getItem("accessToken"))
 
 /**
  ** This function is used for demo purpose route navigation

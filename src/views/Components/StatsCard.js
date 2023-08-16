@@ -30,7 +30,12 @@ import {
 import { useDispatch, useSelector } from "react-redux";
 import { useEffect, useState } from "react";
 import { nombreRepresentant } from "../../redux/store/Representant";
-import { getUserData } from "../../utility/Utils";
+import {
+  getNombreBV,
+  getNombreElecteur,
+  getNombreLV,
+  getUserData,
+} from "../../utility/Utils";
 import {
   nombreBV,
   nombreElecteur,
@@ -38,6 +43,7 @@ import {
   nombreVotant,
   nombreVotantGlobal,
 } from "../../redux/store/Election";
+import { isEmptyObject } from "jquery";
 
 const StatsCard = () => {
   const dispatch = useDispatch();
@@ -50,31 +56,18 @@ const StatsCard = () => {
 
   useEffect(() => {
     dispatch(nombreRepresentant(user.id_candidat));
-    dispatch(
-      nombreBV({
-        idcircons: user.id_circons,
-        type_election: user.id_type_election,
-      })
-    );
-    dispatch(
-      nombreLV({
-        idcircons: user.id_circons,
-        type_election: user.id_type_election,
-      })
-    );
-    dispatch(nombreElecteur());
     dispatch(nombreVotantGlobal());
   }, [dispatch]);
 
   const data = [
     {
-      title: nbreLV,
+      title: !isEmptyObject(nbreLV) ? nbreLV : getNombreLV(),
       subtitle: "Lieux de vote",
       color: "light-primary",
       icon: <MapPin size={24} />,
     },
     {
-      title: nbreBV,
+      title: !isEmptyObject(nbreBV) ? nbreBV : getNombreBV(),
       subtitle: "Bureaux de vote",
       color: "light-info",
       icon: <Archive size={24} />,
@@ -86,7 +79,7 @@ const StatsCard = () => {
       icon: <Users size={24} />,
     },
     {
-      title: inscrit?.nombre,
+      title: inscrit?.nombre ? inscrit?.nombre : getNombreElecteur()?.nombre,
       subtitle: "Nombre d'inscrit",
       color: "light-success",
       icon: <User size={24} />,

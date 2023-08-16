@@ -8,24 +8,32 @@ import "../style.css";
 import { ChevronDown } from "react-feather";
 import { Spinner } from "reactstrap";
 import { useDispatch, useSelector } from "react-redux";
-import { getElecteurVotant, getLieuxVote } from "../../redux/store/Election";
+import {
+  getElecteurVotant,
+  getLieuxVote,
+  vote,
+} from "../../redux/store/Election";
 import { getUserData } from "../../utility/Utils";
 import { Card } from "reactstrap";
 import DataTable from "react-data-table-component";
 import { votants, votantsElect } from "../Components/columns";
 
-const socket = io.connect("https://jellyfish-app-wxyzd.ondigitalocean.app/", {
+const socket = io.connect("https://jellyfish-app-wxyzd.ondigitalocean.app", {
   transports: ["websocket"],
 });
 
 export default function TableVote({ idbv }) {
   const dispatch = useDispatch();
   const user = getUserData();
-  const listeVotants = useSelector((state) => state.election.Listvotants);
+  const listeVotants = useSelector((state) => state.election.votants);
 
   useEffect(() => {
+    socket.on(`insertedvote-${user.id_parti + user.id_circons}`, (data) => {
+      console.log(data);
+      dispatch(vote(JSON.parse(data)));
+    });
     dispatch(getElecteurVotant({ id_bv: idbv }));
-  }, [dispatch]);
+  }, [dispatch, socket]);
 
   return (
     <>

@@ -7,16 +7,16 @@ import { useDispatch, useSelector } from "react-redux";
 import { Badge, Card, CardBody, Col, Row } from "reactstrap";
 import { voice } from "../../redux/store/Election";
 import { isEmptyObject } from "jquery";
-import { getUserData } from "../../utility/Utils";
+import { getCandidats, getUserData } from "../../utility/Utils";
 import { io } from "socket.io-client";
 
-const socket = io.connect("https://jellyfish-app-wxyzd.ondigitalocean.app/", {
+const socket = io.connect("https://jellyfish-app-wxyzd.ondigitalocean.app", {
   transports: ["websocket"],
 });
 
 const Candidat = () => {
   const dispatch = useDispatch();
-  // const listCandidat = useSelector((state) => state.election.candidats);
+  const listCandidat = useSelector((state) => state.election.candidats);
   const voix = useSelector((state) => state.election.voix);
   const resultat = useSelector((state) => state.election.resultat);
 
@@ -25,6 +25,19 @@ const Candidat = () => {
   resultat.map((item) => {
     listCandidatData.push(item);
   });
+
+  
+  if (isEmptyObject(resultat)) {
+    listCandidat.map((item) => {
+      listCandidatData.push(item);
+    });
+  }
+
+  if(isEmptyObject(listCandidat)){
+    getCandidats()?.map((item) => {
+      listCandidatData.push(item);
+    });
+  }
 
   useEffect(() => {
     socket.on(`insertedvoix-${user.id_parti + user.id_circons}`, (data) => {

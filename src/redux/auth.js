@@ -1,10 +1,6 @@
-// ** Redux Imports
+/*eslint-disable */
+
 import { createSlice } from '@reduxjs/toolkit'
-
-// ** UseJWT import to get config
-//import useJwt from '../@core/auth/jwt/useJwt'
-
-//const config = useJwt.jwtConfig
 
 const initialUser = () => {
   const item = window.localStorage.getItem('userProfil')
@@ -21,7 +17,6 @@ export const authSlice = createSlice({
     handleLogin: (state, action) => {
       state.userProfil = action.payload
       state["accessToken"] = action.payload["accessToken"]
-      state["refreshToken"] = action.payload["refreshToken"]
       localStorage.setItem('userProfil', JSON.stringify(action.payload))
       localStorage.setItem('accessToken', JSON.stringify(action.payload.accessToken))
       localStorage.setItem('refreshToken', JSON.stringify(action.payload.refreshToken))
@@ -33,7 +28,15 @@ export const authSlice = createSlice({
       // ** Remove user, accessToken & refreshToken from localStorage
       localStorage.removeItem('userProfil')
       localStorage.removeItem('accessToken')
-      localStorage.removeItem('refreshToken')
+      localStorage.removeItem('ElecteurByBvBYCircons')
+      localStorage.removeItem('lv')
+      localStorage.removeItem('nombreBV')
+      localStorage.removeItem('nombreLV')
+      localStorage.removeItem('nombreElecteur')
+      localStorage.removeItem('candidats')
+      
+     
+      
     }
   }
 })

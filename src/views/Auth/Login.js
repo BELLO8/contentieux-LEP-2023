@@ -19,12 +19,14 @@ import { login } from "../../@core/auth/jwt/const";
 import { useForm, Controller } from "react-hook-form";
 import {
   getHomeRouteForLoggedInUser,
+  getUserData,
   isUserLoggedIn,
 } from "../../utility/Utils";
 import { handleLogin } from "../../redux/auth";
 import { useDispatch } from "react-redux";
 import { useEffect } from "react";
 import toast from "react-hot-toast";
+import { getCandidats, getLieuxVote, nombreBV, nombreElecteur, nombreElecteurByBvBYCircons, nombreLV } from "../../redux/store/Election";
 
 const defaultValues = {
   password: "",
@@ -64,8 +66,17 @@ const Login = () => {
               refreshToken: res.data.refreshToken
             }
             dispatch(handleLogin(data))
+            dispatch(nombreElecteurByBvBYCircons());
+            dispatch(getLieuxVote())
+            dispatch(nombreBV())
+            dispatch(nombreLV())
+            dispatch(nombreElecteur());
+            dispatch(getCandidats())
             navigate(getHomeRouteForLoggedInUser("candidat"))
+
           }
+          
+
         })
         .catch((err) => {
           if (err.code === "ERR_BAD_REQUEST"){

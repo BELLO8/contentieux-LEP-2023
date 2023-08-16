@@ -13,21 +13,24 @@ import {
   Col,
   Input,
   Modal,
-  ModalBody, ModalHeader,
-  Row
+  ModalBody,
+  ModalHeader,
+  Row,
 } from "reactstrap";
 import { Label } from "reactstrap";
 import { useDispatch, useSelector } from "react-redux";
 import {
   allNombreVotant,
   getBureauVote,
-  getLieuxVote, nombreElecteurByBvBYCircons, vote
+  getLieuxVote,
+  nombreElecteurByBvBYCircons,
+  vote,
 } from "../../redux/store/Election";
-import { getUserData } from "../../utility/Utils";
+import { getElecteurByBvBYCircons, getLv, getUserData } from "../../utility/Utils";
 import { Filter } from "react-feather";
 import BreadCrumbs from "../../@core/components/breadcrumbs";
 
-const socket = io.connect("https://jellyfish-app-wxyzd.ondigitalocean.app/", {
+const socket = io.connect("https://jellyfish-app-wxyzd.ondigitalocean.app", {
   transports: ["websocket"],
 });
 
@@ -36,22 +39,37 @@ export default function Vote() {
   const [basicModal, setBasicModal] = useState(false);
   const [searchTerm, setSearchTerm] = useState("");
 
-  const lieuxVote = useSelector((state) => state.election.lieuxVote);
-  const bureauVote = useSelector((state) => state.election.bureauVote);
+  const lieuxVote = getLv();
   const dataVotant = useSelector((state) => state.election.votants);
 
   const allNombreVotantByBvByCircons = useSelector(
     (state) => state.election.allNombreVotantByBvByCircons
   );
-  const nombreElecteurByBv = useSelector(
-    (state) => state.election.nombreElecteurByBv
-  );
+  const nombreElecteurByBv = getElecteurByBvBYCircons();
+  
+  useEffect(() => {
+    socket.on(`insertedvote-${user.id_parti + user.id_circons}`, (data) => {
+      console.log(data);
+      dispatch(vote(JSON.parse(data)));
+    });
+    dispatch(allNombreVotant());
+  }, [dispatch, socket]);
 
   const electeurbv = [];
   const lieuxVoteData = [];
-  const bureauVoteData = [];
+  const votant = [];
 
-  nombreElecteurByBv.map((item) => {
+  dataVotant?.map((item) => {
+    votant.push({
+      id: item.id_bureau_vote,
+      nom: item.nom,
+      prenoms: item.prenoms,
+      num_electeur: item.num_electeur,
+      nombreVotant: dataVotant.length,
+    });
+  });
+
+  nombreElecteurByBv?.map((item) => {
     electeurbv.push({
       id: item.id_bureau,
       nb_electeur: item.nb_electeur,
@@ -71,34 +89,24 @@ export default function Vote() {
     });
   });
 
-  console.log(dataVotant);
+  //console.log(dataVotant);
   let newArray = electeurbv.map((obj1) => {
     let obj2 = nombreVotant.find((obj2) => obj2.id === obj1.id);
-    return { ...obj1, ...obj2 };
+    let votantData = votant.find((item) => item.id === obj1.id);
+    return { ...obj1, ...obj2, ...votantData };
   });
 
-  nombreElecteurByBv.map((item) => {
+  console.log(newArray);
+
+  nombreElecteurByBv?.map((item) => {
     electeurbv.push(item);
   });
 
-  lieuxVote.map((item) => {
+  lieuxVote?.map((item) => {
     lieuxVoteData.push({ value: item.cod_lieu, label: item.lib_lvote });
   });
 
-  bureauVote.map((item) => {
-    bureauVoteData.push({ value: item.cod_bv, label: item.lib_bv });
-  });
   const user = getUserData();
-
-  useEffect(() => {
-    socket.on(`insertedvote${user.id_parti + user.id_circons}`, (data) => {
-      console.log(JSON.parse(data));
-      dispatch(vote(JSON.parse(data)));
-    });
-    dispatch(nombreElecteurByBvBYCircons());
-    dispatch(allNombreVotant());
-    dispatch(getLieuxVote(user.id_circons));
-  }, [dispatch, socket]);
 
   return (
     <>
@@ -189,7 +197,13 @@ export default function Vote() {
                 bv={item.bureau_vote}
                 lv={item.lieu_vote}
                 inscrit={item.nb_electeur}
-                votants={item.total ? item.total : 0}
+                votants={
+                  item.nombreVotant
+                    ? Number(item.total) + item.nombreVotant
+                    : item.total
+                    ? item.total
+                    : 0
+                }
               />
             </Col>
           ))}

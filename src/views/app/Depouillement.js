@@ -24,32 +24,31 @@ import {
   getLieuxVote,
   nombreElecteurByBvBYCircons,
 } from "../../redux/store/Election";
-import { getUserData } from "../../utility/Utils";
+import {
+  getElecteurByBvBYCircons,
+  getLv,
+  getUserData,
+} from "../../utility/Utils";
 import { Filter } from "react-feather";
 import Bv from "../Components/BvDepouillement";
 import BreadCrumbs from "../../@core/components/breadcrumbs";
+import { isEmptyObject } from "jquery";
 
 export default function Depouillement() {
   const dispatch = useDispatch();
-  const [idLieuxVote, setLieuxVote] = useState();
-  const [idBureauVote, setBureauVote] = useState();
-  const [basicModal, setBasicModal] = useState(false);
+
   const [searchTerm, setSearchTerm] = useState("");
 
-  const lieuxVote = useSelector((state) => state.election.lieuxVote);
-  const bureauVote = useSelector((state) => state.election.bureauVote);
-  const taux = useSelector((state) => state.election.taux);
-  const data = useSelector((state) => state.election.votants);
-  const allNombreVotantByBvByCircons = useSelector(
-    (state) => state.election.allNombreVotantByBvByCircons
-  );
-  const nombreElecteurByBv = useSelector(
-    (state) => state.election.nombreElecteurByBv
-  );
+  const lieuxVote = !isEmptyObject(
+    useSelector((state) => state.election.lieuxVote)
+  )
+    ? useSelector((state) => state.election.lieuxVote)
+    : getLv();
+
+  const nombreElecteurByBv = getElecteurByBvBYCircons();
 
   const electeurbv = [];
   const lieuxVoteData = [];
-  const bureauVoteData = [];
 
   nombreElecteurByBv.map((item) => {
     electeurbv.push(item);
@@ -59,22 +58,14 @@ export default function Depouillement() {
     lieuxVoteData.push({ value: item.cod_lieu, label: item.lib_lvote });
   });
 
-  bureauVote.map((item) => {
-    bureauVoteData.push({ value: item.cod_bv, label: item.lib_bv });
-  });
-  const user = getUserData();
-
   useEffect(() => {
-    dispatch(nombreElecteurByBvBYCircons());
-    dispatch(getCandidats())
-    dispatch(getCandidatsVoiceByDep())
-    dispatch(getLieuxVote(user.id_circons));
+    dispatch(getCandidatsVoiceByDep());
   }, [dispatch]);
 
   return (
     <>
       <BreadCrumbs title="Dépouillement" url="/" data={[]} />
-        
+
       <Row className="mt-3">
         <Col lg="3" sm="12">
           <Card>
