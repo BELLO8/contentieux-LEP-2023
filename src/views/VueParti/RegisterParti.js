@@ -22,14 +22,14 @@ import Select from "react-select";
 import { getCirconscription } from "../../redux/store/Circonscription";
 import { getParti } from "../../redux/store/Parti";
 import { getTypeElection } from "../../redux/store/TypeElection";
-import { register } from "../../@core/auth/jwt/const";
+import { register, registerParti } from "../../@core/auth/jwt/const";
 import toast from 'react-hot-toast'
 import { Check } from "react-feather";
 import Avatar from "@components/avatar";
 
 const defaultValues = {};
 
-const Register = () => {
+const RegisterParti = () => {
   const navigate = useNavigate();
   const dispatch = useDispatch();
   const [idTypeElection, setIdTypeElection] = useState();
@@ -77,12 +77,9 @@ const Register = () => {
 
   const onSubmit = (data) => {
 
-    const CodeCand = JSON.parse(localStorage.getItem("candidatInfo"));
     if (Object.values(data).every((field) => field.length > 0)) {
-      register({
+      registerParti({
         ...data,
-        id_type: idTypeElection,
-        id_circons: idcirconscription,
         id_parti: idParti,
       })
         .then((res) => {
@@ -102,7 +99,7 @@ const Register = () => {
                 </div>
               </div>
             );
-            navigate("/login");
+            navigate("/MonParti/login");
           } else if (res.data.status === "error") {
             toast(
               <div className="d-flex">
@@ -195,79 +192,6 @@ const Register = () => {
                 />
               </div>
               <div className="mb-1">
-                <Label className="form-label" for="login-nom">
-                  Nom et prenom
-                </Label>
-                <Controller
-                  id="nom_prenoms"
-                  name="nom_prenoms"
-                  control={control}
-                  render={({ field }) => (
-                    <Input
-                      autoFocus
-                      type="text"
-                      placeholder="Entrer votre nom et prenom"
-                      invalid={errors.nom_prenoms && true}
-                      {...field}
-                      required
-                    />
-                  )}
-                />
-              </div>
-              <div className="mb-1">
-                <Label className="form-label" for="login-contact">
-                  Contact
-                </Label>
-                <Controller
-                  id="contact"
-                  name="contact"
-                  control={control}
-                  render={({ field }) => (
-                    <Input
-                      autoFocus
-                      type="text"
-                      placeholder="Entrer votre numéro de telephone"
-                      invalid={errors.contact && true}
-                      {...field}
-                      required
-                    />
-                  )}
-                />
-              </div>
-              <div className="mb-1">
-                <Label className="form-label" for="type-elec">
-                  Selectionner le type d'élection
-                </Label>
-                <Select
-                  theme={selectThemeColors}
-                  isClearable={false}
-                  id="type-election"
-                  className="react-select"
-                  classNamePrefix="select"
-                  options={typeElectionData}
-                  onChange={(event) => {
-                    setIdTypeElection(event.value);
-                    dispatch(getCirconscription(event.value));
-                  }}
-                />
-              </div>
-              <div className="mb-1">
-                <Label className="form-label" for="circons">
-                  Selectionner une circonscription
-                </Label>
-                <Select
-                  isClearable={false}
-                  theme={selectThemeColors}
-                  id="circons"
-                  options={circonscriptionData}
-                  className="react-select"
-                  classNamePrefix="select"
-                  onChange={(event) => {
-                    setIdcirconscription(event.value);
-                  }}
-                />
-              </div>
-              <div className="mb-1">
                 <Label className="form-label" for="parti">
                   Selectionner votre parti politique
                 </Label>
@@ -311,7 +235,7 @@ const Register = () => {
             </Form>
             <p className="text-center mt-2">
               <span className="me-25">Vous avez déjà un compte ?</span>
-              <Link to="/login">
+              <Link to="/MonParti/login">
                 <span>Se connecter</span>
               </Link>
             </p>
@@ -322,4 +246,4 @@ const Register = () => {
   );
 };
 
-export default Register;
+export default RegisterParti;

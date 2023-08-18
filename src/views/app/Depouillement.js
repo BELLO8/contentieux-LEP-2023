@@ -5,38 +5,30 @@ import "@styles/react/libs/tables/react-dataTable-component.scss";
 import "../style.css";
 import { useState } from "react";
 import {
-  Button,
   Card,
   CardBody,
   Col,
-  Input,
-  Modal,
-  ModalBody,
-  ModalHeader,
-  Row,
+  Input, Row
 } from "reactstrap";
 import { Label } from "reactstrap";
 import { useDispatch, useSelector } from "react-redux";
 import {
-  getBureauVote,
-  getCandidats,
-  getCandidatsVoiceByDep,
-  getLieuxVote,
-  nombreElecteurByBvBYCircons,
+  getBureauVote, getCandidatsVoiceByDep
 } from "../../redux/store/Election";
 import {
   getElecteurByBvBYCircons,
   getLv,
-  getUserData,
+  getUserData
 } from "../../utility/Utils";
 import { Filter } from "react-feather";
 import Bv from "../Components/BvDepouillement";
 import BreadCrumbs from "../../@core/components/breadcrumbs";
 import { isEmptyObject } from "jquery";
+import { useNavigate } from "react-router-dom";
 
 export default function Depouillement() {
   const dispatch = useDispatch();
-
+  const navigate = useNavigate();
   const [searchTerm, setSearchTerm] = useState("");
 
   const lieuxVote = !isEmptyObject(
@@ -50,15 +42,18 @@ export default function Depouillement() {
   const electeurbv = [];
   const lieuxVoteData = [];
 
-  nombreElecteurByBv.map((item) => {
+  nombreElecteurByBv?.map((item) => {
     electeurbv.push(item);
   });
 
-  lieuxVote.map((item) => {
+  lieuxVote?.map((item) => {
     lieuxVoteData.push({ value: item.cod_lieu, label: item.lib_lvote });
   });
 
   useEffect(() => {
+    if (getUserData().role === "parti") {
+      navigate("/VueParti");
+    }
     dispatch(getCandidatsVoiceByDep());
   }, [dispatch]);
 

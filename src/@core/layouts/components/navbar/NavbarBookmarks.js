@@ -1,4 +1,5 @@
-// ** React Imports
+/*eslint-disable*/
+
 import { Link } from "react-router-dom"
 import { Fragment, useEffect, useState } from "react"
 
@@ -161,9 +162,9 @@ const NavbarBookmarks = (props) => {
         {renderBookmarks()}
         {renderExtraBookmarksDropdown()}
         <NavItem className="nav-item d-none d-lg-block">
-          <NavLink className="bookmark-star" onClick={handleBookmarkVisibility}>
+          {/* <NavLink className="bookmark-star" onClick={handleBookmarkVisibility}>
             <Icon.Star className="ficon text-warning" />
-          </NavLink>
+          </NavLink> */}
           <div
             className={classnames("bookmark-input search-input", {
               show: openSearch

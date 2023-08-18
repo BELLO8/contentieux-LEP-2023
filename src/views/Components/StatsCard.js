@@ -80,13 +80,13 @@ const StatsCard = () => {
     },
     {
       title: inscrit?.nombre ? inscrit?.nombre : getNombreElecteur()?.nombre,
-      subtitle: "Nombre d'inscrit",
+      subtitle: "Nombre d'inscrits",
       color: "light-success",
       icon: <User size={24} />,
     },
     {
       title: votant[0]?.total_votant,
-      subtitle: "Nombre de votant",
+      subtitle: "Nombre de votants",
       color: "light-success",
       icon: <CheckCircle size={24} />,
     },
@@ -95,8 +95,8 @@ const StatsCard = () => {
   const renderData = () => {
     return data.map((item, index) => {
       return (
-        <Col>
-          <Card className="shadow-none round">
+        <Col lg="2" className="mx-1">
+          <Card className="shadow-none round" style={{minWidth : "220px"}}>
             <CardBody>
               <div className="d-flex align-items-center">
                 <Avatar color={item.color} icon={item.icon} className="me-2" />
@@ -116,7 +116,7 @@ const StatsCard = () => {
 
   return (
     <>
-      <h5 tag="h4">Statistique globale</h5>
+      <h5 tag="h4"> Données générales</h5>
       <Row>{renderData()}</Row>
     </>
   );

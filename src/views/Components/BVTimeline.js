@@ -73,7 +73,7 @@ const BVTimeline = () => {
     <Card className="shadow-none round">
       <CardHeader>
         <CardTitle tag="h4">
-          Chronologie des activités dans le bureau de vote
+          Etapes du scrutin
         </CardTitle>
       </CardHeader>
       <CardBody className="pt-1">

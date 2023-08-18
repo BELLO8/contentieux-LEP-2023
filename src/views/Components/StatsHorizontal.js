@@ -45,15 +45,15 @@ const StatsHorizontal = ({ idbv, bv, lv, inscrit, votants }) => {
                 <div className="my-auto">
                   <div className="d-flex align-items-center mb-2">
                     <div className="my-auto">
-                      <h4 className="fw-bolder mb-0">{votants}</h4>
+                      <h4 className="fw-bolder mb-0 text-info">{inscrit}</h4>
                       <CardText className="font-small-3 mb-0">
-                        Votant(s)
+                        Inscrits
                       </CardText>
                     </div>
                     <div className="mx-3">
-                      <h4 className="fw-bolder mb-0">{inscrit}</h4>
+                      <h4 className="fw-bolder mb-0 text-success">{votants}</h4>
                       <CardText className="font-small-3 mb-0">
-                        Inscrit(s)
+                        Votants
                       </CardText>
                     </div>
                   </div>
@@ -64,7 +64,7 @@ const StatsHorizontal = ({ idbv, bv, lv, inscrit, votants }) => {
                   <Col lg="8" sm="8">
                     <div className="px-1">
                       <span>
-                        Taux de participation… <b>{parseInt(taux)}%</b>
+                        Taux de participations… <b className="text-danger">{parseInt(taux)}%</b>
                       </span>
                       <Progress
                         animated

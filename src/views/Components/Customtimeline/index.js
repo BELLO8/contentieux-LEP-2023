@@ -66,11 +66,11 @@ const CustomTimeline = (props) => {
                 {item.libelle == "Ouverture du scrutin" ? (
                   <div>
                     <p>
-                      Votant :{" "}
+                      Votants :{" "}
                       {votant[0]?.total_votant ? votant[0]?.total_votant : 0}
                     </p>
                     <p>
-                      Inscrit :{" "}
+                      Inscrits :{" "}
                       {!isEmptyObject(inscrit)
                         ? inscrit?.nombre
                         : getNombreElecteur()?.nombre}

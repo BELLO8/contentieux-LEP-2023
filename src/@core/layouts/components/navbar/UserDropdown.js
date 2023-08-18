@@ -16,7 +16,7 @@ import {
   DropdownItem,
 } from "reactstrap";
 import { useEffect, useState } from "react";
-import { isUserLoggedIn } from "../../../../utility/Utils";
+import { getUserData, isUserLoggedIn } from "../../../../utility/Utils";
 import { useDispatch } from "react-redux";
 import { handleLogout } from "../../../../redux/auth";
 
@@ -24,6 +24,7 @@ import { handleLogout } from "../../../../redux/auth";
 
 const UserDropdown = () => {
   const [userData, setUserData] = useState(null);
+  const user = getUserData();
   const dispatch = useDispatch();
   const navigate = useNavigate();
   //** ComponentDidMount
@@ -43,16 +44,12 @@ const UserDropdown = () => {
       >
         <div className="user-nav d-sm-flex d-none">
           <span className="user-name fw-bold">
-            {userData !== null ? userData.nom : ""}
+            {user.role === "parti" ? user.username : user.nom}
           </span>
           <span className="user-status fw-bold text-warning">
-            {userData !== null
-              ? userData.role +
-                " " +
-                userData.lib_parti +
-                " " +
-                userData.lib_type_election
-              : ""}
+            {user.role !== "parti"
+              ? user.role + " " + user.lib_parti + " " + user.lib_type_election
+              : 'Parti politique'}
           </span>
         </div>
         <Avatar imgHeight="40" imgWidth="40" status="online" />

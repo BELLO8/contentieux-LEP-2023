@@ -3,13 +3,13 @@ import { useEffect } from "react"
 import { NavLink } from "react-router-dom"
 
 // ** Icons Imports
-import { Disc, X, Circle } from "react-feather"
+import { Disc, Circle } from "react-feather"
 
 // ** Config
-import themeConfig from "@configs/themeConfig"
 
 // ** Utils
 import { getUserData, getHomeRouteForLoggedInUser } from "@utils"
+import logo from "@src/assets/images/logo/logo1.png"
 
 const VerticalMenuHeader = (props) => {
   // ** Props
@@ -60,7 +60,7 @@ const VerticalMenuHeader = (props) => {
             to={user ? getHomeRouteForLoggedInUser(user.role) : "/"}
             className="navbar-brand"
           >
-              <img src={themeConfig.app.appLogoImage} alt="logo" width={100} />
+              {/* <img src={logo} alt="logo" width={100} /> */}
             {/* <h2 className="brand-text mb-0">{themeConfig.app.appName}</h2> */}
           </NavLink>
         </li>

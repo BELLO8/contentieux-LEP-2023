@@ -1,44 +1,28 @@
 /* eslint-disable */
 
 // ** React Imports
-import { Fragment, useState, useEffect, useRef } from "react";
+import { Fragment, useState, useEffect } from "react";
 
 import { useDispatch, useSelector } from "react-redux";
 
 // ** Third Party Components
-import Select from "react-select";
 import DataTable from "react-data-table-component";
 import { ChevronDown } from "react-feather";
 
 // ** Utils
-import { selectThemeColors } from "@utils";
 
 // ** Reactstrap Imports
 import {
-  Row,
   Col,
   Card,
-  Input,
-  Label,
-  CardBody,
-  CardTitle,
-  CardHeader,
-  Button,
+  Input
 } from "reactstrap";
 
 // ** Styles
 import "@styles/react/libs/react-select/_react-select.scss";
 import "@styles/react/libs/tables/react-dataTable-component.scss";
 import { getUserData } from "../../utility/Utils";
-import {
-  getCirconscriptionAdmin,
-  getDepartement,
-  getElecteur,
-  getElecteurGlobal,
-  getLieuxVote,
-} from "../../redux/store/Election";
 import "../style.css";
-import { getCirconscription } from "../../redux/store/Circonscription";
 import { columns } from "./columns";
 import { getRepresentant } from "../../redux/store/Representant";
 

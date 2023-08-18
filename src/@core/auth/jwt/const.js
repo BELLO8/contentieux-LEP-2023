@@ -9,12 +9,19 @@ export const urlBase = "https://jellyfish-app-wxyzd.ondigitalocean.app/";
 export const register = async (...args) => {
   return axios.post(`${urlBase}RegisterCandidatApp`, ...args);
 };
+
+export const registerParti = async (...args) => {
+  return axios.post(`${urlBase}register_parti`, ...args);
+};
 export const addRepresentant = async (...args) => {
   return axios.post(`${urlBase}UserRegister`, ...args);
 };
 
 export const verifyPayment = async (...args) => {
   return axios.post(`${urlBase}api/status-payment`, ...args);
+};
+export const loginParti = async (...args) => {
+  return axios.post(`${urlBase}login_parti`, ...args);
 };
 
 export const login = async (...args) => {

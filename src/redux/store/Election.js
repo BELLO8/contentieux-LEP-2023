@@ -28,6 +28,16 @@ export const getBureauVote = createAsyncThunk(
   }
 );
 
+export const getResultatGlobalByParti = createAsyncThunk(
+  "resultatGlobalByParti/getResultatGlobalByParti",
+  async (idtype) => {
+    const response = await client.get(
+      `ResultatGlobalByParti/${idtype}/${getUserData().id_parti}`
+    );
+    return response.data.data;
+  }
+);
+
 export const nombreBV = createAsyncThunk("bv/nombreBureauVote", async () => {
   const response = await client.get(
     `NombreBvByCirconsElectorale/${getUserData().id_circons}/${
@@ -295,6 +305,7 @@ export const ElectionSlice = createSlice({
   initialState: {
     status: null,
     lieuxVote: [],
+    resultatGlobalByParti: [],
     CandidatsVoice: [],
     listBvConforme: [],
     timeLine: [],
@@ -343,6 +354,10 @@ export const ElectionSlice = createSlice({
       .addCase(nombreBV.fulfilled, (state, action) => {
         state.status = "succeeded";
         state.nbrBv = action.payload;
+      })
+      .addCase(getResultatGlobalByParti.fulfilled, (state, action) => {
+        state.status = "succeeded";
+        state.resultatGlobalByParti = action.payload;
       })
       .addCase(getNombreBvEtapeEnCours.fulfilled, (state, action) => {
         state.status = "succeeded";

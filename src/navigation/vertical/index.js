@@ -1,4 +1,4 @@
-import { AlignJustify, Archive, CheckSquare, Monitor, Package, Settings, Table, Users } from "react-feather"
+import { Archive, CheckSquare, Monitor, Package, Table } from "react-feather"
 
 export default [
   {
@@ -9,13 +9,13 @@ export default [
   },
   {
     id: "bv",
-    title: "Bureau de vote ",
+    title: "Etapes du vote ",
     icon: <Archive size={20} />,
     navLink: "/bureau-vote"
   },
   {
     id: "vote",
-    title: "Vote",
+    title: "Evolution du scrutin",
     icon: <Package size={20} />,
     navLink: "/vote"
   },

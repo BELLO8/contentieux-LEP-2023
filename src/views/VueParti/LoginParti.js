@@ -15,25 +15,26 @@ import { AlertCircle } from "react-feather";
 import Avatar from "@components/avatar";
 import "@styles/react/pages/page-authentication.scss";
 import InputPasswordToggle from "@components/input-password-toggle";
-import { login } from "../../@core/auth/jwt/const";
+import { loginParti } from "../../@core/auth/jwt/const";
 import { useForm, Controller } from "react-hook-form";
 import {
-  getHomeRouteForLoggedInUser,
   getUserData,
-  isUserLoggedIn,
+  isUserLoggedIn
 } from "../../utility/Utils";
 import { handleLogin } from "../../redux/auth";
 import { useDispatch } from "react-redux";
 import { useEffect } from "react";
 import toast from "react-hot-toast";
-import { getCandidats, getLieuxVote, nombreBV, nombreElecteur, nombreElecteurByBvBYCircons, nombreLV } from "../../redux/store/Election";
+import {
+  getLieuxVote
+} from "../../redux/store/Election";
 
 const defaultValues = {
   password: "",
   username: "",
 };
 
-const Login = () => {
+const LoginParti = () => {
   const navigate = useNavigate();
   const dispatch = useDispatch();
   const {
@@ -53,62 +54,61 @@ const Login = () => {
   }, []);
 
   const onSubmit = (data) => {
-    
     if (Object.values(data).every((field) => field.length > 0)) {
-      login({
-          username: data.username,
-          password: data.password
-        })
+      loginParti({
+        username: data.username,
+        password: data.password,
+      })
         .then((res) => {
-          console.log(res)
-          const Token = res.data.data.token
+          console.log(res);
+          const Token = res.data.data.token;
           if (res.data.status === "success") {
             const data = {
-              ...res.data.data.user,
-              role:"candidat",
+              ...res.data.data.admin,
+              role: "parti",
               accessToken: Token,
-              refreshToken: res.data.refreshToken
-            }
-            dispatch(handleLogin(data))
-            dispatch(nombreElecteurByBvBYCircons());
+              refreshToken: res.data.refreshToken,
+            };
+            dispatch(handleLogin(data));
             dispatch(getLieuxVote())
-            dispatch(nombreBV())
-            dispatch(nombreLV())
-            dispatch(nombreElecteur());
-            dispatch(getCandidats())
-            navigate(getHomeRouteForLoggedInUser("candidat"))
-
+            navigate("/VueParti");
           }
-          
-
         })
         .catch((err) => {
-          if (err.code === "ERR_BAD_REQUEST"){
+          if (err.code === "ERR_BAD_REQUEST") {
             toast(
-              <div className='d-flex'>
-                <div className='me-1'>
-                  <Avatar size='sm' color='danger' icon={<AlertCircle size={12}/>} />
+              <div className="d-flex">
+                <div className="me-1">
+                  <Avatar
+                    size="sm"
+                    color="danger"
+                    icon={<AlertCircle size={12} />}
+                  />
                 </div>
-                <div className='d-flex flex-column'>
+                <div className="d-flex flex-column">
                   <h6>{err.response.data.message}</h6>
                 </div>
               </div>
-            )
-          }else{
-             toast(
-              <div className='d-flex'>
-                <div className='me-1'>
-                  <Avatar size='sm' color='danger' icon={<AlertCircle size={12}/>} />
+            );
+          } else {
+            toast(
+              <div className="d-flex">
+                <div className="me-1">
+                  <Avatar
+                    size="sm"
+                    color="danger"
+                    icon={<AlertCircle size={12} />}
+                  />
                 </div>
-                <div className='d-flex flex-column'>
+                <div className="d-flex flex-column">
                   <h6>{err.message}</h6>
                 </div>
               </div>
-            )
+            );
           }
 
-          console.log(err)
-        })
+          console.log(err);
+        });
     }
   };
 
@@ -175,7 +175,7 @@ const Login = () => {
             </Form>
             <p className="text-center mt-2">
               <span className="me-25">Nouveau sur notre plateforme?</span>
-              <Link to="/inscription">
+              <Link to="/MonParti/inscription">
                 <span>créer un compte</span>
               </Link>
             </p>
@@ -186,4 +186,4 @@ const Login = () => {
   );
 };
 
-export default Login;
+export default LoginParti;

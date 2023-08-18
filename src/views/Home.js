@@ -12,11 +12,16 @@ import {
 import { useEffect } from "react";
 import BasicTimeline from "./Components/BasicTimeline";
 import { getUserData } from "../utility/Utils";
+import { useNavigate } from "react-router-dom";
 
 const Home = () => {
   const dispatch = useDispatch();
-
+  const navigate = useNavigate();
+  
   useEffect(() => {
+    if (getUserData().role === "parti") {
+      navigate("/VueParti");
+    }
     dispatch(getAllEtapeBv());
     dispatch(getNombreBvEtapeEnCours());
   }, [dispatch]);
@@ -24,7 +29,8 @@ const Home = () => {
     <div>
       <h2 className="mb-3">
         Tableau de bord 
-      </h2><p>{getUserData().lib_type_election}</p>
+      </h2>
+      <p>{getUserData().lib_type_election } ( {getUserData().lib_circons} )</p>
       <StatsCard />
       <BasicTimeline />
       <Candidat />

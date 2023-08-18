@@ -1,28 +1,35 @@
-import { Home } from "react-feather"
+import { Archive, CheckSquare, Monitor, Package, Table } from "react-feather"
 
 export default [
-   {
+  {
     id: "home",
-    title: "Home",
-    icon: <Home size={20} />,
+    title: "Tableau de bord",
+    icon: <Monitor size={20} />,
     navLink: "/home"
+  },
+  {
+    id: "bv",
+    title: "Bureau de vote ",
+    icon: <Archive size={20} />,
+    navLink: "/bureau-vote"
+  },
+  {
+    id: "vote",
+    title: "Vote",
+    icon: <Package size={20} />,
+    navLink: "/vote"
+  },
+  {
+    id: "depouillement",
+    title: "Dépouillement",
+    icon: <Table size={20} />,
+    navLink: "/depouillement"
+  },
+  {
+    id: "resultat",
+    title: "Resultat",
+    icon: <CheckSquare size={20} />,
+    navLink: "/resultat"
   }
+   
 ]
-
-
-// import { Mail, Home } from "react-feather"
-
-// export default [
-//   {
-//     id: "home",
-//     title: "Home",
-//     icon: <Home size={20} />,
-//     navLink: "/home"
-//   },
-//   {
-//     id: "secondPage",
-//     title: "Second Page",
-//     icon: <Mail size={20} />,
-//     navLink: "/second-page"
-//   }
-// ]

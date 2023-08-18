@@ -19,7 +19,7 @@ const CandidatVoice = ({ data }) => {
             />
             <div>
               <h6 className="transaction-title">{item.nom}</h6>
-              <small>candidat</small>
+              <small>{item.lib_parti}</small>
             </div>
           </div>
           <div className="fw-bolder text-success">{item.nombre_voix ?? 0}</div>
@@ -31,7 +31,7 @@ const CandidatVoice = ({ data }) => {
   return (
     <Card className="card-transaction">
       <CardHeader>
-        <CardTitle tag="h6">Comptage de voix</CardTitle>
+        <CardTitle tag="h6">Décompte des voix</CardTitle>
       </CardHeader>
       <CardBody>{renderTransactions()}</CardBody>
     </Card>

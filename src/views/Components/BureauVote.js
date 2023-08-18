@@ -35,7 +35,7 @@ const BureauVote = ({ idbv, bv, lv, idlv, etape, nbrRep }) => {
             <div className="border">
               <Row className=" d-flex justify-content-between align-items-center">
                 <Col lg="6">
-                  <div className="px-1">{lv}</div>
+                  <div className="px-1"><b>{lv}</b></div>
                 </Col>
                 <Col lg="4">
                   <div className="border" style={{ padding: "10px" }}>

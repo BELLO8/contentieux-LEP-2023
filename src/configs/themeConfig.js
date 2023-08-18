@@ -4,7 +4,7 @@
 const themeConfig = {
   app: {
     appName: "JamElec",
-    appLogoImage: require('../assets/images/logo/logo1.png').default
+    appLogoImage: require('../assets/images/logo/logo.png').default
   },
   layout: {
     isRTL: false,

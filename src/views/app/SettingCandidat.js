@@ -25,20 +25,31 @@ import {
   nombreElecteurByBvBYCircons,
   vote,
 } from "../../redux/store/Election";
-import { getElecteurByBvBYCircons, getLv, getUserData } from "../../utility/Utils";
+import {
+  getElecteurByBvBYCircons,
+  getLv,
+  getUserData,
+} from "../../utility/Utils";
 import { Filter } from "react-feather";
 import BureauVote from "../Components/BureauVote";
 import BreadCrumbs from "../../@core/components/breadcrumbs";
 import { getRepresentant } from "../../redux/store/Representant";
+import { isEmptyObject } from "jquery";
+import { useNavigate } from "react-router-dom";
 
 export default function SettingCandidat() {
   const dispatch = useDispatch();
   const [basicModal, setBasicModal] = useState(false);
   const [searchTerm, setSearchTerm] = useState("");
-
+  const navigate = useNavigate();
+  
   const lieuxVote = getLv();
 
-  const nombreElecteurByBv = getElecteurByBvBYCircons();
+  const nombreElecteurByBv = !isEmptyObject(
+    useSelector((state) => state.election.nombreElecteurByBv)
+  )
+    ? useSelector((state) => state.election.nombreElecteurByBv)
+    : getElecteurByBvBYCircons();
   const timeLine = useSelector((state) => state.election.timeLineCircons);
   const ListRepresentant = useSelector(
     (state) => state.representant.representant.data
@@ -91,12 +102,12 @@ export default function SettingCandidat() {
     lieuxVoteData.push({ value: item.cod_lieu, label: item.lib_lvote });
   });
 
-
   useEffect(() => {
+    if (getUserData().role === "parti") {
+      navigate("/VueParti");
+    }
     dispatch(getTimeLineByCircons());
     dispatch(getRepresentant());
-    //dispatch(nombreElecteurByBvBYCircons());
-    //dispatch(getLieuxVote());
   }, [dispatch]);
 
   return (
@@ -182,7 +193,7 @@ export default function SettingCandidat() {
             }
           })
           .map((item) => (
-            <Col lg="4" sm="6">
+            <Col lg="4" sm="4">
               <BureauVote
                 idbv={item.id_bureau}
                 idlv={item.id_lieu_vote}

@@ -3,24 +3,28 @@
 import React from "react";
 import { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { useParams } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import { getElecteurByBv, getElecteurVotant, nombreElecteurByBvBYCircons } from "../../redux/store/Election";
-import TableVote from "../Components/TableVote";
 import DataTable from "react-data-table-component";
 import { votants } from "../Components/columns";
-import { ArrowLeft, ChevronDown } from "react-feather";
+import { ChevronDown } from "react-feather";
 import Breadcrumbs from "@components/breadcrumbs";
+import { getUserData } from "../../utility/Utils";
 
 const ListeVotant = () => {
   const params = useParams();
   const dispatch = useDispatch();
   const bv = useSelector((state) => state.election.nombreElecteurByBv);
+  const navigate = useNavigate();
 
   let bvData = bv?.filter(function (id) {
     return id.id_bureau == params.idbv;
   });
 
   useEffect(() => {
+    if (getUserData().role === "parti") {
+      navigate("/VueParti");
+    }
     dispatch(getElecteurByBv({ bv: params.idbv }));
     dispatch(getElecteurVotant({ id_bv: params.idbv }));
     dispatch(nombreElecteurByBvBYCircons());

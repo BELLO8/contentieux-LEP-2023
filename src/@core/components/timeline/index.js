@@ -125,11 +125,13 @@ const Timeline = (props) => {
                     >
                       <ModalHeader>{item.title}</ModalHeader>
                       <ModalBody>
-                        <ul>
+                        <ul className="timeline mt-1">
                           {item.materiels?.map((item) => {
                             return (
-                              <li>
-                                {item.id_materiel} : {item.status}
+                              <li className="timeline-item">
+                               <span className="timeline-point timeline-point timeline-point-indicator"></span> 
+                               <p>{item.libelle}</p>
+                                <Badge color="success">{item.status? "Conforme" : "Pas conforme"}</Badge> 
                               </li>
                             );
                           })}

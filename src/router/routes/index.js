@@ -22,6 +22,9 @@ import TableVote from "../../views/Components/TableVote"
 import ListeVotant from "../../views/app/ListeVotant"
 import DepouillementBV from "../../views/app/DepouillementBV"
 import DetailBv from "../../views/app/DetailBv"
+import LoginParti from "../../views/VueParti/LoginParti"
+import RegisterParti from "../../views/VueParti/RegisterParti"
+import Parti from "../../views/VueParti/Home"
 
 const getLayout = {
   blank: <BlankLayout />,
@@ -69,12 +72,32 @@ const Routes = [
     element: <Resultat />
   },
   {
+    path: "/VueParti",
+    element: <Parti />
+  },
+  {
     path: "/bureau-vote",
     element: <SettingCandidat />
   },
   {
     path: "/bureau-vote/deroulement/:idlv/:idbv",
     element: <DetailBv />
+  },
+  {
+    path: "/MonParti/login",
+    element: <LoginParti />,
+    meta: {
+      publicRoute: true,
+      layout: "blank"
+    }
+  },
+  {
+    path: "/MonParti/inscription",
+    element: <RegisterParti />,
+    meta: {
+      publicRoute: true,
+      layout: "blank"
+    }
   },
   {
     path: "/login",
