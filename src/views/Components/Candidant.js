@@ -17,7 +17,11 @@ const socket = io.connect("https://jellyfish-app-wxyzd.ondigitalocean.app", {
 
 const Candidat = () => {
   const dispatch = useDispatch();
-  const listCandidat = useSelector((state) => state.election.candidats);
+  const listCandidat = !isEmptyObject(
+    useSelector((state) => state.election.candidats)
+  )
+    ? useSelector((state) => state.election.candidats)
+    : getCandidats();
   const voix = useSelector((state) => state.election.voix);
   const resultat = useSelector((state) => state.election.resultat);
 
@@ -29,12 +33,6 @@ const Candidat = () => {
 
   if (isEmptyObject(resultat)) {
     listCandidat.map((item) => {
-      listCandidatData.push(item);
-    });
-  }
-
-  if (isEmptyObject(listCandidat)) {
-    getCandidats()?.map((item) => {
       listCandidatData.push(item);
     });
   }
