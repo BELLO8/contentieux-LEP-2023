@@ -1,8 +1,4 @@
 /* eslint-disable */
-<<<<<<< HEAD
-
-=======
->>>>>>> d4f43fa7f5d2b3734fe44db4da8868db95fe21de
 import { Fragment } from "react"
 
 // ** Custom Components
