@@ -45,7 +45,7 @@ const UsersList = ({ idlv, idbv }) => {
   return (
     <Fragment>
       <Col xl="6">
-        <div className="d-flex align-items-center mt-2 mb-sm-0 mb-1 me-1">
+        {/* <div className="d-flex align-items-center mt-2 mb-sm-0 mb-1 me-1">
           <label className="mb-0" htmlFor="search-invoice"></label>
           <Input
             id="search-invoice"
@@ -55,7 +55,7 @@ const UsersList = ({ idlv, idbv }) => {
             value={searchTerm}
             onChange={(e) => setSearchTerm(e.target.value)}
           />
-        </div>
+        </div> */}
       </Col>
       <Card className="overflow-hidden mt-2">
         <div className="react-dataTable" id="electeur">

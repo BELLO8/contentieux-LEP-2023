@@ -44,11 +44,11 @@ const UserDropdown = () => {
       >
         <div className="user-nav d-sm-flex d-none">
           <span className="user-name fw-bold">
-            {user.role === "parti" ? user.username : user.nom}
+            {user?.role === "parti" ? user?.username : user?.nom}
           </span>
           <span className="user-status fw-bold text-warning">
-            {user.role !== "parti"
-              ? user.role + " " + user.lib_parti + " " + user.lib_type_election
+            {user?.role !== "parti"
+              ? user?.role + " " + user?.lib_parti + " " + user?.lib_type_election
               : 'Parti politique'}
           </span>
         </div>

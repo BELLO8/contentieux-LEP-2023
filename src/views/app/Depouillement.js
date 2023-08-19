@@ -11,7 +11,7 @@ import {
   Input, Row
 } from "reactstrap";
 import { Label } from "reactstrap";
-import { useDispatch, useSelector } from "react-redux";
+import { useDispatch } from "react-redux";
 import {
   getBureauVote, getCandidatsVoiceByDep
 } from "../../redux/store/Election";
@@ -23,7 +23,6 @@ import {
 import { Filter } from "react-feather";
 import Bv from "../Components/BvDepouillement";
 import BreadCrumbs from "../../@core/components/breadcrumbs";
-import { isEmptyObject } from "jquery";
 import { useNavigate } from "react-router-dom";
 
 export default function Depouillement() {
@@ -31,11 +30,7 @@ export default function Depouillement() {
   const navigate = useNavigate();
   const [searchTerm, setSearchTerm] = useState("");
 
-  const lieuxVote = !isEmptyObject(
-    useSelector((state) => state.election.lieuxVote)
-  )
-    ? useSelector((state) => state.election.lieuxVote)
-    : getLv();
+  const lieuxVote = getLv();
 
   const nombreElecteurByBv = getElecteurByBvBYCircons();
 

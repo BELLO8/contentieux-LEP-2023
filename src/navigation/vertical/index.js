@@ -27,7 +27,7 @@ export default [
   },
   {
     id: "resultat",
-    title: "Resultat",
+    title: "Résultats",
     icon: <CheckSquare size={20} />,
     navLink: "/resultat"
   }

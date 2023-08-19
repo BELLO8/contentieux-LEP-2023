@@ -20,15 +20,13 @@ const DetailBv = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
   
-  const bv = isEmptyObject(
-    useSelector((state) => state.election.nombreElecteurByBv)
-  )
-    ? useSelector((state) => state.election.nombreElecteurByBv)
-    : getElecteurByBvBYCircons();
+  const bv = getElecteurByBvBYCircons();
 
   let data = bv?.filter(function (id) {
     return id.id_bureau == params.idbv;
   });
+
+  console.log(data)
 
   useEffect(() => {
     if (getUserData().role === "parti") {

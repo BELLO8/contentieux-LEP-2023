@@ -1,10 +1,8 @@
 /* eslint-disable */
 
-import Avatar from "@components/avatar";
 import { useEffect } from "react";
-import { Check, User } from "react-feather";
 import { useDispatch, useSelector } from "react-redux";
-import { Badge, Card, CardBody, Col, Row } from "reactstrap";
+import { Card, Col, Row } from "reactstrap";
 import { voice } from "../../redux/store/Election";
 import { isEmptyObject } from "jquery";
 import { getCandidats, getUserData } from "../../utility/Utils";
@@ -17,22 +15,18 @@ const socket = io.connect("https://jellyfish-app-wxyzd.ondigitalocean.app", {
 
 const Candidat = () => {
   const dispatch = useDispatch();
-  const listCandidat = !isEmptyObject(
-    useSelector((state) => state.election.candidats)
-  )
-    ? useSelector((state) => state.election.candidats)
-    : getCandidats();
+  const listCandidat = getCandidats();
   const voix = useSelector((state) => state.election.voix);
   const resultat = useSelector((state) => state.election.resultat);
 
   const listCandidatData = [];
   const user = getUserData();
-  resultat.map((item) => {
+  resultat?.map((item) => {
     listCandidatData.push(item);
   });
 
   if (isEmptyObject(resultat)) {
-    listCandidat.map((item) => {
+    listCandidat?.map((item) => {
       listCandidatData.push(item);
     });
   }
@@ -70,7 +64,7 @@ const Candidat = () => {
             </div>
             <div style={{ height: "12px" }}></div>
             <div className=" d-flex align-items-center flex-column text-white bg-danger">
-              <b>{item.lib_parti}</b>
+              <b>{item.parti}</b>
             </div>
             <div className="d-flex align-items-center flex-column">
               <h2 className="mt-1 mb-1">

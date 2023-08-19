@@ -28,7 +28,7 @@ body,
     }
     a.active {
       z-index: 1;
-      background: linear-gradient(118deg, #365af7, #3e20c3);
+      background: $primary;
       // box-shadow: 0 0 10px 1px rgba($primary, 0.7);
       color: $white;
       font-weight: 400;

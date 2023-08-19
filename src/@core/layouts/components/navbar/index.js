@@ -1,4 +1,5 @@
-// ** React Imports
+/* eslint-disable */
+
 import { Fragment } from "react"
 
 // ** Custom Components
@@ -11,9 +12,9 @@ const ThemeNavbar = (props) => {
 
   return (
     <Fragment>
-       <div className='bookmark-wrapper d-flex align-items-center'>
+       {/* <div className='bookmark-wrapper d-flex align-items-center'>
         <NavbarBookmarks setMenuVisibility={setMenuVisibility} />
-      </div>
+      </div> */}
       <NavbarUser skin={skin} setSkin={setSkin} />
     </Fragment>
   )

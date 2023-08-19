@@ -35,10 +35,10 @@ const BureauVote = ({ idbv, bv, lv, idlv, etape, nbrRep }) => {
             <div className="border">
               <Row className=" d-flex justify-content-between align-items-center">
                 <Col lg="6">
-                  <div className="px-1"><b>{lv}</b></div>
+                  <div className="px-1"><b style={{ color: "#000000"}}>{lv}</b></div>
                 </Col>
                 <Col lg="4">
-                  <div className="border" style={{ padding: "10px" }}>
+                  <div className="border" style={{ fontWeight:"bold",color:"#000000",padding: "10px" }}>
                     {bv}
                   </div>
                 </Col>
@@ -58,7 +58,7 @@ const BureauVote = ({ idbv, bv, lv, idlv, etape, nbrRep }) => {
                   <div className="px-1">
                     <Badge
                       color={
-                        etape != "Pas encore debuté" ? "success" : "secondary"
+                        etape != "Pas encore debuté" ? "success" : "dark"
                       }
                     >
                       Etape : {etape}
@@ -75,7 +75,7 @@ const BureauVote = ({ idbv, bv, lv, idlv, etape, nbrRep }) => {
                         navigate(`/bureau-vote/deroulement/${idlv}/${idbv}`);
                       }}
                     >
-                      Detail
+                     <b style={{ color:"#183f98"}}>Détails</b> 
                     </Button>
                   </div>
                 </Col>

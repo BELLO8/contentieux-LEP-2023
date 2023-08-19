@@ -51,7 +51,7 @@ const BVTimeline = () => {
             hour: "numeric",
             minute: "numeric",
           })
-        : item.lib_etape === "Ouverture bureau de vote"
+        : item.lib_etape === "Ouverture du bureau de vote"
         ? "Ouvert"
         : "Encours",
       comment: item.commentaire
@@ -62,13 +62,14 @@ const BVTimeline = () => {
 
   let dataLine = dataTimeLine.map((item) => {
     let materiels = verifData.find((materiels) => materiels.id == item.id);
-    if (item.title === "Vérification matériel") {
+    if (item.title === "Vérification du matériel électoral") {
       return { ...item, ...materiels };
     } else {
       return { ...item };
     }
   });
 
+  console.log(dataLine);
   return (
     <Card className="shadow-none round">
       <CardHeader>

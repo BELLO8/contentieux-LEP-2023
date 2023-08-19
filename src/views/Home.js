@@ -17,11 +17,8 @@ import { useNavigate } from "react-router-dom";
 const Home = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
-  
+
   useEffect(() => {
-    if (getUserData().role === "parti") {
-      navigate("/VueParti");
-    }
     dispatch(getAllEtapeBv());
     dispatch(getNombreBvEtapeEnCours());
   }, [dispatch]);

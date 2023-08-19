@@ -106,9 +106,9 @@ const Timeline = (props) => {
               </p>
               {/* {item.customContent ? item.customContent : null} */}
               <div className="d-flex align-items-center">
-                {item.title === "Ouverture bureau de vote" ? (
+                {item.title === "Ouverture du bureau de vote" ? (
                   ""
-                ) : item.title === "Vérification matériel" ? (
+                ) : item.title === "Vérification du matériel électoral" ? (
                   <>
                     <Button
                       className="btn-sm"

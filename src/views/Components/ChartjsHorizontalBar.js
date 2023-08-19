@@ -19,6 +19,7 @@ const ChartjsHorizontalBarChart = () => {
     candidat.push(item.nom);
   });
 
+  console.log(candidatData);
   useEffect(() => {
     dispatch(
       getResult({
@@ -30,7 +31,7 @@ const ChartjsHorizontalBarChart = () => {
   }, [dispatch]);
 
   const options = {
-    indexAxis: "x",
+    indexAxis: "y",
     responsive: true,
     maintainAspectRatio: false,
     animation: { duration: 500 },
@@ -65,16 +66,18 @@ const ChartjsHorizontalBarChart = () => {
       {
         label: user?.lib_type_election,
         backgroundColor: [
-          "rgba(255, 99, 132,0.7)",
-          "rgba(255, 159, 64,0.7)",
-          "rgba(255, 205, 86,0.7)",
-          "rgba(75, 192, 192, 0.2)",
-          "rgba(54, 162, 235, 0.2)",
-          "rgba(153, 102, 255, 0.2)",
-          "rgba(201, 203, 207, 0.2)",
+          "#1058d2",
+          "#cccccc",
+          "#cccccc",
+          "#cccccc",
+          "#dddddd",
+          "#dddddd",
+          "#dddddd",
+          "#dddddd",
+          "#000000",
         ],
         borderColor: "transparent",
-        data: candidatData,
+        data: candidatData.sort((a, b) => b - a),
       },
     ],
   };
