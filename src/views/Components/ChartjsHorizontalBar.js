@@ -61,7 +61,7 @@ const ChartjsHorizontalBarChart = () => {
 
   // ** Chart Data
   const data = {
-    labels: candidat,
+    labels: candidat, 
     datasets: [
       {
         label: user?.lib_type_election,
@@ -77,7 +77,7 @@ const ChartjsHorizontalBarChart = () => {
           "#000000",
         ],
         borderColor: "transparent",
-        data: candidatData.sort((a, b) => b - a),
+        data: candidatData,
       },
     ],
   };

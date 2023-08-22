@@ -13,12 +13,12 @@ export default [
     icon: <Archive size={20} />,
     navLink: "/bureau-vote"
   },
-  {
-    id: "vote",
-    title: "Evolution du scrutin",
-    icon: <Package size={20} />,
-    navLink: "/vote"
-  },
+  // {
+  //   id: "vote",
+  //   title: "Evolution du scrutin",
+  //   icon: <Package size={20} />,
+  //   navLink: "/vote"
+  // },
   {
     id: "depouillement",
     title: "Dépouillement",

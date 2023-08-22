@@ -57,17 +57,14 @@ const UsersList = ({ idlv, idbv }) => {
           />
         </div> */}
       </Col>
-      <Card className="overflow-hidden mt-2">
+      <Card className="overflow-hidden shadow-none mt-2">
         <div className="react-dataTable" id="electeur">
           <DataTable
-            pagination
             responsive
             noDataComponent="Aucune données pour le moment"
             columns={columns}
             sortIcon={<ChevronDown />}
             className="react-dataTable"
-            paginationPerPage={100}
-            paginationRowsPerPageOptions={[100]}
             data={data?.filter((item) => {
               if (searchTerm == "") {
                 return item;

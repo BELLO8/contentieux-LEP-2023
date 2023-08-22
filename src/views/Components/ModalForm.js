@@ -77,7 +77,6 @@ const ModalForm = ({ idbv, idlv, rep }) => {
                 </div>
                 <div className="d-flex flex-column">
                   <h6>{res.data.message}</h6>
-                  <Link to="/paiement-candidat">payer maintenant</Link>
                 </div>
               </div>
             );
@@ -123,7 +122,7 @@ const ModalForm = ({ idbv, idlv, rep }) => {
 
   return (
     <div>
-      <b>{rep}</b> Répresentant(s)
+      <b className="text-dark">{rep} Répresentants </b> 
       <Button
         color="primary"
         className="btn-icon rounded-circle"

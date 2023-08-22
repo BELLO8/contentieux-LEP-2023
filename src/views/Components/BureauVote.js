@@ -23,46 +23,96 @@ import {
 } from "../../redux/store/Election";
 import ModalForm from "./ModalForm";
 
-const BureauVote = ({ idbv, bv, lv, idlv, etape, nbrRep }) => {
+const BureauVote = ({
+  idbv,
+  bv,
+  lv,
+  idlv,
+  etape,
+  nbrRep,
+  inscrit,
+  votants,
+}) => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
+  const taux = votants === 0 ? 0 : (Number(votants) * 100) / Number(inscrit);
 
   return (
-    <div className="bg-white shadow rounded mb-1">
+    <Card className="rounded mb-1">
       <div>
         <div className=" ">
           <div>
             <div className="border">
               <Row className=" d-flex justify-content-between align-items-center">
-                <Col lg="6">
-                  <div className="px-1"><b style={{ color: "#000000"}}>{lv}</b></div>
+                <Col lg="8">
+                  <div style={{ minWidth: "310px", marginLeft: "8px" }}>
+                    <b style={{ minWidth: "10px", color: "#000000" }}>{lv}</b>
+                  </div>
+                  <Badge
+                    style={{ marginLeft: "8px" }}
+                    color={etape != "Pas debuté" ? "success" : "dark"}
+                  >
+                    Etape : {etape}
+                  </Badge>
                 </Col>
                 <Col lg="4">
-                  <div className="border" style={{ fontWeight:"bold",color:"#000000",padding: "10px" }}>
+                  <div
+                    className="border"
+                    style={{
+                      fontWeight: "bold",
+                      color: "#000000",
+                      padding: "10px",
+                    }}
+                  >
                     {bv}
                   </div>
                 </Col>
               </Row>
             </div>
 
-            <div className="d-flex align-items-center mt-1 px-1">
+            <div className="d-flex align-items-center mt-1">
+              <div className="mx-1">
+                <ModalForm idbv={idbv} idlv={idlv} rep={nbrRep} />
+              </div>
               <div className="my-auto">
-                <p>
-                  <ModalForm idbv={idbv} idlv={idlv} rep={nbrRep} />
-                </p>
+                <h4
+                  className="mb-0"
+                  style={{ fontWeight: "bold", color: "#183f98" }}
+                >
+                  {inscrit}
+                </h4>
+                <CardText
+                  className="font-small-3 mb-0"
+                  style={{ fontWeight: "bold", color: "#183f98" }}
+                >
+                  Inscrits
+                </CardText>
+              </div>
+              <div className="mx-3">
+                <h4 className="fw-bolder mb-0 text-success">{votants}</h4>
+                <CardText
+                  className="font-small-3 text-success mb-0"
+                  style={{ fontWeight: "bold" }}
+                >
+                  Votants
+                </CardText>
               </div>
             </div>
             <div className="border">
               <Row className=" d-flex justify-content-between align-items-center">
                 <Col lg="8" sm="8">
                   <div className="px-1">
-                    <Badge
-                      color={
-                        etape != "Pas encore debuté" ? "success" : "dark"
-                      }
-                    >
-                      Etape : {etape}
-                    </Badge>{" "}
+                    <span>
+                      Taux de participations…{" "}
+                      <b className="text-danger">
+                        {parseFloat(taux).toFixed(2)}%
+                      </b>
+                    </span>
+                    <Progress
+                      animated
+                      className="progress-bar-info"
+                      value={taux}
+                    />
                   </div>
                 </Col>
                 <Col lg="4" sm="4">
@@ -75,7 +125,7 @@ const BureauVote = ({ idbv, bv, lv, idlv, etape, nbrRep }) => {
                         navigate(`/bureau-vote/deroulement/${idlv}/${idbv}`);
                       }}
                     >
-                     <b style={{ color:"#183f98"}}>Détails</b> 
+                      <b style={{ color: "#183f98" }}>Détails</b>
                     </Button>
                   </div>
                 </Col>
@@ -84,7 +134,7 @@ const BureauVote = ({ idbv, bv, lv, idlv, etape, nbrRep }) => {
           </div>
         </div>
       </div>
-    </div>
+    </Card>
   );
 };
 

@@ -7,6 +7,7 @@ import BVTimeline from "../Components/BVTimeline";
 import { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import {
+  getAllEtapeBv,
   getListBvConforme,
   getTimeLineByBv,
   nombreElecteurByBvBYCircons,
@@ -34,6 +35,7 @@ const DetailBv = () => {
     }
     dispatch(getTimeLineByBv({ bv: params.idbv }));
     dispatch(getListBvConforme());
+    dispatch(getAllEtapeBv());
   }, [dispatch]);
   return (
     <>

@@ -116,7 +116,7 @@ const StatsCard = () => {
 
   return (
     <>
-      <h5 tag="h4"> Données générales</h5>
+      <h4 style={{ fontWeight:"bold" }} tag="h4"> Données générales</h4>
       <Row>{renderData()}</Row>
     </>
   );

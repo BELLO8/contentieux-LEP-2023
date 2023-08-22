@@ -36,15 +36,23 @@ import BreadCrumbs from "../../@core/components/breadcrumbs";
 import { getRepresentant } from "../../redux/store/Representant";
 import { isEmptyObject } from "jquery";
 import { useNavigate } from "react-router-dom";
+import { io } from "socket.io-client";
+
+const socket = io.connect("https://jellyfish-app-wxyzd.ondigitalocean.app", {
+  transports: ["websocket"],
+});
 
 export default function SettingCandidat() {
   const dispatch = useDispatch();
   const [basicModal, setBasicModal] = useState(false);
   const [searchTerm, setSearchTerm] = useState("");
   const navigate = useNavigate();
-  
+  const user = getUserData();
   const lieuxVote = getLv();
-
+  const dataVotant = useSelector((state) => state.election.votants);
+  const allNombreVotantByBvByCircons = useSelector(
+    (state) => state.election.allNombreVotantByBvByCircons
+  );
   const nombreElecteurByBv = !isEmptyObject(
     useSelector((state) => state.election.nombreElecteurByBv)
   )
@@ -59,6 +67,8 @@ export default function SettingCandidat() {
   const lieuxVoteData = [];
   const timeLineData = [];
   const ListRepresentantData = [];
+  const votant = [];
+  const nombreVotant = [];
 
   ListRepresentant?.map((rep) => {
     ListRepresentantData.push({
@@ -85,14 +95,39 @@ export default function SettingCandidat() {
     });
   });
 
+  allNombreVotantByBvByCircons.map((item) => {
+    nombreVotant.push({
+      id: item.id_bureau_vote,
+      total: item.total_votant,
+      liblvote: item.liblvote,
+      lib_bv: item.lib_bv,
+    });
+  });
+
+  dataVotant?.map((item) => {
+    votant.push({
+      id: item.id_bureau_vote,
+      nom: item.nom,
+      prenoms: item.prenoms,
+      num_electeur: item.num_electeur,
+      nombreVotant: dataVotant.length,
+    });
+  });
+
   let newArray = electeurbv.map((obj1) => {
     let obj2 = timeLineData.filter((obj2) => obj2.id === obj1.id);
     let obj3 = ListRepresentantData.filter((obj3) => obj3.id === obj1.id);
+    let nbreVotant = nombreVotant.find(
+      (nbreVotant) => nbreVotant.id === obj1.id
+    );
+    let votantData = votant.find((item) => item.id === obj1.id);
     return {
       ...obj1,
+      ...nbreVotant,
+      ...votantData,
       etape: [...obj2][obj2.length - 1]
         ? [...obj2][obj2.length - 1].name
-        : "Pas encore debuté",
+        : "Pas debuté",
       nbrRep: [...obj3].length,
     };
   });
@@ -103,12 +138,16 @@ export default function SettingCandidat() {
   });
 
   useEffect(() => {
+    socket.on(`insertedvote-${user.id_parti + user.id_circons}`, (data) => {
+      console.log(data);
+      dispatch(vote(JSON.parse(data)));
+    });
     if (getUserData().role === "parti") {
       navigate("/VueParti");
     }
     dispatch(getTimeLineByCircons());
     dispatch(getRepresentant());
-  }, [dispatch]);
+  }, [dispatch, socket]);
 
   return (
     <>
@@ -199,6 +238,14 @@ export default function SettingCandidat() {
                 idlv={item.id_lieu_vote}
                 lv={item.lieu_vote}
                 nbrRep={item.nbrRep}
+                inscrit={item.nb_electeur}
+                votants={
+                  item.nombreVotant
+                    ? Number(item.total) + item.nombreVotant
+                    : item.total
+                    ? item.total
+                    : 0
+                }
                 etape={item.etape}
                 bv={" Bv : " + item.bureau_vote}
               />

@@ -48,7 +48,7 @@ const UserDropdown = () => {
           </span>
           <span className="user-status fw-bold text-warning">
             {user?.role !== "parti"
-              ? user?.role + " " + user?.lib_parti + " " + user?.lib_type_election
+              ? user?.role + " " + user?.lib_parti 
               : 'Parti politique'}
           </span>
         </div>

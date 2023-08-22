@@ -8,15 +8,11 @@ import "../style.css";
 import { ChevronDown } from "react-feather";
 import { Spinner } from "reactstrap";
 import { useDispatch, useSelector } from "react-redux";
-import {
-  getElecteurVotant,
-  getLieuxVote,
-  vote,
-} from "../../redux/store/Election";
+import { getElecteurVotant, vote } from "../../redux/store/Election";
 import { getUserData } from "../../utility/Utils";
 import { Card } from "reactstrap";
 import DataTable from "react-data-table-component";
-import { votants, votantsElect } from "../Components/columns";
+import { columns } from "../Components/columns";
 
 const socket = io.connect("https://jellyfish-app-wxyzd.ondigitalocean.app", {
   transports: ["websocket"],
@@ -26,6 +22,7 @@ export default function TableVote({ idbv }) {
   const dispatch = useDispatch();
   const user = getUserData();
   const listeVotants = useSelector((state) => state.election.votants);
+  const [pending, setPending] = useState(true);
 
   useEffect(() => {
     socket.on(`insertedvote-${user.id_parti + user.id_circons}`, (data) => {
@@ -35,6 +32,8 @@ export default function TableVote({ idbv }) {
     dispatch(getElecteurVotant({ id_bv: idbv }));
   }, [dispatch, socket]);
 
+  listeVotants ? setPending(false) : "";
+  
   return (
     <>
       <Card className="overflow-hidden mt-2">
@@ -42,9 +41,10 @@ export default function TableVote({ idbv }) {
           <DataTable
             pagination
             responsive
+            progressPending={pending}
             progressComponent={<Spinner color="primary" size="sm" />}
-            noDataComponent="aucune données pour le moment"
-            columns={votantsElect}
+            noDataComponent="Aucune données pour le moment"
+            columns={columns}
             sortIcon={<ChevronDown />}
             className="react-dataTable"
             paginationPerPage={6}

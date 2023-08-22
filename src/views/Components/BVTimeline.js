@@ -20,34 +20,26 @@ const BVTimeline = () => {
   const verifData = [];
   const dataTimeLine = [];
 
-  bvConform.map((item) => {
+  bvConform?.map((item) => {
     verifData.push({
       id: item.id_bureau_vote,
       materiels: item.materiels,
     });
   });
 
-  timeLine.map((item) => {
+  timeLine?.map((item) => {
     dataTimeLine.push({
       id: item.id_bureau_vote,
       title: item.lib_etape,
       content:
-        "Date et heure de debut le : " +
-        new Date(item.started_at).toLocaleDateString("fr-FR", {
-          weekday: "long",
-          year: "numeric",
-          month: "short",
-          day: "numeric",
+        "Debut : " +
+        new Date(item.started_at).toTimeString("fr-FR", {
           hour: "numeric",
           minute: "numeric",
         }),
       status: item.end_at
-        ? "Date et heure de fin le " +
-          new Date(item.started_at).toLocaleDateString("fr-FR", {
-            weekday: "long",
-            year: "numeric",
-            month: "short",
-            day: "numeric",
+        ? "Fin" +
+          new Date(item.started_at).toTimeString("fr-FR", {
             hour: "numeric",
             minute: "numeric",
           })
@@ -73,8 +65,8 @@ const BVTimeline = () => {
   return (
     <Card className="shadow-none round">
       <CardHeader>
-        <CardTitle tag="h4">
-          Etapes du scrutin
+        <CardTitle tag="h1">
+          <h2 style={{ fontWeight: "bold" }}>Etapes du scrutin</h2>
         </CardTitle>
       </CardHeader>
       <CardBody className="pt-1">

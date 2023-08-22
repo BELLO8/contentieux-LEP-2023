@@ -334,7 +334,7 @@ export const ElectionSlice = createSlice({
       state.votants.unshift(action.payload);
     },
     voice: (state, action) => {
-      state.voix = action.payload;
+      state.voix.push(action.payload);
     },
   },
   extraReducers: (builder) => {

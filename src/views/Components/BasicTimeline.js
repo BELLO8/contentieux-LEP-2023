@@ -67,10 +67,12 @@ const BasicTimeline = () => {
   //console.log(data);
 
   return (
-    <div className="bg-white p-1 round">
-      <h5 className="mb-3">Chronologie globale du déroulement de l'élection</h5>
+    <Card className="p-1 shadow-none round">
+      <h5 className="mb-3" style={{ fontWeight: "bold" }}>
+        Chronologie globale du déroulement de l'élection
+      </h5>
       <CustomTimeline data={data} />
-    </div>
+    </Card>
   );
 };
 

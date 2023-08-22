@@ -51,10 +51,13 @@ const Timeline = (props) => {
             })}
           >
             <span
-              className={classnames("timeline-point", {
-                [`timeline-point-${item.color}`]: item.color,
-                "timeline-point-indicator": !item.icon,
-              })}
+              className={`timeline-point timeline-point-${
+                item.status == "Ouvert" || item.status == "Encours"
+                  ? "primary"
+                  : item.status
+                  ? "success"
+                  : "secondary"
+              } timeline-point-indicator`}
             >
               {item.icon ? item.icon : null}
             </span>
@@ -109,47 +112,59 @@ const Timeline = (props) => {
                 {item.title === "Ouverture du bureau de vote" ? (
                   ""
                 ) : item.title === "Vérification du matériel électoral" ? (
-                  <>
-                    <Button
-                      className="btn-sm"
-                      color="primary"
-                      onClick={() => setBasicModal(!basicModal)}
-                      outline
-                    >
-                      Voir details
-                    </Button>
-                    <Modal
-                      isOpen={basicModal}
-                      toggle={() => setBasicModal(!basicModal)}
-                      modalClassName="modal-slide-in event-sidebar"
-                    >
-                      <ModalHeader>{item.title}</ModalHeader>
-                      <ModalBody>
-                        <ul className="timeline mt-1">
-                          {item.materiels?.map((item) => {
-                            return (
-                              <li className="timeline-item">
-                               <span className="timeline-point timeline-point timeline-point-indicator"></span> 
-                               <p>{item.libelle}</p>
-                                <Badge color="success">{item.status? "Conforme" : "Pas conforme"}</Badge> 
-                              </li>
-                            );
-                          })}
-                        </ul>
-                      </ModalBody>
-                    </Modal>
-                  </>
+                  item.content ? (
+                    <>
+                      <Button
+                        className="btn-sm"
+                        color="primary"
+                        onClick={() => setBasicModal(!basicModal)}
+                        outline
+                      >
+                        Voir details
+                      </Button>
+                      <Modal
+                        isOpen={basicModal}
+                        toggle={() => setBasicModal(!basicModal)}
+                        modalClassName="modal-slide-in event-sidebar"
+                      >
+                        <ModalHeader>{item.title}</ModalHeader>
+                        <ModalBody>
+                          <ul className="timeline mt-1">
+                            {item.materiels?.map((item) => {
+                              return (
+                                <li className="timeline-item">
+                                  <span className="timeline-point timeline-point timeline-point-indicator"></span>
+                                  <p>{item.libelle}</p>
+                                  <Badge color="success">
+                                    {item.status ? "Conforme" : "Pas conforme"}
+                                  </Badge>
+                                </li>
+                              );
+                            })}
+                          </ul>
+                        </ModalBody>
+                      </Modal>
+                    </>
+                  ) : (""
+                    // <Badge color="danger">pas debuté</Badge>
+                  )
                 ) : item.title === "Ouverture du scrutin" ? (
-                  <Accordion open={open} toggle={toggle}>
-                    <AccordionItem>
-                      <AccordionHeader targetId="2">
-                      <Button outline size="sm">Voir details</Button>  
-                      </AccordionHeader>
-                      <AccordionBody accordionId="2">
-                      <TableVote idbv={params.idbv}/>
-                      </AccordionBody>
-                    </AccordionItem>
-                  </Accordion>
+                  item.content ? (
+                    <Accordion open={open} toggle={toggle}>
+                      <AccordionItem>
+                        <AccordionHeader targetId="2">
+                          <Button outline size="sm">
+                            Voir details
+                          </Button>
+                        </AccordionHeader>
+                        <AccordionBody accordionId="2">
+                          <TableVote idbv={params.idbv} />
+                        </AccordionBody>
+                      </AccordionItem>
+                    </Accordion>
+                  ) : (""
+                    // <Badge color="danger">pas debuté</Badge>
+                  )
                 ) : (
                   ""
                 )}

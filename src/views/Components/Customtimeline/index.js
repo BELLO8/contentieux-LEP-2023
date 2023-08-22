@@ -22,9 +22,10 @@ const CustomTimeline = (props) => {
         const ItemTag = item.tag ? item.tag : "li";
         return (
           <Tag
-            className={classnames("timeline px-1", {
+            className={classnames("timeline", {
               [className]: className,
             })}
+            style={{ marginRight: "5px" }}
           >
             <ItemTag
               key={i}
@@ -77,14 +78,14 @@ const CustomTimeline = (props) => {
                     </p>
                     <p>
                       Taux :{" "}
-                      {parseInt(
+                      {parseFloat(
                         (Number(votant[0]?.total_votant) * 100) /
                           Number(
                             inscrit?.nombre
                               ? inscrit?.nombre
                               : getNombreElecteur()?.nombre
                           )
-                      ) + "%"}
+                      ).toFixed(2) + "%"}
                     </p>
                   </div>
                 ) : (
