@@ -13,6 +13,7 @@ import { getUserData } from "../../utility/Utils";
 import { Card } from "reactstrap";
 import DataTable from "react-data-table-component";
 import { columns } from "../Components/columns";
+import { useState } from "react";
 
 const socket = io.connect("https://jellyfish-app-wxyzd.ondigitalocean.app", {
   transports: ["websocket"],
@@ -22,7 +23,7 @@ export default function TableVote({ idbv }) {
   const dispatch = useDispatch();
   const user = getUserData();
   const listeVotants = useSelector((state) => state.election.votants);
-  const [pending, setPending] = useState(true);
+  // const [pending, setPending] = useState(true);
 
   useEffect(() => {
     socket.on(`insertedvote-${user.id_parti + user.id_circons}`, (data) => {
@@ -32,8 +33,6 @@ export default function TableVote({ idbv }) {
     dispatch(getElecteurVotant({ id_bv: idbv }));
   }, [dispatch, socket]);
 
-  listeVotants ? setPending(false) : "";
-  
   return (
     <>
       <Card className="overflow-hidden mt-2">
@@ -41,7 +40,6 @@ export default function TableVote({ idbv }) {
           <DataTable
             pagination
             responsive
-            progressPending={pending}
             progressComponent={<Spinner color="primary" size="sm" />}
             noDataComponent="Aucune données pour le moment"
             columns={columns}

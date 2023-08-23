@@ -38,7 +38,7 @@ const BVTimeline = () => {
           minute: "numeric",
         }),
       status: item.end_at
-        ? "Fin" +
+        ? "Fin : " +
           new Date(item.started_at).toTimeString("fr-FR", {
             hour: "numeric",
             minute: "numeric",
