@@ -33,13 +33,13 @@ const BVTimeline = () => {
       title: item.lib_etape,
       content:
         "Debut : " +
-        new Date(item.started_at).toTimeString("fr-FR", {
+        new Date(item.started_at).toLocaleTimeString("fr-FR", {
           hour: "numeric",
           minute: "numeric",
         }),
       status: item.end_at
         ? "Fin : " +
-          new Date(item.started_at).toTimeString("fr-FR", {
+          new Date(item.started_at).toLocaleTimeString("fr-FR", {
             hour: "numeric",
             minute: "numeric",
           })

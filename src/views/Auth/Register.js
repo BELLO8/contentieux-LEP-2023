@@ -10,6 +10,8 @@ import {
   Label,
   Input,
   Button,
+  Row,
+  Col,
 } from "reactstrap";
 import "@styles/react/pages/page-authentication.scss";
 import InputPasswordToggle from "@components/input-password-toggle";
@@ -23,10 +25,11 @@ import { getCirconscription } from "../../redux/store/Circonscription";
 import { getParti } from "../../redux/store/Parti";
 import { getTypeElection } from "../../redux/store/TypeElection";
 import { register } from "../../@core/auth/jwt/const";
-import toast from 'react-hot-toast'
-import { Check } from "react-feather";
+import toast from "react-hot-toast";
+import { AlertCircle, Check } from "react-feather";
 import Avatar from "@components/avatar";
-
+import { getCandidatInfo } from "../../redux/store/InfoCandidat";
+import img1 from "@src/assets/images/portrait/small/5.jpg";
 const defaultValues = {};
 
 const Register = () => {
@@ -38,15 +41,14 @@ const Register = () => {
 
   const typeElection = useSelector((state) => state.typeElection.data);
   const circonscription = useSelector((state) => state.circonscription.data);
-  const parti = useSelector((state) => state.parti.data);
-
+  const candidatInfo = useSelector((state) => state.infoCandidat.data);
   const typeElectionData = [];
   const circonscriptionData = [];
-  const partiData = [];
+  // const partiData = [];
 
-  parti.map((item) => {
-    partiData.push({ value: item.id, label: item.libelle });
-  });
+  // parti.map((item) => {
+  //   partiData.push({ value: item.id, label: item.libelle });
+  // });
 
   typeElection.map((item) => {
     typeElectionData.push({ value: item.id_type, label: item.type_election });
@@ -69,25 +71,17 @@ const Register = () => {
     if (isUserLoggedIn() !== null) {
       if (getUserData().role === "parti") {
         navigate("/VueParti");
-      }else{
+      } else {
         navigate("/home");
       }
     }
   }, []);
 
   const onSubmit = (data) => {
-
-    const CodeCand = JSON.parse(localStorage.getItem("candidatInfo"));
     if (Object.values(data).every((field) => field.length > 0)) {
-      register({
-        ...data,
-        id_type: idTypeElection,
-        id_circons: idcirconscription,
-        id_parti: idParti,
-      })
+      register({ id_candidat: candidatInfo.cod_candidat, ...data })
         .then((res) => {
           if (res.data.status === "success") {
-            localStorage.removeItem("candidatInfo");
             toast(
               <div className="d-flex">
                 <div className="me-1">
@@ -160,15 +154,24 @@ const Register = () => {
   };
 
   return (
-    <div className="auth-wrapper auth-basic px-2">
-      <div className="auth-inner my-2">
-        <Card className="mb-0">
-          <CardBody>
-            <CardTitle tag="h4" className="mb-1">
-              Inscription sur JamElec ! 👋
+    <div className="auth-wrapper auth-cover">
+      <Row className="auth-inner m-0">
+        <Col className="d-none d-lg-flex align-items-center" lg="8" sm="12">
+          <div className="w-100 d-lg-flex align-items-center justify-content-center">
+            <img  src={img1} alt="Login Cover" height={713} />
+          </div>
+        </Col>
+        <Col
+          className="d-flex align-items-center auth-bg "
+          lg="4"
+          sm="12"
+        >
+          <Col className="px-xl-2 mx-auto" xs="12" sm="8" md="6" lg="12">
+            <CardTitle tag="h1" className="fw-bolder mb-1">
+              <b style={{ color:"maroon" }}>Elector |</b> Créer votre compte
             </CardTitle>
-            <CardText className="mb-2">
-              Créer votre compte et commencez votre aventure
+            <CardText className="mb-2 text-dark">
+               Assurer l'égalité des droits et garantir l'égalit des chances.
             </CardText>
             <Form
               className="auth-login-form mt-2"
@@ -188,46 +191,6 @@ const Register = () => {
                       type="text"
                       placeholder="Entrer votre username"
                       invalid={errors.username && true}
-                      {...field}
-                      required
-                    />
-                  )}
-                />
-              </div>
-              <div className="mb-1">
-                <Label className="form-label" for="login-nom">
-                  Nom et prenom
-                </Label>
-                <Controller
-                  id="nom_prenoms"
-                  name="nom_prenoms"
-                  control={control}
-                  render={({ field }) => (
-                    <Input
-                      autoFocus
-                      type="text"
-                      placeholder="Entrer votre nom et prenom"
-                      invalid={errors.nom_prenoms && true}
-                      {...field}
-                      required
-                    />
-                  )}
-                />
-              </div>
-              <div className="mb-1">
-                <Label className="form-label" for="login-contact">
-                  Contact
-                </Label>
-                <Controller
-                  id="contact"
-                  name="contact"
-                  control={control}
-                  render={({ field }) => (
-                    <Input
-                      autoFocus
-                      type="text"
-                      placeholder="Entrer votre numéro de telephone"
-                      invalid={errors.contact && true}
                       {...field}
                       required
                     />
@@ -264,25 +227,17 @@ const Register = () => {
                   classNamePrefix="select"
                   onChange={(event) => {
                     setIdcirconscription(event.value);
+                    console.log(event.value);
+                    dispatch(
+                      getCandidatInfo({
+                        idTypeElection: idTypeElection,
+                        idcirconscription: event.value,
+                      })
+                    );
                   }}
                 />
               </div>
-              <div className="mb-1">
-                <Label className="form-label" for="parti">
-                  Selectionner votre parti politique
-                </Label>
-                <Select
-                  theme={selectThemeColors}
-                  isClearable={false}
-                  id="parti"
-                  className="react-select"
-                  classNamePrefix="select"
-                  options={partiData}
-                  onChange={(event) => {
-                    setParti(event.value);
-                  }}
-                />
-              </div>
+
               <div className="mb-1">
                 <div className="d-flex justify-content-between">
                   <Label className="form-label" for="login-password">
@@ -304,7 +259,6 @@ const Register = () => {
                   )}
                 />
               </div>
-
               <Button type="submit" color="primary" block>
                 Créer mon compte
               </Button>
@@ -315,10 +269,120 @@ const Register = () => {
                 <span>Se connecter</span>
               </Link>
             </p>
-          </CardBody>
-        </Card>
-      </div>
+          </Col>
+        </Col>
+      </Row>
     </div>
+    // <div className="auth-wrapper auth-basic px-2">
+    //   <div className="auth-inner my-2">
+    //     <Card className="mb-0">
+    //       <CardBody>
+    //         <CardTitle tag="h4" className="mb-1">
+    //           Inscription sur Elector ! 👋
+    //         </CardTitle>
+    //         <CardText className="mb-2">
+    //           Créer votre compte et commencez votre aventure
+    //         </CardText>
+    //         <Form
+    //           className="auth-login-form mt-2"
+    //           onSubmit={handleSubmit(onSubmit)}
+    //         >
+    //           <div className="mb-1">
+    //             <Label className="form-label" for="login-username">
+    //               Username
+    //             </Label>
+    //             <Controller
+    //               id="username"
+    //               name="username"
+    //               control={control}
+    //               render={({ field }) => (
+    //                 <Input
+    //                   autoFocus
+    //                   type="text"
+    //                   placeholder="Entrer votre username"
+    //                   invalid={errors.username && true}
+    //                   {...field}
+    //                   required
+    //                 />
+    //               )}
+    //             />
+    //           </div>
+    //           <div className="mb-1">
+    //             <Label className="form-label" for="type-elec">
+    //               Selectionner le type d'élection
+    //             </Label>
+    //             <Select
+    //               theme={selectThemeColors}
+    //               isClearable={false}
+    //               id="type-election"
+    //               className="react-select"
+    //               classNamePrefix="select"
+    //               options={typeElectionData}
+    //               onChange={(event) => {
+    //                 setIdTypeElection(event.value);
+    //                 dispatch(getCirconscription(event.value));
+    //               }}
+    //             />
+    //           </div>
+    //           <div className="mb-1">
+    //             <Label className="form-label" for="circons">
+    //               Selectionner une circonscription
+    //             </Label>
+    //             <Select
+    //               isClearable={false}
+    //               theme={selectThemeColors}
+    //               id="circons"
+    //               options={circonscriptionData}
+    //               className="react-select"
+    //               classNamePrefix="select"
+    //               onChange={(event) => {
+    //                 setIdcirconscription(event.value);
+    //                 console.log(event.value);
+    //                 dispatch(
+    //                   getCandidatInfo({
+    //                     idTypeElection: idTypeElection,
+    //                     idcirconscription: event.value,
+    //                   })
+    //                 );
+    //               }}
+    //             />
+    //           </div>
+
+    //           <div className="mb-1">
+    //             <div className="d-flex justify-content-between">
+    //               <Label className="form-label" for="login-password">
+    //                 Password
+    //               </Label>
+    //               <Link to="/forgot-password"></Link>
+    //             </div>
+    //             <Controller
+    //               id="password"
+    //               name="password"
+    //               control={control}
+    //               render={({ field }) => (
+    //                 <InputPasswordToggle
+    //                   className="input-group-merge"
+    //                   invalid={errors.password && true}
+    //                   {...field}
+    //                   required
+    //                 />
+    //               )}
+    //             />
+    //           </div>
+    //           <Button type="submit" color="primary" block>
+    //             Créer mon compte
+    //           </Button>
+    //         </Form>
+    //         <p className="text-center mt-2">
+    //           <span className="me-25">Vous avez déjà un compte ?</span>
+    //           <Link to="/login">
+    //             <span>Se connecter</span>
+    //           </Link>
+    //         </p>
+    //       </CardBody>
+    //     </Card>
+    //   </div>
+    // </div>
   );
 };
 

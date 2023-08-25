@@ -7,6 +7,7 @@ import circonscription from "./store/Circonscription"
 import parti from "./store/Parti"
 import election from "./store/Election"
 import representant from "./store/Representant"
+import infoCandidat from "./store/InfoCandidat"
 
 const rootReducer = {
     auth,
@@ -16,7 +17,8 @@ const rootReducer = {
     circonscription,
     parti,
     election,
-    representant
+    representant,
+    infoCandidat
   }
 
 export default rootReducer

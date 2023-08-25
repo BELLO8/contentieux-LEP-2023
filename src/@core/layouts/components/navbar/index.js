@@ -15,7 +15,7 @@ const ThemeNavbar = (props) => {
       <div className="bookmark-wrapper d-flex align-items-center">
         <NavbarBookmarks setMenuVisibility={setMenuVisibility} />
         <h5 style={{ fontWeight: "bold" }}  >
-          {getUserData().lib_type_election} ( {getUserData().lib_circons} ){" "}
+          {getUserData()?.lib_type_election} ( {getUserData()?.lib_circons} ){" "}
         </h5>
       </div>
       <NavbarUser skin={skin} setSkin={setSkin} />

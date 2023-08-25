@@ -2,7 +2,7 @@ import { createAsyncThunk, createSlice } from "@reduxjs/toolkit"
 import { client } from "../../@core/auth/jwt/const"
 
 export const  getCirconscription = createAsyncThunk('circonscription/getCirconscription', async(id) => {
-    const response = await client.get(`/ListeCirconsElectorale/${id}`)
+    const response = await client.get(`/circonscription/${id}`)
     return response.data.data
   })
 

@@ -23,7 +23,7 @@ export const getLieuxVote = createAsyncThunk(
 export const getBureauVote = createAsyncThunk(
   "bureauVote/getBureauVote",
   async (idLv) => {
-    const response = await client.get(`bureauVote/${idLv}`);
+    const response = await client.get(`bureauVoteByLv/${idLv}`);
     return response.data.data;
   }
 );

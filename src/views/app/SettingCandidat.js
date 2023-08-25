@@ -138,13 +138,14 @@ export default function SettingCandidat() {
   });
 
   useEffect(() => {
-    socket.on(`insertedvote-${user.id_parti + user.id_circons}`, (data) => {
+    socket.on(`insertedvote-${user.id_candidat}`, (data) => {
       console.log(data);
       dispatch(vote(JSON.parse(data)));
     });
     if (getUserData().role === "parti") {
       navigate("/VueParti");
     }
+    dispatch(allNombreVotant());
     dispatch(getTimeLineByCircons());
     dispatch(getRepresentant());
   }, [dispatch, socket]);
@@ -232,7 +233,7 @@ export default function SettingCandidat() {
             }
           })
           .map((item) => (
-            <Col lg="4" sm="4">
+            <Col lg="4" sm="6">
               <BureauVote
                 idbv={item.id_bureau}
                 idlv={item.id_lieu_vote}

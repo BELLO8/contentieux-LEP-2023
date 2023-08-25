@@ -8,37 +8,68 @@ import {
   Card,
   CardBody,
   Col,
-  Input, Row
+  Input,
+  Row,
+  Modal,
+  ModalBody,
+  ModalHeader,
+  Button,
+  Accordion,
+  AccordionBody,
+  AccordionHeader,
+  AccordionItem,
 } from "reactstrap";
 import { Label } from "reactstrap";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import {
-  getBureauVote, getCandidatsVoiceByDep
+  getBureauVote, getElecteurVotant
 } from "../../redux/store/Election";
 import {
+  getCandidats,
   getElecteurByBvBYCircons,
   getLv,
-  getUserData
+  getUserData,
 } from "../../utility/Utils";
 import { Filter } from "react-feather";
-import Bv from "../Components/BvDepouillement";
 import BreadCrumbs from "../../@core/components/breadcrumbs";
 import { useNavigate } from "react-router-dom";
+import CandidatVoice from "../Components/CardTransactions";
+import ChartjsHorizontalBarChart from "../Components/ChartjsHorizontalBar";
 
 export default function Depouillement() {
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const [searchTerm, setSearchTerm] = useState("");
-
+  const [basicModal, setBasicModal] = useState(false);
   const lieuxVote = getLv();
-
   const nombreElecteurByBv = getElecteurByBvBYCircons();
+  const [open, setOpen] = useState("1");
 
+  const toggle = (id) => {
+    open === id ? setOpen() : setOpen(id);
+  };
   const electeurbv = [];
   const lieuxVoteData = [];
+  const listCandidat = getCandidats();
+  const resultat = useSelector((state) => state.election.resultat);
+  const bv = useSelector((state) => state.election.bureauVote);
+  const user = getUserData();
 
-  nombreElecteurByBv?.map((item) => {
-    electeurbv.push(item);
+  const listCandidatVoixData = [];
+
+  resultat?.map((item) => {
+    listCandidatVoixData.push({
+      id: item.id_candidat,
+      total_voix: item.total_voix,
+      nom: item.nom,
+    });
+  });
+
+  let candidatResult = listCandidat?.map((candidat) => {
+    let candidatVotantData = listCandidatVoixData.find(
+      (candidatVotantData) => candidatVotantData.id === candidat.id
+    );
+    return { ...candidat, ...candidatVotantData };
   });
 
   lieuxVote?.map((item) => {
@@ -49,87 +80,141 @@ export default function Depouillement() {
     if (getUserData().role === "parti") {
       navigate("/VueParti");
     }
-    dispatch(getCandidatsVoiceByDep());
   }, [dispatch]);
 
   return (
     <>
       <BreadCrumbs title="Dépouillement" url="/" data={[]} />
-
-      <Row className="mt-3">
-        <Col lg="3" sm="12">
-          <Card>
-            <CardBody>
-              <h4 className="mb-1">
-                <Filter size={17} />
-                Filtre
-              </h4>
-              <h5 className="filter-title">Lieu de vote</h5>
-              <ul className="list-unstyled categories-list">
-                <li className="mb-1">
-                  <div className="form-check">
+      <Row>
+        <Col lg="6" sm="6">
+          <div className="basic-modal">
+            <Button
+              className="mb-1 btn-icon rounded-circle btn-sm"
+              outline
+              color="primary"
+              onClick={() => setBasicModal(!basicModal)}
+            >
+              <Filter size={16} />
+            </Button>
+            <Modal
+              isOpen={basicModal}
+              toggle={() => setBasicModal(!basicModal)}
+              modalClassName="modal-slide-in event-sidebar"
+            >
+              <ModalHeader>Appliquer un filtre sur les données</ModalHeader>
+              <ModalBody>
+                <Card className="shadow-none">
+                  <CardBody>
+                    {/* <h4 className="mb-1">
+                      <Filter size={17} />
+                      Filtre
+                    </h4> */}
+                    <h5 className="filter-title">Lieu de vote</h5>
                     <Input
-                      type="radio"
-                      id="all"
-                      name="item-radio"
-                      defaultChecked
-                      onClick={() => {
-                        setSearchTerm("");
-                      }}
+                      id="search-invoice"
+                      className="mb-1"
+                      placeholder="Recherche par mot clé"
+                      type="text"
+                      value={searchTerm}
+                      onChange={(e) => setSearchTerm(e.target.value)}
                     />
-                    <Label className="form-check-label" for="all">
-                      Tout
-                    </Label>
-                  </div>
-                </li>
-                {lieuxVoteData.map((item) => {
-                  return (
-                    <li key={item.value} className="mb-1">
-                      <div className="form-check">
-                        <Input
-                          type="radio"
-                          id={item.value}
-                          name="item-radio"
-                          onClick={() => {
-                            dispatch(getBureauVote(item.value));
-                            setSearchTerm(item.label);
-                          }}
-                        />
-                        <Label className="form-check-label" for={item.value}>
-                          {item.label}
-                        </Label>
-                      </div>
-                    </li>
-                  );
-                })}
-              </ul>
-            </CardBody>
-          </Card>
+                    {/* <div className="form-check">
+                <Input
+                  type="radio"
+                  id="all"
+                  name="item-radio"
+                  defaultChecked
+                  onClick={() => {}}
+                />
+                <Label className="form-check-label" for="all">
+                  Tout
+                </Label>
+              </div> */}
+                    {lieuxVoteData
+                      .filter((filtre) => {
+                        if (searchTerm == "") {
+                          return filtre;
+                        } else if (
+                          JSON.stringify(filtre)
+                            .toLowerCase()
+                            .indexOf(searchTerm.toLowerCase()) != -1
+                        ) {
+                          return filtre;
+                        }
+                      })
+                      .map((item, index) => {
+                        return (
+                          <Accordion open={open} toggle={toggle}>
+                            <AccordionItem>
+                              <AccordionHeader targetId={index}>
+                                <div className="form-check">
+                                  <Input
+                                    type="radio"
+                                    id={item.value}
+                                    name="item-radio"
+                                    onClick={() => {
+                                      dispatch(getBureauVote(item.value));
+                                    }}
+                                  />
+                                  <Label
+                                    className="form-check-label"
+                                    for={item.value}
+                                  >
+                                    {item.label}
+                                  </Label>
+                                </div>
+                              </AccordionHeader>
+                              <AccordionBody accordionId={index}>
+                                {bv?.map((bureauVote) => {
+                                  return (
+                                    <div className="form-check">
+                                      <Input
+                                        type="radio"
+                                        id={bureauVote.cod_bv}
+                                        name="item-radio"
+                                        onClick={() => {
+                                          dispatch(
+                                            getElecteurVotant({
+                                              id_bv: bureauVote.cod_bv,
+                                            })
+                                          );
+                                        }}
+                                      />
+                                      <Label
+                                        className="form-check-label"
+                                        for={bureauVote.cod_bv}
+                                      >
+                                        BV : {bureauVote.lib_bv}
+                                      </Label>
+                                    </div>
+                                  );
+                                })}
+                              </AccordionBody>
+                            </AccordionItem>
+                          </Accordion>
+                        );
+                      })}
+                  </CardBody>
+                </Card>
+              </ModalBody>
+            </Modal>
+          </div>
         </Col>
-        <Col lg="9" sm="12">
+      </Row>
+      <Row className="mt-3">
+        <Col lg="12" sm="8">
           <Row>
-            {electeurbv
-              .filter((filtre) => {
-                if (searchTerm == "") {
-                  return filtre;
-                } else if (
-                  JSON.stringify(filtre)
-                    .toLowerCase()
-                    .indexOf(searchTerm.toLowerCase()) != -1
-                ) {
-                  return filtre;
-                }
-              })
-              .map((item) => (
-                <Col lg="6" sm="6">
-                  <Bv
-                    idbv={item.id_bureau}
-                    bv={item.bureau_vote}
-                    lv={item.lieu_vote}
-                  />
-                </Col>
-              ))}
+            {candidatResult.map((result) => (
+              <Col lg="3" sm="6">
+                <CandidatVoice
+                  nom={result.nom}
+                  lib_parti={result.parti}
+                  nombre_voix={0}
+                />
+              </Col>
+            ))}
           </Row>
+          <ChartjsHorizontalBarChart />
         </Col>
       </Row>
     </>

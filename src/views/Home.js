@@ -4,12 +4,12 @@ import ChartjsHorizontalBarChart from "./Components/ChartjsHorizontalBar";
 import Candidat from "./Components/Candidant";
 import { useDispatch } from "react-redux";
 import {
-  getAllEtapeBv, getNombreBvEtapeEnCours
+  getAllEtapeBv,
+  getNombreBvEtapeEnCours,
 } from "../redux/store/Election";
 import { useEffect } from "react";
 import BasicTimeline from "./Components/BasicTimeline";
 import { useNavigate } from "react-router-dom";
-
 
 const Home = () => {
   const dispatch = useDispatch();
@@ -21,15 +21,14 @@ const Home = () => {
   }, [dispatch]);
   return (
     <div>
-      
       <h1 style={{ fontWeight: "bold" }} className="mb-3">
-        Tableau de bord 
+        Tableau de bord
       </h1>
       {/* <p>{getUserData().lib_type_election } ( {getUserData().lib_circons} )</p> */}
       <StatsCard />
       <BasicTimeline />
       <Candidat />
-      <h3>Résultat de l'élection</h3>
+      <h3 style={{ fontWeight: "bold" }}>Résultat de l'élection</h3>
       <ChartjsHorizontalBarChart />
     </div>
   );

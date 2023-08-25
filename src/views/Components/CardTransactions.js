@@ -1,41 +1,53 @@
 /* eslint-disable */
-import Avatar from "@components/avatar";
 
 // ** Icons Imports
-import * as Icon from "react-feather";
 // ** Reactstrap Imports
-import { Card, CardHeader, CardTitle, CardBody } from "reactstrap";
+import { Card } from "reactstrap";
+import img1 from "@src/assets/images/portrait/small/1.png";
+import { useSelector } from "react-redux";
 
-const CandidatVoice = ({ data }) => {
+const CandidatVoice = ({ nom, lib_parti, nombre_voix }) => {
+  const listeVotants = useSelector((state) => state.election.Listvotants);
+  const vote =
+    listeVotants.length === 0
+      ? 0
+      : parseFloat(
+          (Number(nombre_voix) * 100) / Number(listeVotants.length)
+        ).toFixed(2);
+
   const renderTransactions = () => {
-    return data.map((item) => {
-      return (
-        <div key={item.nom} className="transaction-item">
-          <div className="d-flex">
-            <Avatar
-              className="rounded"
-              color="light-primary"
-              icon={<Icon.User size={18} />}
-            />
-            <div>
-              <h6 className="transaction-title">{item.nom}</h6>
-              <small>{item.lib_parti}</small>
+    return (
+      <Card
+        className="shadow-none"
+        style={{ minHeight: "85px", minWidth: "295px", maxWidth: "222px" }}
+      >
+        <div className="d-flex">
+          <img src={img1} height={80} width={80} />
+          <div style={{ marginLeft: "5px" }}>
+            <div
+              className="bg-info px-1 text-white fw-bolder"
+              style={{
+                minWidth: "182px",
+              }}
+            >
+              <small>{lib_parti}</small>
+            </div>
+            <div className="px-1" style={{ minHeight: "35px" }}>
+              <small className="fw-bolder text-dark">{nom}</small>
+            </div>
+            <div className="d-flex bg-light-secondary px-1 fw-bolder text-dark">
+              <div className="mx-1">{vote}%</div>
+              <div className="px-2" style={{ borderLeft: "solid 2px white" }}>
+                {nombre_voix ?? 0}
+              </div>
             </div>
           </div>
-          <div className="fw-bolder text-success">{item.nombre_voix ?? 0}</div>
         </div>
-      );
-    });
+      </Card>
+    );
   };
 
-  return (
-    <Card className="card-transaction">
-      <CardHeader>
-        <CardTitle tag="h6">Décompte des voix</CardTitle>
-      </CardHeader>
-      <CardBody>{renderTransactions()}</CardBody>
-    </Card>
-  );
+  return renderTransactions();
 };
 
 export default CandidatVoice;

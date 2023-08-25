@@ -2,9 +2,8 @@
 
 import { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { Card, Col, Row } from "reactstrap";
+import { Card, Row } from "reactstrap";
 import { voice } from "../../redux/store/Election";
-import { isEmptyObject } from "jquery";
 import { getCandidats, getUserData } from "../../utility/Utils";
 import { io } from "socket.io-client";
 import img1 from "@src/assets/images/portrait/small/1.png";
@@ -13,6 +12,7 @@ import vide from "@src/assets/images/portrait/small/vide.png";
 import { Swiper, SwiperSlide } from "swiper/react";
 import "swiper/css";
 import { Autoplay, Navigation } from "swiper";
+
 const socket = io.connect("https://jellyfish-app-wxyzd.ondigitalocean.app", {
   transports: ["websocket"],
 });
@@ -46,9 +46,10 @@ const Candidat = () => {
     );
     return { ...candidat, ...voix, ...candidatVotantData };
   });
+  
 
   useEffect(() => {
-    socket.on(`insertedvoix-${user.id_parti + user.id_circons}`, (data) => {
+    socket.on(`insertedvoix-${user.id_candidat}`, (data) => {
       console.log(data);
       dispatch(voice(data));
     });

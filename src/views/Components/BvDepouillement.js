@@ -1,13 +1,10 @@
 /* eslint-disable */
 
-import Avatar from "@components/avatar";
 
 // ** Reactstrap Imports
-import { Row, Col, Card, CardBody } from "reactstrap";
-import { User } from "react-feather";
+import { Card } from "reactstrap";
 import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
-import { Swiper, SwiperSlide } from "swiper/react";
 import { isEmptyObject } from "jquery";
 import CandidatVoice from "./CardTransactions";
 import { getCandidats } from "../../utility/Utils";
@@ -34,29 +31,9 @@ const Bv = ({ idbv, bv, lv }) => {
 
   return (
     <>
-      <div className="bg-white shadow rounded mb-1">
-        <div>
-          <div className=" ">
-            <div>
-              <div className="border">
-                <Row className=" d-flex justify-content-between align-items-center">
-                  <Col lg="6">
-                    <div className="px-1">{lv}</div>
-                  </Col>
-                  <Col lg="4">
-                    <div className="border" style={{ padding: "10px" }}>
-                      Bv : {bv}
-                    </div>
-                  </Col>
-                </Row>
-              </div>
-              <div className="my-auto">
-                <CandidatVoice data={data} />
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
+      <Card className="shadow rounded mb-1">
+        <CandidatVoice data={data} />
+      </Card>
     </>
   );
 };

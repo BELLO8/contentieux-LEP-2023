@@ -29,7 +29,7 @@ const ListeVotant = () => {
     dispatch(getElecteurVotant({ id_bv: params.idbv }));
     dispatch(nombreElecteurByBvBYCircons());
   }, [dispatch]);
-
+  
   const listeVotants = useSelector((state) => state.election.Listvotants);
   const electeurBv = useSelector((state) => state.election.electeurBv.data);
   const electeurData = [];

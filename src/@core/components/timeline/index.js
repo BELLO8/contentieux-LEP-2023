@@ -26,7 +26,7 @@ const Timeline = (props) => {
   const Tag = tag ? tag : "ul";
   const [basicModal, setBasicModal] = useState(false);
   const [open, setOpen] = useState("1");
-
+  //const [pending, setPending] = useState(true);
   const toggle = (id) => {
     open === id ? setOpen() : setOpen(id);
   };

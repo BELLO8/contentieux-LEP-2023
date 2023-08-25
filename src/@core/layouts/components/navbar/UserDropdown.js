@@ -43,9 +43,9 @@ const UserDropdown = () => {
         onClick={(e) => e.preventDefault()}
       >
         <div className="user-nav d-sm-flex d-none">
-          <span className="user-name fw-bold">
+          <h6 style={{ fontWeight:"bold" }}>
             {user?.role === "parti" ? user?.username : user?.nom}
-          </span>
+          </h6>
           <span className="user-status fw-bold text-warning">
             {user?.role !== "parti"
               ? user?.role + " " + user?.lib_parti 

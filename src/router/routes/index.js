@@ -47,18 +47,18 @@ const Routes = [
     path: "/home",
     element: <Home />
   },
-  {
-    path: "/vote",
-    element: <Vote />
-  },
-  {
-    path: "/vote/liste-votants",
-    element: <TableVote />
-  },
-  {
-    path: "/vote/liste-votants/:idbv",
-    element: <ListeVotant />
-  },
+  // {
+  //   path: "/vote",
+  //   element: <Vote />
+  // },
+  // {
+  //   path: "/vote/liste-votants",
+  //   element: <TableVote />
+  // },
+  // {
+  //   path: "/vote/liste-votants/:idbv",
+  //   element: <ListeVotant />
+  // },
   {
     path: "/depouillement/depouillement-par-bv/:idbv",
     element: <DepouillementBV />
