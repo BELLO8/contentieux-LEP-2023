@@ -10,6 +10,7 @@ import { useNavigate } from "react-router-dom";
 import { Swiper, SwiperSlide } from "swiper/react";
 import "swiper/css";
 import { Autoplay, Navigation } from "swiper";
+import "../style.css";
 
 const StatsHorizontal = ({
   idbv,
@@ -96,7 +97,7 @@ const StatsHorizontal = ({
 
                   <div className="d-flex justify-content-start align-items-center">
                     <div className="profile-user-info">
-                      <h6 className="mb-0 mx-1"> Bulletin null </h6>
+                      <h6 className="mb-0 mx-1"> Bulletins nuls </h6>
                     </div>
                     <div className="ms-auto">
                       <Badge
@@ -111,7 +112,7 @@ const StatsHorizontal = ({
 
                   <div className="d-flex justify-content-start align-items-center">
                     <div className="profile-user-info">
-                      <h6 className="mb-0 mx-1"> Bulletin blanc </h6>
+                      <h6 className="mb-0 mx-1"> Bulletins blancs </h6>
                     </div>
                     <div className="ms-auto">
                       <Badge
@@ -138,7 +139,7 @@ const StatsHorizontal = ({
               >
                 <b style={{ color: "#183f98" }}>Détails</b>
               </Button>
-              <div className="border">
+              <div className="px-1 mt-1">
                 <Row>
                   <Swiper
                     spaceBetween={2}

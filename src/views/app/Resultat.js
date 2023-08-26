@@ -67,11 +67,7 @@ export default function Resultat() {
 
   const listCandidatVoixData = [];
 
-  voixCandidat
-    ?.filter(function (params) {
-      return params.id_bv === idBv;
-    })
-    .map((item) => {
+  voixCandidat?.map((item) => {
       listCandidatVoixData.push({
         id: item.id_candidat,
         voix: item.nombre_voix,
@@ -236,7 +232,7 @@ export default function Resultat() {
         <Col lg="12" sm="6">
           <DepouillementBV />
           <Row className="mb-3">
-            <h2 className="fw-bolder mb-3">Résultat </h2>
+            <h2 className="fw-bolder mb-3">Résultats </h2>
             {candidatResult
               .sort((a, b) => b.voix - a.voix)
               .map((result) => (
@@ -244,7 +240,7 @@ export default function Resultat() {
                   <CandidatVoice
                     nom={result.nom}
                     lib_parti={result.parti}
-                    nombre_voix={result.voix}
+                    nombre_voix={result.total_voix}
                     color={result.color}
                   />
                 </Col>
