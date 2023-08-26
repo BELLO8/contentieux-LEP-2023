@@ -33,13 +33,19 @@ export default function TableVote({ idbv }) {
     dispatch(getElecteurVotant({ id_bv: idbv }));
   }, [dispatch, socket]);
 
-  console.log(listeVotants);
+  const paginationComponentOptions = {
+    rowsPerPageText: 'Résultat par page',
+    rangeSeparatorText: 'de',
+    selectAllRowsItem: true,
+    selectAllRowsItemText: 'Todos',
+};
   return (
     <>
       <Card className="overflow-hidden mt-2">
         <div className="react-dataTable" id="electeur">
           <DataTable
             pagination
+            paginationComponentOptions={paginationComponentOptions}
             responsive
             progressComponent={<Spinner color="primary" size="sm" />}
             noDataComponent="Aucune données pour le moment"

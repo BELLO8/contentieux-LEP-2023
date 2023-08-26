@@ -1,7 +1,15 @@
 /* eslint-disable */
 
 import StatsHorizontal from "@components/widgets/stats/StatsHorizontal";
-import { Activity, Copy, Cpu, File, FileMinus, FileText, Server } from "react-feather";
+import {
+  Activity,
+  Copy,
+  Cpu,
+  File,
+  FileMinus,
+  FileText,
+  Server,
+} from "react-feather";
 import { Row, Col } from "reactstrap";
 import Candidat from "../Components/Candidant";
 import { useEffect, React } from "react";
@@ -11,20 +19,12 @@ import { getCandidats } from "../../redux/store/Election";
 const DepouillementBV = () => {
   const dispatch = useDispatch();
   useEffect(() => {
-    dispatch(getCandidats())
+    dispatch(getCandidats());
   }, [dispatch]);
   return (
     <>
       <Row>
-        <Col lg="3" sm="6">
-          <StatsHorizontal
-            icon={<FileText size={21} />}
-            color="primary"
-            stats="0"
-            statTitle="Bulletin valide"
-          />
-        </Col>
-        <Col lg="3" sm="6">
+        <Col lg="4" sm="6">
           <StatsHorizontal
             icon={<File size={21} />}
             color="success"
@@ -32,15 +32,15 @@ const DepouillementBV = () => {
             statTitle="Bulletin blanc"
           />
         </Col>
-        <Col lg="3" sm="6">
+        <Col lg="4" sm="6">
           <StatsHorizontal
             icon={<FileMinus size={21} />}
             color="danger"
             stats="0"
-            statTitle="Bulletin nul"
+            statTitle="Bulletin null"
           />
         </Col>
-        <Col lg="3" sm="6">
+        <Col lg="4" sm="6">
           <StatsHorizontal
             icon={<FileMinus size={21} />}
             color="danger"
@@ -48,10 +48,30 @@ const DepouillementBV = () => {
             statTitle="Suffrage exprime"
           />
         </Col>
-      </Row>
-
-      <Row>
-        <Candidat />
+        <Col lg="4" sm="6">
+          <StatsHorizontal
+            icon={<FileText size={21} />}
+            color="primary"
+            stats="0"
+            statTitle="Nombres inscrits"
+          />
+        </Col>
+        <Col lg="4" sm="6">
+          <StatsHorizontal
+            icon={<FileText size={21} />}
+            color="primary"
+            stats="0"
+            statTitle="Nombres votants"
+          />
+        </Col>
+        <Col lg="4" sm="6">
+          <StatsHorizontal
+            icon={<FileText size={21} />}
+            color="primary"
+            stats="0"
+            statTitle="Taux de participation"
+          />
+        </Col>
       </Row>
     </>
   );

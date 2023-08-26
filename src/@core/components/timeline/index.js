@@ -148,7 +148,7 @@ const Timeline = (props) => {
                   ) : (""
                     // <Badge color="danger">pas debuté</Badge>
                   )
-                ) : item.title === "Ouverture du scrutin" ? (
+                ) : item.title === "Déroulement du scrutin" ? (
                   item.content ? (
                     <Accordion open={open} toggle={toggle}>
                       <AccordionItem>

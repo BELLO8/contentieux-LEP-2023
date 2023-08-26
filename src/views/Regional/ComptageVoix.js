@@ -1,11 +1,5 @@
 /* eslint-disable */
-import ChartjsHorizontalBarChart from "../Components/ChartjsHorizontalBar";
-import "chart.js/auto";
-import BreadCrumbs from "../../@core/components/breadcrumbs";
-import { useEffect } from "react";
-import { getUserData } from "../../utility/Utils";
-import { useNavigate } from "react-router-dom";
-import React from "react";
+import React, { useEffect } from "react";
 import "@styles/react/libs/react-select/_react-select.scss";
 import "@styles/react/libs/tables/react-dataTable-component.scss";
 import "../style.css";
@@ -27,28 +21,23 @@ import {
 } from "reactstrap";
 import { Label } from "reactstrap";
 import { useDispatch, useSelector } from "react-redux";
-import {
-  getBureauVote,
-  getCandidatsVoiceByDep,
-  getElecteurVotant,
-  getResult,
-  getTimeLineByBv,
-} from "../../redux/store/Election";
+import { getBureauVote, getElecteurVotant } from "../../redux/store/Election";
 import {
   getCandidats,
   getElecteurByBvBYCircons,
   getLv,
+  getUserData,
 } from "../../utility/Utils";
-import { Download, Filter, Printer } from "react-feather";
+import { Filter } from "react-feather";
+import BreadCrumbs from "../../@core/components/breadcrumbs";
+import { useNavigate } from "react-router-dom";
 import CandidatVoice from "../Components/CardTransactions";
-import BVTimeline from "../Components/BVTimeline";
-import { isEmptyObject } from "jquery";
+import HorizontalBarChart from "../Components/HorizontalBar";
 import { colorByParti } from "../Components/columns";
-import DepouillementBV from "./DepouillementBV";
 
-export default function Resultat() {
-  const navigate = useNavigate();
+export default function ComptageVoix() {
   const dispatch = useDispatch();
+  const navigate = useNavigate();
   const [searchTerm, setSearchTerm] = useState("");
   const [basicModal, setBasicModal] = useState(false);
   const lieuxVote = getLv();
@@ -62,11 +51,11 @@ export default function Resultat() {
   const lieuxVoteData = [];
   const listCandidat = getCandidats();
   const voixCandidat = useSelector((state) => state.election.CandidatsVoice);
-  const user = getUserData();
   const bv = useSelector((state) => state.election.bureauVote);
+  const user = getUserData();
 
   const listCandidatVoixData = [];
-
+  
   voixCandidat
     ?.filter(function (params) {
       return params.id_bv === idBv;
@@ -86,30 +75,31 @@ export default function Resultat() {
     let colors = colorByParti.filter(function (params) {
       return params.libelle === candidat.parti;
     });
-    return { ...candidat, ...candidatVotantData, color: colors[0].color };
+    return { ...candidat, ...candidatVotantData, color:colors[0].color };
   });
 
   lieuxVote?.map((item) => {
     lieuxVoteData.push({ value: item.cod_lieu, label: item.lib_lvote });
   });
+  console.log(candidatResult);
+  const candidatNom = [];
+  const candidatData = [];
+
+  candidatResult.map((item) => {
+    candidatNom.push(item.nom);
+    candidatData.push(item.voix);
+  });
+  console.log(candidatResult);
 
   useEffect(() => {
     if (getUserData().role === "parti") {
       navigate("/VueParti");
     }
-    dispatch(getCandidatsVoiceByDep());
-    // dispatch(
-    //   getResult({
-    //     id_circons: user?.id_circons,
-    //     id_parti: user?.id_parti,
-    //     type: user?.id_type_election,
-    //   })
-    // );
   }, [dispatch]);
+
   return (
-    <div>
-      <BreadCrumbs title="Résultat élection" url="/" data={[]} />
-      {/* <ChartjsHorizontalBarChart /> */}
+    <>
+      <BreadCrumbs title="Dépouillement" url="/" data={[]} />
       <Row>
         <Col lg="6" sm="6">
           <div className="basic-modal">
@@ -204,11 +194,6 @@ export default function Resultat() {
                                               id_bv: bureauVote.cod_bv,
                                             })
                                           );
-                                          dispatch(
-                                            getTimeLineByBv({
-                                              bv: bureauVote.cod_bv,
-                                            })
-                                          );
                                         }}
                                       />
                                       <Label
@@ -233,26 +218,25 @@ export default function Resultat() {
         </Col>
       </Row>
       <Row className="mt-3">
-        <Col lg="12" sm="6">
-          <DepouillementBV />
-          <Row className="mb-3">
-            <h2 className="fw-bolder mb-3">Résultat </h2>
-            {candidatResult
-              .sort((a, b) => b.voix - a.voix)
-              .map((result) => (
-                <Col lg="3" sm="6">
-                  <CandidatVoice
-                    nom={result.nom}
-                    lib_parti={result.parti}
-                    nombre_voix={result.voix}
-                    color={result.color}
-                  />
-                </Col>
-              ))}
-            <ChartjsHorizontalBarChart />
+        <Col lg="12" sm="8">
+          <Row>
+            {candidatResult.map((result) => (
+              <Col lg="3" sm="6">
+                <CandidatVoice
+                  nom={result.nom}
+                  lib_parti={result.parti}
+                  nombre_voix={result?.voix}
+                  color={result.color}
+                />
+              </Col>
+            ))}
           </Row>
+          <HorizontalBarChart
+            candidat={candidatNom}
+            candidatData={candidatData}
+          />
         </Col>
       </Row>
-    </div>
+    </>
   );
 }

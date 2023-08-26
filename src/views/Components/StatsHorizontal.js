@@ -3,96 +3,183 @@
 import Avatar from "@components/avatar";
 
 // ** Reactstrap Imports
-import {
-  Button,
-  Card,
-  CardBody,
-  Row,
-  Col,
-  Badge,
-  CardText,
-  Progress,
-} from "reactstrap";
-import { Archive } from "react-feather";
+import { Button, Card, Row, Col, Badge, CardBody } from "reactstrap";
+import { Folder } from "react-feather";
 import { useDispatch } from "react-redux";
 import { useNavigate } from "react-router-dom";
-import { getElecteurByBv, getElecteurVotant } from "../../redux/store/Election";
+import { Swiper, SwiperSlide } from "swiper/react";
+import "swiper/css";
+import { Autoplay, Navigation } from "swiper";
 
-const StatsHorizontal = ({ idbv, bv, lv, inscrit, votants }) => {
-  const dispatch = useDispatch();
+const StatsHorizontal = ({
+  idbv,
+  bv,
+  lv,
+  candidats,
+  etape,
+  idlv,
+  votants,
+  bulletinOuvert,
+  nombreBulletinBlanc,
+  nombreBulletinNull,
+}) => {
   const navigate = useNavigate();
-  const taux = votants === 0 ? 0 : (Number(votants) * 100) / Number(inscrit);
+
+  console.log(candidats);
   return (
     <>
-      <div className="bg-white shadow rounded mb-1">
+      <Card className="rounded mb-1">
         <div>
           <div className=" ">
             <div>
               <div className="border">
                 <Row className=" d-flex justify-content-between align-items-center">
-                  <Col lg="6">
-                    <div className="px-1">{lv}</div>
+                  <Col lg="8">
+                    <div style={{ minWidth: "310px", marginLeft: "8px" }}>
+                      <b style={{ minWidth: "10px", color: "#000000" }}>{lv}</b>
+                    </div>
+                    <Badge
+                      style={{ marginLeft: "8px" }}
+                      color={
+                        etape != "Dépouillement pas débuté" ? "success" : "dark"
+                      }
+                    >
+                      {etape}
+                    </Badge>
                   </Col>
                   <Col lg="4">
-                    <div className="border" style={{ padding: "10px" }}>
-                      Bv : {bv}
+                    <div
+                      className="border"
+                      style={{
+                        fontWeight: "bold",
+                        color: "#000000",
+                        padding: "10px",
+                      }}
+                    >
+                      {bv}
                     </div>
                   </Col>
                 </Row>
               </div>
 
-              <div className="d-flex align-items-center mt-1 px-1">
+              <div className="d-flex align-items-center p-1 mt-1">
+                <Avatar
+                  color={"light-primary"}
+                  icon={<Folder size={15} />}
+                  className="me-1"
+                />
                 <div className="my-auto">
-                  <div className="d-flex align-items-center mb-2">
-                    <div className="my-auto">
-                      <h4 className="fw-bolder mb-0 text-info">{inscrit}</h4>
-                      <CardText className="font-small-3 mb-0">
-                        Inscrits
-                      </CardText>
+                  <h4
+                    className="mb-0"
+                    style={{ fontWeight: "bold", color: "#183f98" }}
+                  >
+                    {bulletinOuvert} / {votants}
+                  </h4>
+                </div>
+                <div className="mx-1">
+                  <div className="d-flex justify-content-start align-items-center">
+                    <div className="profile-user-info">
+                      <h6 className="mb-0 mx-1"> Suffrage exprimé </h6>
                     </div>
-                    <div className="mx-3">
-                      <h4 className="fw-bolder mb-0 text-success">{votants}</h4>
-                      <CardText className="font-small-3 mb-0">
-                        Votants
-                      </CardText>
+                    <div className="ms-auto">
+                      <Badge
+                        className="btn-icon"
+                        color="light-primary"
+                        size="sm"
+                      >
+                        {Number(votants) -
+                          Number(nombreBulletinNull) -
+                          Number(nombreBulletinBlanc)}{" "}
+                      </Badge>
+                    </div>
+                  </div>
+
+                  <div className="d-flex justify-content-start align-items-center">
+                    <div className="profile-user-info">
+                      <h6 className="mb-0 mx-1"> Bulletin null </h6>
+                    </div>
+                    <div className="ms-auto">
+                      <Badge
+                        className="btn-icon"
+                        color="light-primary"
+                        size="sm"
+                      >
+                        {nombreBulletinNull}
+                      </Badge>
+                    </div>
+                  </div>
+
+                  <div className="d-flex justify-content-start align-items-center">
+                    <div className="profile-user-info">
+                      <h6 className="mb-0 mx-1"> Bulletin blanc </h6>
+                    </div>
+                    <div className="ms-auto">
+                      <Badge
+                        className="btn-icon"
+                        color="light-primary"
+                        size="sm"
+                      >
+                        {nombreBulletinBlanc}
+                      </Badge>
                     </div>
                   </div>
                 </div>
               </div>
+              <Button
+                color="secondary"
+                size="sm"
+                outline
+                className="mx-1"
+                onClick={() => {
+                  navigate(
+                    `/depouillement/depouillement-par-bv/${idlv}/${idbv}`
+                  );
+                }}
+              >
+                <b style={{ color: "#183f98" }}>Détails</b>
+              </Button>
               <div className="border">
-                <Row className=" d-flex justify-content-between align-items-center">
-                  <Col lg="8" sm="8">
-                    <div className="px-1">
-                      <span>
-                        Taux de participations… <b className="text-danger">{parseInt(taux)}%</b>
-                      </span>
-                      <Progress
-                        animated
-                        className="progress-bar-info"
-                        value={taux}
-                      />
-                    </div>
-                  </Col>
-                  <Col lg="4" sm="4">
-                    <div className="border" style={{ padding: "10px" }}>
-                      <Button
-                        color="flat-secondary"
-                        size="sm"
-                        onClick={() => {
-                          dispatch(getElecteurByBv({ bv: idbv }));
-                          navigate(`/vote/liste-votants/${idbv}`);
-                        }}
-                      >
-                        Detail
-                      </Button>
-                    </div>
-                  </Col>
+                <Row>
+                  <Swiper
+                    spaceBetween={2}
+                    slidesPerView={2}
+                    navigation={true}
+                    autoplay={{ delay: 10500, disableOnInteraction: false }}
+                    modules={[Autoplay, Navigation]}
+                  >
+                    {candidats.map((item) => (
+                      <SwiperSlide>
+                        <Card className="border">
+                          <CardBody>
+                            <small>{item.nom}</small>
+                            <div className="d-flex my-auto">
+                              <h4
+                                className="mb-0 bg-secondary px-1"
+                                style={{ fontWeight: "bold", color: "#ffff" }}
+                              >
+                                {}
+                              </h4>
+                              <h4
+                                className="mb-0 bg-secondary px-1"
+                                style={{
+                                  fontWeight: "bold",
+                                  borderLeft: "solid 2px white",
+                                }}
+                              >
+                                {item.voix}
+                              </h4>
+                            </div>
+                          </CardBody>
+                        </Card>
+                      </SwiperSlide>
+                    ))}
+                  </Swiper>
                 </Row>
               </div>
             </div>
           </div>
         </div>
-      </div>
+      </Card>
     </>
   );
 };

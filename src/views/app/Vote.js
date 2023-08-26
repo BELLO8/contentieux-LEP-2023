@@ -1,7 +1,6 @@
 /* eslint-disable */
 
 import React, { useEffect } from "react";
-import { io } from "socket.io-client";
 import "@styles/react/libs/react-select/_react-select.scss";
 import "@styles/react/libs/tables/react-dataTable-component.scss";
 import "../style.css";
@@ -22,50 +21,94 @@ import { useDispatch, useSelector } from "react-redux";
 import {
   allNombreVotant,
   getBureauVote,
-  getLieuxVote,
-  nombreElecteurByBvBYCircons,
-  vote,
+  getCandidatsVoiceByDep,
+  getNombreBulletinNonValideByCirconsElectorale,
+  getNombreBulletinOuvertByCirconsElectorale,
+  getNombreVotantCei,
+  getResult,
+  getTimeLineByCircons,
 } from "../../redux/store/Election";
-import { getElecteurByBvBYCircons, getLv, getUserData } from "../../utility/Utils";
+import {
+  getCandidats,
+  getElecteurByBvBYCircons,
+  getLv,
+  getUserData,
+} from "../../utility/Utils";
 import { Filter } from "react-feather";
 import BreadCrumbs from "../../@core/components/breadcrumbs";
-
-const socket = io.connect("https://jellyfish-app-wxyzd.ondigitalocean.app", {
-  transports: ["websocket"],
-});
 
 export default function Vote() {
   const dispatch = useDispatch();
   const [basicModal, setBasicModal] = useState(false);
   const [searchTerm, setSearchTerm] = useState("");
-
-  const lieuxVote = getLv();
-  const dataVotant = useSelector((state) => state.election.votants);
-
-  const allNombreVotantByBvByCircons = useSelector(
-    (state) => state.election.allNombreVotantByBvByCircons
+  const bulletinNonValid = useSelector(
+    (state) => state.election.nombreBulletinNonValideByCirconsElectorale
   );
+  const timeLine = useSelector((state) => state.election.timeLineCircons);
+  const nombreCeiVotant = useSelector(
+    (state) => state.election.nombreVotantCei
+  );
+  const nombreBulletinOuver = useSelector(
+    (state) => state.election.nombreBulletinOuvertByCirconsElectorale
+  );
+  const lieuxVote = getLv();
+  const result = useSelector((state) => state.election.resultat);
   const nombreElecteurByBv = getElecteurByBvBYCircons();
-  
-  useEffect(() => {
-    socket.on(`insertedvote-${user.id_parti + user.id_circons}`, (data) => {
-      console.log(data);
-      dispatch(vote(JSON.parse(data)));
+  const nombreCei = [];
+  const bulletinOuver = [];
+  const nonValide = [];
+  const listCandidat = getCandidats();
+  const voixCandidat = useSelector((state) => state.election.CandidatsVoice);
+
+  bulletinNonValid.map((item) => {
+    nonValide.push({
+      id: item.id_bv,
+      bulletinBlanc: item.bulletin_blanc,
+      bulletinNull: item.bulletin_null,
     });
-    dispatch(allNombreVotant());
-  }, [dispatch, socket]);
+  });
+
+  nombreCeiVotant.map((item) => {
+    nombreCei.push({
+      id: item.id_bureau_vote,
+      nombre_votant: item.nombre_votant,
+    });
+  });
+
+  nombreBulletinOuver.map((bulletin) => {
+    bulletinOuver.push({ id: bulletin.id_bv, bulletin: bulletin.bulletin });
+  });
+
+  useEffect(() => {
+    dispatch(
+      getResult({
+        id_circons: user?.id_circons,
+        id_parti: user?.id_parti,
+        type: user?.id_type_election,
+      })
+    );
+    dispatch(getCandidatsVoiceByDep());
+    dispatch(getNombreVotantCei());
+    dispatch(getNombreBulletinOuvertByCirconsElectorale());
+    dispatch(getNombreBulletinNonValideByCirconsElectorale());
+    dispatch(getTimeLineByCircons());
+    dispatch(getCandidatsVoiceByDep());
+  }, [dispatch]);
 
   const electeurbv = [];
   const lieuxVoteData = [];
   const votant = [];
+  const timeLineData = [];
+  //  ?.filter(function (params) {
+  //       return params.id_bv === idBv;
+  //     })
 
-  dataVotant?.map((item) => {
-    votant.push({
+  timeLine.map((item) => {
+    timeLineData.push({
       id: item.id_bureau_vote,
-      nom: item.nom,
-      prenoms: item.prenoms,
-      num_electeur: item.num_electeur,
-      nombreVotant: dataVotant.length,
+      name: item.lib_etape,
+      started_at: item.started_at,
+      end_at: item.end_at,
     });
   });
 
@@ -79,21 +122,30 @@ export default function Vote() {
     });
   });
 
-  const nombreVotant = [];
-  allNombreVotantByBvByCircons.map((item) => {
-    nombreVotant.push({
-      id: item.id_bureau_vote,
-      total: item.total_votant,
-      liblvote: item.liblvote,
-      lib_bv: item.lib_bv,
-    });
-  });
-
   //console.log(dataVotant);
+
   let newArray = electeurbv.map((obj1) => {
-    let obj2 = nombreVotant.find((obj2) => obj2.id === obj1.id);
-    let votantData = votant.find((item) => item.id === obj1.id);
-    return { ...obj1, ...obj2, ...votantData };
+    let timeLine = timeLineData.filter((time) => time.id === obj1.id);
+    let bulletins = bulletinOuver.find((bull) => bull.id === obj1.id);
+    let nombresCei = nombreCei.find((nombreCei) => nombreCei.id === obj1.id);
+    let NombreBull = nonValide.filter((nbre) => nbre.id === obj1.id);
+    return {
+      ...obj1,
+      ...nombresCei,
+      nombreBulletinBlanc: [...NombreBull][0]?.bulletinBlanc
+        ? [...NombreBull][0]?.bulletinBlanc
+        : 0,
+      nombreBulletinNull: [...NombreBull][0]?.bulletinNull
+        ? [...NombreBull][0]?.bulletinNull
+        : 0,
+      ...bulletins,
+      etape: [...timeLine][timeLine.length - 1]
+        ? [...timeLine][timeLine.length - 1]?.name === "Dépouillement" ||
+          [...timeLine][timeLine.length - 1]?.name === "Décompte des voix"
+          ? ([...timeLine][timeLine.length - 1].name = "Dépouillement encours")
+          : "Dépouillement pas débuté"
+        : "Pas debuté",
+    };
   });
 
   console.log(newArray);
@@ -106,11 +158,44 @@ export default function Vote() {
     lieuxVoteData.push({ value: item.cod_lieu, label: item.lib_lvote });
   });
 
+  const listCandidatVoixData = [];
+  const listCandidatVoix = [];
+
   const user = getUserData();
+
+  result?.map((item) => {
+    listCandidatVoix.push({
+      id: item.id_candidat,
+      total_voix: item.total_voix,
+      nom: item.nom,
+    });
+  });
+
+  voixCandidat?.map((item) => {
+    listCandidatVoixData.push({
+      id: item.id_candidat,
+      voix: item.nombre_voix,
+      idBv: item.id_bv,
+    });
+  });
+
+  let candidatResult = listCandidat.map((candidat) => {
+    let candidatVotantData = listCandidatVoixData.find(
+      (candidatVotantData) => candidatVotantData.id === candidat.id
+    );
+    let VotantData = listCandidatVoix.find(
+      (VotantData) => VotantData.id === candidat.id
+    );
+    return {
+      ...candidat,
+      ...candidatVotantData,
+      ...VotantData,
+    };
+  });
 
   return (
     <>
-      <BreadCrumbs title="Déroulement du vote" url="/" data={[]} />
+      <BreadCrumbs title="Dépouillement" url="/" data={[]} />
       <Row>
         <Col lg="6" sm="6">
           <div className="basic-modal">
@@ -194,16 +279,16 @@ export default function Vote() {
             <Col lg="4" sm="6">
               <StatsHorizontal
                 idbv={item.id}
+                idlv={item.id_lieu_vote}
+                candidats={candidatResult}
                 bv={item.bureau_vote}
                 lv={item.lieu_vote}
                 inscrit={item.nb_electeur}
-                votants={
-                  item.nombreVotant
-                    ? Number(item.total) + item.nombreVotant
-                    : item.total
-                    ? item.total
-                    : 0
-                }
+                etape={item.etape}
+                nombreBulletinBlanc={item.nombreBulletinBlanc}
+                nombreBulletinNull={item.nombreBulletinNull}
+                bulletinOuvert={item.bulletin ? item.bulletin : 0}
+                votants={item.nombre_votant ? item.nombre_votant : 0}
               />
             </Col>
           ))}

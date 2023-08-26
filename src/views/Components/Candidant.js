@@ -46,7 +46,6 @@ const Candidat = () => {
     );
     return { ...candidat, ...voix, ...candidatVotantData };
   });
-  
 
   useEffect(() => {
     socket.on(`insertedvoix-${user.id_candidat}`, (data) => {
@@ -64,34 +63,6 @@ const Candidat = () => {
         autoplay={{ delay: 10500, disableOnInteraction: false }}
         modules={[Autoplay, Navigation]}
       >
-        {listCandidatVoixData
-          .filter(function (param) {
-            return param.id == "-1" || param.id == "-2";
-          })
-          .map((item) => (
-            <SwiperSlide>
-              <Card className="shadow-none">
-                <img className="img-fluid m-1" src={vide} alt="Card cap" />
-                {/* <CardImg top src={img1} alt='Card cap' /> */}
-                <div
-                  className="d-flex flex-column align-items-center text-center"
-                  style={{ minHeight: "52px" }}
-                >
-                  <p>
-                    <b>{item.nom}</b>
-                  </p>
-                </div>
-                <div style={{ height: "12px" }}></div>
-                {/* <div className=" d-flex align-items-center flex-column text-white bg-danger">
-                <b>{item.parti}</b>
-              </div> */}
-                <div className="d-flex align-items-center flex-column">
-                  <h2 className="mt-1 mb-1">{item.total_voix}</h2>
-                </div>
-              </Card>
-            </SwiperSlide>
-          ))}
-
         {candidatResult
           ?.sort((a, b) => Number(b.total_voix) - Number(a.total_voix))
           .map((item) => (
@@ -119,6 +90,34 @@ const Candidat = () => {
                       ? item.total_voix
                       : 0}
                   </h2>
+                </div>
+              </Card>
+            </SwiperSlide>
+          ))}
+
+        {listCandidatVoixData
+          .filter(function (param) {
+            return param.id == "-1" || param.id == "-2";
+          })
+          .map((item) => (
+            <SwiperSlide>
+              <Card className="shadow-none">
+                <img className="img-fluid m-1" src={vide} alt="Card cap" />
+                {/* <CardImg top src={img1} alt='Card cap' /> */}
+                <div
+                  className="d-flex flex-column align-items-center text-center"
+                  style={{ minHeight: "52px" }}
+                >
+                  <p>
+                    <b>{item.nom}</b>
+                  </p>
+                </div>
+                <div style={{ height: "12px" }}></div>
+                {/* <div className=" d-flex align-items-center flex-column text-white bg-danger">
+                <b>{item.parti}</b>
+              </div> */}
+                <div className="d-flex align-items-center flex-column">
+                  <h2 className="mt-1 mb-1">{item.total_voix}</h2>
                 </div>
               </Card>
             </SwiperSlide>

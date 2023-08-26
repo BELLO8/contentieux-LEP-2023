@@ -28,11 +28,29 @@ export const getBureauVote = createAsyncThunk(
   }
 );
 
+export const getlieuVoteByCommune = createAsyncThunk(
+  "lieuVoteByCommune/getlieuVoteByCommune",
+  async (idCom) => {
+    const response = await client.get(`lieuVoteByCommune/${idCom}`);
+    return response.data.data;
+  }
+);
+
 export const getResultatGlobalByParti = createAsyncThunk(
   "resultatGlobalByParti/getResultatGlobalByParti",
   async (idtype) => {
     const response = await client.get(
       `ResultatGlobalByParti/${idtype}/${getUserData().id_parti}`
+    );
+    return response.data.data;
+  }
+);
+
+export const getCommuneByRegion = createAsyncThunk(
+  "communeByRegion/getCommuneByRegion",
+  async () => {
+    const response = await client.get(
+      `CommuneByRegion/${getUserData().id_circons}`
     );
     return response.data.data;
   }
@@ -114,6 +132,14 @@ export const allNombreVotant = createAsyncThunk(
     const response = await client.get(
       `AllNombreVotantByBvByCircons/${getUserData().id_type_election}`
     );
+    return response.data.data;
+  }
+);
+
+export const getNombreElecteurByBvByCommune = createAsyncThunk(
+  "NombreElecteurByBvByCommune/getNombreElecteurByBvByCommune",
+  async (id) => {
+    const response = await client.get(`NombreElecteurByBvByCommune/${id}`);
     return response.data.data;
   }
 );
@@ -242,6 +268,38 @@ export const getCandidatsVoiceByDep = createAsyncThunk(
   }
 );
 
+export const getNombreVotantCei = createAsyncThunk(
+  "nombreVotantCei/getNombreVotantCei",
+  async () => {
+    const response = await client.get(
+      `NombreVotantCei/${getUserData().id_candidat}`
+    );
+    return response.data.data;
+  }
+);
+
+export const getNombreBulletinNonValideByCirconsElectorale = createAsyncThunk(
+  "nombreBulletinNonValideByCirconsElectorale/getNombreBulletinNonValideByCirconsElectorale",
+  async () => {
+    const response = await client.get(
+      `NombreBulletinByCirconsElectorale/${getUserData().id_candidat}/${getUserData().id_type_election}`
+    );
+    return response.data.data;
+  }
+);
+
+export const getNombreBulletinOuvertByCirconsElectorale = createAsyncThunk(
+  "nombreBulletinOuvertByCirconsElectorale/getNombreBulletinOuvertByCirconsElectorale",
+  async () => {
+    const response = await client.get(
+      `NombreBulletinOuvertByCirconsElectorale/${getUserData().id_candidat}/${
+        getUserData().id_type_election
+      }`
+    );
+    return response.data.data;
+  }
+);
+
 export const getNombreBvEtapeEnCours = createAsyncThunk(
   "NombreEtapeEnCoursEtTermine/NombreEtapeEnCours",
   async () => {
@@ -305,6 +363,12 @@ export const ElectionSlice = createSlice({
   initialState: {
     status: null,
     lieuxVote: [],
+    nombreVotantCei: [],
+    nombreBulletinOuvertByCirconsElectorale: [],
+    nombreBulletinNonValideByCirconsElectorale:[],
+    nombreElecteurByBvByCommune: [],
+    lieuVoteByCommune: [],
+    communeByRegion: [],
     resultatGlobalByParti: [],
     CandidatsVoice: [],
     listBvConforme: [],
@@ -350,6 +414,36 @@ export const ElectionSlice = createSlice({
       .addCase(getListBvConforme.fulfilled, (state, action) => {
         state.status = "succeeded";
         state.listBvConforme = action.payload;
+      })
+      .addCase(getNombreVotantCei.fulfilled, (state, action) => {
+        state.status = "succeeded";
+        state.nombreVotantCei = action.payload;
+      })
+      .addCase(getCommuneByRegion.fulfilled, (state, action) => {
+        state.status = "succeeded";
+        state.communeByRegion = action.payload;
+      })
+      .addCase(getNombreElecteurByBvByCommune.fulfilled, (state, action) => {
+        state.status = "succeeded";
+        state.nombreElecteurByBvByCommune = action.payload;
+      })
+      .addCase(
+        getNombreBulletinOuvertByCirconsElectorale.fulfilled,
+        (state, action) => {
+          state.status = "succeeded";
+          state.nombreBulletinOuvertByCirconsElectorale = action.payload;
+        }
+      )
+      .addCase(
+        getNombreBulletinNonValideByCirconsElectorale.fulfilled,
+        (state, action) => {
+          state.status = "succeeded";
+          state.nombreBulletinNonValideByCirconsElectorale = action.payload;
+        }
+      )
+      .addCase(getlieuVoteByCommune.fulfilled, (state, action) => {
+        state.status = "succeeded";
+        state.lieuVoteByCommune = action.payload;
       })
       .addCase(nombreBV.fulfilled, (state, action) => {
         state.status = "succeeded";

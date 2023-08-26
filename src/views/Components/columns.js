@@ -170,3 +170,76 @@ export const votantsElect = [
       }),
   },
 ];
+
+export const colorByParti = [
+  {
+    id: "17",
+    libelle: "INDEPENDANT",
+    color: "#00cfe8",
+  },
+  {
+    id: "17",
+    libelle: "MGC",
+    color: "#033975",
+  },
+  {
+    id: "16",
+    libelle: "URD",
+    color: "#027f48",
+  },
+  {
+    id: "15",
+    libelle: "BBN",
+    color: "#f60000",
+  },
+  {
+    id: "14",
+    libelle: "PPA-CI",
+    color: "#01a9ea",
+  },
+  {
+    id: "13",
+    libelle: "PDCI-RDA/PPA-CI",
+    color: "#088640",
+  },
+  {
+    id: "12",
+    libelle: "REEL.CI",
+    color: "#d67b2e",
+  },
+  {
+    id: "11",
+    libelle: "PDL",
+    color: "#00cfe8",
+  },
+  {
+    id: "10",
+    libelle: "FAP",
+    color: "#00cfe8",
+  },
+  {
+    id: "9",
+    libelle: "FPI",
+    color: "#244b83",
+  },
+  {
+    id: "8",
+    libelle: "MSC",
+    color: "#198cd8",
+  },
+  {
+    id: "7",
+    libelle: "PPR",
+    color: "",
+  },
+  {
+    id: "2",
+    libelle: "RHDP",
+    color: "#ee9605",
+  },
+  {
+    id: "1",
+    libelle: "PDCI-RDA",
+    color: "#088640",
+  },
+];

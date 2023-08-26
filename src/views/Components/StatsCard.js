@@ -64,47 +64,59 @@ const StatsCard = () => {
       title: !isEmptyObject(nbreLV) ? nbreLV : getNombreLV(),
       subtitle: "Lieux de vote",
       color: "light-primary",
-      icon: <MapPin size={24} />,
+      icon: <MapPin size={18} />,
     },
     {
       title: !isEmptyObject(nbreBV) ? nbreBV : getNombreBV(),
       subtitle: "Bureaux de vote",
       color: "light-info",
-      icon: <Archive size={24} />,
+      icon: <Archive size={18} />,
     },
     {
       title: nbreRep,
       subtitle: "Représentants",
       color: "light-danger",
-      icon: <Users size={24} />,
+      icon: <Users size={18} />,
     },
     {
       title: inscrit?.nombre ? inscrit?.nombre : getNombreElecteur()?.nombre,
       subtitle: "Nombre d'inscrits",
       color: "light-success",
-      icon: <User size={24} />,
+      icon: <User size={18} />,
     },
     {
       title: votant[0]?.total_votant,
       subtitle: "Nombre de votants",
       color: "light-success",
-      icon: <CheckCircle size={24} />,
+      icon: <CheckCircle size={18} />,
+    },
+    {
+      title:
+        parseFloat(
+          (Number(votant[0]?.total_votant) * 100) /
+            Number(
+              inscrit?.nombre ? inscrit?.nombre : getNombreElecteur()?.nombre
+            )
+        ).toFixed(2) + " %",
+      subtitle: "Taux de participations",
+      color: "light-success",
+      icon: <Percent size={18} />,
     },
   ];
 
   const renderData = () => {
     return data.map((item, index) => {
       return (
-        <Col lg="2" className="mx-1">
-          <Card className="shadow-none round" style={{minWidth : "220px"}}>
+        <Col lg="4" className="">
+          <Card className="shadow-none round" style={{ minWidth: "220px" }}>
             <CardBody>
               <div className="d-flex align-items-center">
                 <Avatar color={item.color} icon={item.icon} className="me-2" />
                 <div className="my-auto">
                   <h4 className="fw-bolder mb-0">{item.title}</h4>
-                  <CardText className="font-small-3 mb-0">
+                  <h6 className="fw-bolder mb-0">
                     {item.subtitle}
-                  </CardText>
+                  </h6>
                 </div>
               </div>
             </CardBody>
@@ -116,7 +128,10 @@ const StatsCard = () => {
 
   return (
     <>
-      <h4 style={{ fontWeight:"bold" }} tag="h4"> Données générales</h4>
+      <h4 style={{ fontWeight: "bold" }} tag="h4">
+        {" "}
+        Données générales
+      </h4>
       <Row>{renderData()}</Row>
     </>
   );

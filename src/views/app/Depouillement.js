@@ -22,7 +22,10 @@ import {
 import { Label } from "reactstrap";
 import { useDispatch, useSelector } from "react-redux";
 import {
-  getBureauVote, getElecteurVotant
+  getBureauVote,
+  getCandidatsVoiceByDep,
+  getElecteurVotant,
+  getResult,
 } from "../../redux/store/Election";
 import {
   getCandidats,
@@ -32,9 +35,11 @@ import {
 } from "../../utility/Utils";
 import { Filter } from "react-feather";
 import BreadCrumbs from "../../@core/components/breadcrumbs";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import CandidatVoice from "../Components/CardTransactions";
 import ChartjsHorizontalBarChart from "../Components/ChartjsHorizontalBar";
+import HorizontalBarChart from "../Components/HorizontalBar";
+import { colorByParti } from "../Components/columns";
 
 export default function Depouillement() {
   const dispatch = useDispatch();
@@ -44,177 +49,118 @@ export default function Depouillement() {
   const lieuxVote = getLv();
   const nombreElecteurByBv = getElecteurByBvBYCircons();
   const [open, setOpen] = useState("1");
-
+  const [idBv, setIdBv] = useState();
   const toggle = (id) => {
     open === id ? setOpen() : setOpen(id);
   };
   const electeurbv = [];
   const lieuxVoteData = [];
   const listCandidat = getCandidats();
-  const resultat = useSelector((state) => state.election.resultat);
+  const voixCandidat = useSelector((state) => state.election.CandidatsVoice);
+  const result = useSelector((state) => state.election.resultat);
   const bv = useSelector((state) => state.election.bureauVote);
   const user = getUserData();
 
+  const params = useParams();
   const listCandidatVoixData = [];
+  const listCandidatVoix = [];
 
-  resultat?.map((item) => {
-    listCandidatVoixData.push({
+  result?.map((item) => {
+    listCandidatVoix.push({
       id: item.id_candidat,
       total_voix: item.total_voix,
       nom: item.nom,
     });
   });
 
-  let candidatResult = listCandidat?.map((candidat) => {
+  voixCandidat
+    ?.filter(function (param) {
+      return param.id_bv === params.idbv;
+    })
+    .map((item) => {
+      listCandidatVoixData.push({
+        id: item.id_candidat,
+        voix: item.nombre_voix,
+        idBv: item.id_bv,
+      });
+    });
+
+  let candidatResult = listCandidat.map((candidat) => {
     let candidatVotantData = listCandidatVoixData.find(
       (candidatVotantData) => candidatVotantData.id === candidat.id
     );
-    return { ...candidat, ...candidatVotantData };
+    let VotantData = listCandidatVoix.find(
+      (VotantData) => VotantData.id === candidat.id
+    );
+    let colors = colorByParti.filter(function (params) {
+      return params.libelle === candidat.parti;
+    });
+    return {
+      ...candidat,
+      ...candidatVotantData,
+      color: colors[0].color,
+      ...VotantData,
+    };
   });
 
   lieuxVote?.map((item) => {
     lieuxVoteData.push({ value: item.cod_lieu, label: item.lib_lvote });
   });
+  console.log(candidatResult);
+  const candidatNom = [];
+  const candidat = [];
+  const candidatData = [];
+
+  candidatResult
+    .sort((a, b) => b.voix - a.voix)
+    .map((item) => {
+      candidatNom.push(item.nom);
+      candidatData.push(item.voix);
+    });
+
+  console.log(candidatResult);
 
   useEffect(() => {
     if (getUserData().role === "parti") {
       navigate("/VueParti");
     }
+    dispatch(getElecteurVotant({ id_bv: params.idbv }));
+    dispatch(
+      getResult({
+        id_circons: user?.id_circons,
+        id_parti: user?.id_parti,
+        type: user?.id_type_election,
+      })
+    );
+    dispatch(getCandidatsVoiceByDep());
   }, [dispatch]);
 
   return (
     <>
-      <BreadCrumbs title="Dépouillement" url="/" data={[]} />
-      <Row>
-        <Col lg="6" sm="6">
-          <div className="basic-modal">
-            <Button
-              className="mb-1 btn-icon rounded-circle btn-sm"
-              outline
-              color="primary"
-              onClick={() => setBasicModal(!basicModal)}
-            >
-              <Filter size={16} />
-            </Button>
-            <Modal
-              isOpen={basicModal}
-              toggle={() => setBasicModal(!basicModal)}
-              modalClassName="modal-slide-in event-sidebar"
-            >
-              <ModalHeader>Appliquer un filtre sur les données</ModalHeader>
-              <ModalBody>
-                <Card className="shadow-none">
-                  <CardBody>
-                    {/* <h4 className="mb-1">
-                      <Filter size={17} />
-                      Filtre
-                    </h4> */}
-                    <h5 className="filter-title">Lieu de vote</h5>
-                    <Input
-                      id="search-invoice"
-                      className="mb-1"
-                      placeholder="Recherche par mot clé"
-                      type="text"
-                      value={searchTerm}
-                      onChange={(e) => setSearchTerm(e.target.value)}
-                    />
-                    {/* <div className="form-check">
-                <Input
-                  type="radio"
-                  id="all"
-                  name="item-radio"
-                  defaultChecked
-                  onClick={() => {}}
-                />
-                <Label className="form-check-label" for="all">
-                  Tout
-                </Label>
-              </div> */}
-                    {lieuxVoteData
-                      .filter((filtre) => {
-                        if (searchTerm == "") {
-                          return filtre;
-                        } else if (
-                          JSON.stringify(filtre)
-                            .toLowerCase()
-                            .indexOf(searchTerm.toLowerCase()) != -1
-                        ) {
-                          return filtre;
-                        }
-                      })
-                      .map((item, index) => {
-                        return (
-                          <Accordion open={open} toggle={toggle}>
-                            <AccordionItem>
-                              <AccordionHeader targetId={index}>
-                                <div className="form-check">
-                                  <Input
-                                    type="radio"
-                                    id={item.value}
-                                    name="item-radio"
-                                    onClick={() => {
-                                      dispatch(getBureauVote(item.value));
-                                    }}
-                                  />
-                                  <Label
-                                    className="form-check-label"
-                                    for={item.value}
-                                  >
-                                    {item.label}
-                                  </Label>
-                                </div>
-                              </AccordionHeader>
-                              <AccordionBody accordionId={index}>
-                                {bv?.map((bureauVote) => {
-                                  return (
-                                    <div className="form-check">
-                                      <Input
-                                        type="radio"
-                                        id={bureauVote.cod_bv}
-                                        name="item-radio"
-                                        onClick={() => {
-                                          dispatch(
-                                            getElecteurVotant({
-                                              id_bv: bureauVote.cod_bv,
-                                            })
-                                          );
-                                        }}
-                                      />
-                                      <Label
-                                        className="form-check-label"
-                                        for={bureauVote.cod_bv}
-                                      >
-                                        BV : {bureauVote.lib_bv}
-                                      </Label>
-                                    </div>
-                                  );
-                                })}
-                              </AccordionBody>
-                            </AccordionItem>
-                          </Accordion>
-                        );
-                      })}
-                  </CardBody>
-                </Card>
-              </ModalBody>
-            </Modal>
-          </div>
-        </Col>
-      </Row>
+      <BreadCrumbs title="Dépouillement" url="/depouillement" data={[]} />
+
       <Row className="mt-3">
         <Col lg="12" sm="8">
           <Row>
-            {candidatResult.map((result) => (
-              <Col lg="3" sm="6">
-                <CandidatVoice
-                  nom={result.nom}
-                  lib_parti={result.parti}
-                  nombre_voix={0}
-                />
-              </Col>
-            ))}
+            {candidatResult
+              .sort((a, b) => b.total_voix - a.total_voix)
+              .map((result) => (
+                <Col lg="3" sm="6">
+                  <CandidatVoice
+                    nom={result.nom}
+                    lib_parti={result.parti}
+                    nombre_voix={
+                      result?.voix
+                    }
+                    color={result.color}
+                  />
+                </Col>
+              ))}
           </Row>
-          <ChartjsHorizontalBarChart />
+          <HorizontalBarChart
+            candidat={candidatNom ? candidatNom : candidat}
+            candidatData={candidatData}
+          />
         </Col>
       </Row>
     </>

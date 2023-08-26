@@ -5,6 +5,7 @@ import classnames from "classnames";
 import { useSelector } from "react-redux";
 import { getNombreElecteur } from "../../../utility/Utils";
 import { isEmptyObject } from "jquery";
+import { Badge } from "reactstrap";
 
 const CustomTimeline = (props) => {
   // ** Props
@@ -64,7 +65,7 @@ const CustomTimeline = (props) => {
                   Bv terminé :{" "}
                   <b>{item.nombre_bv_termine ? item.nombre_bv_termine : 0}</b>
                 </p>
-                {item.libelle == "Ouverture du scrutin" ? (
+                {item.libelle == "Déroulement du scrutin" ? (
                   <div>
                     <p>
                       Votants :{" "}
@@ -76,8 +77,8 @@ const CustomTimeline = (props) => {
                         ? inscrit?.nombre
                         : getNombreElecteur()?.nombre}
                     </p>
-                    <p>
-                      Taux :{" "}
+                    <Badge color='danger' className="fw-bolder" >
+                        Taux :{" "}
                       {parseFloat(
                         (Number(votant[0]?.total_votant) * 100) /
                           Number(
@@ -85,8 +86,9 @@ const CustomTimeline = (props) => {
                               ? inscrit?.nombre
                               : getNombreElecteur()?.nombre
                           )
-                      ).toFixed(2) + "%"}
-                    </p>
+                      ).toFixed(2) + " %"}
+                     
+                    </Badge> 
                   </div>
                 ) : (
                   ""
