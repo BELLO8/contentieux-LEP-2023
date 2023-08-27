@@ -200,7 +200,7 @@ const StatsHorizontal = ({
               </Button>
               <div className="px-2 mt-1">
                 <Swiper
-                  spaceBetween={2}
+                  spaceBetween={3}
                   slidesPerView={2}
                   navigation={true}
                   autoplay={{ delay: 10500, disableOnInteraction: false }}
@@ -210,18 +210,12 @@ const StatsHorizontal = ({
                   }}
                 >
                   {candidatResult.map((item) => (
-                    <SwiperSlide className="mx-auto">
+                    <SwiperSlide className="px-1 mx-auto">
                       <div
                         className="border rounded"
-                        style={{
-                          minHeight:"65px",
-                          marginBottom:"8px"
-                        }}
+                        
                       >
-                        <div className="" style={{
-                          minWidth:"15px",
-                          marginBottom:"8px"
-                        }}>
+                        <div className="">
                           <small style={{
                           minWidth:"5px",
                         }} className="fw-bold">{item.nom}</small>

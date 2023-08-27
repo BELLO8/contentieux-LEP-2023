@@ -113,7 +113,7 @@ const DepouillementInfo = () => {
                 })[0]?.total_voix ?? 0
               )
             }
-            statTitle="Suffrage exprimé"
+            statTitle="Suffrages exprimés"
           />
         </Col>
       </Row>
