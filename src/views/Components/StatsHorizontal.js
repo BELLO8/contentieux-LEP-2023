@@ -5,18 +5,18 @@ import Avatar from "@components/avatar";
 // ** Reactstrap Imports
 import { Button, Card, Row, Col, Badge, CardBody } from "reactstrap";
 import { Folder } from "react-feather";
-import { useDispatch } from "react-redux";
-import { useNavigate } from "react-router-dom";
+import { useDispatch, useSelector } from "react-redux";
+import { useNavigate, useParams } from "react-router-dom";
 import { Swiper, SwiperSlide } from "swiper/react";
 import "swiper/css";
 import { Autoplay, Navigation } from "swiper";
 import "../style.css";
+import { getCandidats, getUserData } from "../../utility/Utils";
 
 const StatsHorizontal = ({
   idbv,
   bv,
   lv,
-  candidats,
   etape,
   idlv,
   votants,
@@ -25,8 +25,46 @@ const StatsHorizontal = ({
   nombreBulletinNull,
 }) => {
   const navigate = useNavigate();
+  const result = useSelector((state) => state.election.resultat);
+  const listCandidat = getCandidats();
+  const voixCandidat = useSelector((state) => state.election.CandidatsVoice);
+  const listCandidatVoixData = [];
+  const listCandidatVoix = [];
 
-  console.log(candidats);
+  result?.map((item) => {
+    listCandidatVoix.push({
+      id: item.id_candidat,
+      total_voix: item.total_voix,
+      nom: item.nom,
+    });
+  });
+
+  voixCandidat
+    ?.filter(function (param) {
+      return param.id_bv === idbv;
+    })
+    .map((item) => {
+      listCandidatVoixData.push({
+        id: item.id_candidat,
+        voix: item.nombre_voix,
+        idBv: item.id_bv,
+      });
+    });
+
+  let candidatResult = listCandidat.map((candidat) => {
+    let candidatVotantData = listCandidatVoixData.find(
+      (candidatVotantData) => candidatVotantData.id === candidat.id
+    );
+    let VotantData = listCandidatVoix.find(
+      (VotantData) => VotantData.id === candidat.id
+    );
+    return {
+      ...candidat,
+      ...candidatVotantData,
+      ...VotantData,
+    };
+  });
+
   return (
     <>
       <Card className="rounded mb-1">
@@ -80,23 +118,6 @@ const StatsHorizontal = ({
                 <div className="mx-1">
                   <div className="d-flex justify-content-start align-items-center">
                     <div className="profile-user-info">
-                      <h6 className="mb-0 mx-1"> Suffrage exprimé </h6>
-                    </div>
-                    <div className="ms-auto">
-                      <Badge
-                        className="btn-icon"
-                        color="light-primary"
-                        size="sm"
-                      >
-                        {Number(votants) -
-                          Number(nombreBulletinNull) -
-                          Number(nombreBulletinBlanc)}{" "}
-                      </Badge>
-                    </div>
-                  </div>
-
-                  <div className="d-flex justify-content-start align-items-center">
-                    <div className="profile-user-info">
                       <h6 className="mb-0 mx-1"> Bulletins nuls </h6>
                     </div>
                     <div className="ms-auto">
@@ -124,6 +145,23 @@ const StatsHorizontal = ({
                       </Badge>
                     </div>
                   </div>
+
+                  <div className="d-flex justify-content-start align-items-center">
+                    <div className="profile-user-info">
+                      <h6 className="mb-0 mx-1"> Suffrage exprimé </h6>
+                    </div>
+                    <div className="ms-auto">
+                      <Badge
+                        className="btn-icon"
+                        color="light-primary"
+                        size="sm"
+                      >
+                        {Number(votants) -
+                          Number(nombreBulletinNull) -
+                          Number(nombreBulletinBlanc)}{" "}
+                      </Badge>
+                    </div>
+                  </div>
                 </div>
               </div>
               <Button
@@ -148,7 +186,7 @@ const StatsHorizontal = ({
                     autoplay={{ delay: 10500, disableOnInteraction: false }}
                     modules={[Autoplay, Navigation]}
                   >
-                    {candidats.map((item) => (
+                    {candidatResult.map((item) => (
                       <SwiperSlide>
                         <Card className="border">
                           <CardBody>
@@ -158,7 +196,13 @@ const StatsHorizontal = ({
                                 className="mb-0 bg-secondary px-1"
                                 style={{ fontWeight: "bold", color: "#ffff" }}
                               >
-                                {}
+                                {votants
+                                  ? item.voix
+                                    ? parseFloat(
+                                        (item.voix * 100) / votants
+                                      ).toFixed(2) + "%"
+                                    : 0
+                                  : 0}
                               </h4>
                               <h4
                                 className="mb-0 bg-secondary px-1"
@@ -167,7 +211,7 @@ const StatsHorizontal = ({
                                   borderLeft: "solid 2px white",
                                 }}
                               >
-                                {item.voix}
+                                {item.voix ?? 0}
                               </h4>
                             </div>
                           </CardBody>

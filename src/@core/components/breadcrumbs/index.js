@@ -55,7 +55,7 @@ const BreadCrumbs = (props) => {
         <div className="row breadcrumbs-top">
           <div className="col-12">
             {title ? (
-              <h4 className="content-header-title float-start mb-0">
+              <h1 className="content-header-title fw-bolder float-start mb-0" style={{ color:"black" }}>
                 <Button
                   className="btn-icon rounded-circle btn-sm mx-1"
                   color="primary"
@@ -66,7 +66,7 @@ const BreadCrumbs = (props) => {
                   <ArrowLeft size={15} />
                 </Button>
                 {title}
-              </h4>
+              </h1>
             ) : (
               ""
             )}

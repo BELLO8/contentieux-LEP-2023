@@ -4,27 +4,12 @@ import "@styles/react/libs/react-select/_react-select.scss";
 import "@styles/react/libs/tables/react-dataTable-component.scss";
 import "../style.css";
 import { useState } from "react";
-import {
-  Card,
-  CardBody,
-  Col,
-  Input,
-  Row,
-  Modal,
-  ModalBody,
-  ModalHeader,
-  Button,
-  Accordion,
-  AccordionBody,
-  AccordionHeader,
-  AccordionItem,
-} from "reactstrap";
-import { Label } from "reactstrap";
+import { Col, Row } from "reactstrap";
 import { useDispatch, useSelector } from "react-redux";
 import {
-  getBureauVote,
   getCandidatsVoiceByDep,
   getElecteurVotant,
+  getNombreVotantCei,
   getResult,
 } from "../../redux/store/Election";
 import {
@@ -33,11 +18,9 @@ import {
   getLv,
   getUserData,
 } from "../../utility/Utils";
-import { Filter } from "react-feather";
 import BreadCrumbs from "../../@core/components/breadcrumbs";
 import { useNavigate, useParams } from "react-router-dom";
 import CandidatVoice from "../Components/CardTransactions";
-import ChartjsHorizontalBarChart from "../Components/ChartjsHorizontalBar";
 import HorizontalBarChart from "../Components/HorizontalBar";
 import { colorByParti } from "../Components/columns";
 
@@ -58,12 +41,14 @@ export default function Depouillement() {
   const listCandidat = getCandidats();
   const voixCandidat = useSelector((state) => state.election.CandidatsVoice);
   const result = useSelector((state) => state.election.resultat);
-  const bv = useSelector((state) => state.election.bureauVote);
   const user = getUserData();
-
   const params = useParams();
   const listCandidatVoixData = [];
   const listCandidatVoix = [];
+  const NombreVote = useSelector((state) => state.election.nombreVotantCei);
+  const voix = NombreVote.filter(function (param) {
+    return param.id_bureau_vote === params.idbv;
+  })[0]?.nombre_votant;
 
   result?.map((item) => {
     listCandidatVoix.push({
@@ -110,12 +95,16 @@ export default function Depouillement() {
   const candidatNom = [];
   const candidat = [];
   const candidatData = [];
+  const bv = getElecteurByBvBYCircons();
 
+  let data = bv?.filter(function (id) {
+    return id.id_bureau == params.idbv;
+  });
   candidatResult
     .sort((a, b) => b.voix - a.voix)
     .map((item) => {
       candidatNom.push(item.nom);
-      candidatData.push(item.voix);
+      candidatData.push(parseFloat((item.voix * 100) / voix).toFixed(2));
     });
 
   console.log(candidatResult);
@@ -125,6 +114,7 @@ export default function Depouillement() {
       navigate("/VueParti");
     }
     dispatch(getElecteurVotant({ id_bv: params.idbv }));
+    dispatch(getNombreVotantCei());
     dispatch(
       getResult({
         id_circons: user?.id_circons,
@@ -137,7 +127,14 @@ export default function Depouillement() {
 
   return (
     <>
-      <BreadCrumbs title="Dépouillement" url="/depouillement" data={[]} />
+      <BreadCrumbs
+        title={data[0]?.lieu_vote}
+        url="/depouillement"
+        data={[
+          { title: "Bureau de vote " },
+          { title: `${data[0]?.bureau_vote}` },
+        ]}
+      />
 
       <Row className="mt-3">
         <Col lg="12" sm="8">
@@ -149,9 +146,7 @@ export default function Depouillement() {
                   <CandidatVoice
                     nom={result.nom}
                     lib_parti={result.parti}
-                    nombre_voix={
-                      result?.voix
-                    }
+                    nombre_voix={result?.voix ? result?.voix : 0}
                     color={result.color}
                   />
                 </Col>

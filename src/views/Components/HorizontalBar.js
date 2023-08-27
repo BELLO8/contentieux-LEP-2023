@@ -2,9 +2,9 @@
 import { Bar } from "react-chartjs-2";
 import { Card, CardHeader, CardBody } from "reactstrap";
 import { getUserData } from "../../utility/Utils";
+import "chartjs-plugin-datalabels";
 
 const HorizontalBarChart = ({ candidat, candidatData }) => {
-  
   const options = {
     indexAxis: "y",
     responsive: true,
@@ -14,7 +14,7 @@ const HorizontalBarChart = ({ candidat, candidatData }) => {
       padding: { top: -4 },
     },
     scales: {
-      x: {
+      y: {
         min: 0,
         grid: {
           drawTicks: false,
@@ -28,8 +28,9 @@ const HorizontalBarChart = ({ candidat, candidatData }) => {
       },
     },
     plugins: {
-      legend: {
-        display: false,
+      datalabels: {
+        display: true,
+        color: "white",
       },
     },
   };
@@ -39,7 +40,7 @@ const HorizontalBarChart = ({ candidat, candidatData }) => {
     labels: candidat,
     datasets: [
       {
-        label: getUserData()?.lib_type_election,
+        label: 'VAINQUEUR '+getUserData()?.lib_type_election,
         backgroundColor: [
           "#1058d2",
           "#cccccc",
@@ -63,7 +64,6 @@ const HorizontalBarChart = ({ candidat, candidatData }) => {
           "#dddddd",
           "#dddddd",
           "#dddddd",
-         
         ],
         borderColor: "transparent",
         data: candidatData,

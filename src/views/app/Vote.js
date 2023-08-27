@@ -52,13 +52,11 @@ export default function Vote() {
     (state) => state.election.nombreBulletinOuvertByCirconsElectorale
   );
   const lieuxVote = getLv();
-  const result = useSelector((state) => state.election.resultat);
   const nombreElecteurByBv = getElecteurByBvBYCircons();
   const nombreCei = [];
   const bulletinOuver = [];
   const nonValide = [];
-  const listCandidat = getCandidats();
-  const voixCandidat = useSelector((state) => state.election.CandidatsVoice);
+  const user = getUserData()
 
   bulletinNonValid.map((item) => {
     nonValide.push({
@@ -99,9 +97,7 @@ export default function Vote() {
   const lieuxVoteData = [];
   const votant = [];
   const timeLineData = [];
-  //  ?.filter(function (params) {
-  //       return params.id_bv === idBv;
-  //     })
+
 
   timeLine.map((item) => {
     timeLineData.push({
@@ -148,7 +144,6 @@ export default function Vote() {
     };
   });
 
-  console.log(newArray);
 
   nombreElecteurByBv?.map((item) => {
     electeurbv.push(item);
@@ -158,44 +153,11 @@ export default function Vote() {
     lieuxVoteData.push({ value: item.cod_lieu, label: item.lib_lvote });
   });
 
-  const listCandidatVoixData = [];
-  const listCandidatVoix = [];
-
-  const user = getUserData();
-
-  result?.map((item) => {
-    listCandidatVoix.push({
-      id: item.id_candidat,
-      total_voix: item.total_voix,
-      nom: item.nom,
-    });
-  });
-
-  voixCandidat?.map((item) => {
-    listCandidatVoixData.push({
-      id: item.id_candidat,
-      voix: item.nombre_voix,
-      idBv: item.id_bv,
-    });
-  });
-
-  let candidatResult = listCandidat.map((candidat) => {
-    let candidatVotantData = listCandidatVoixData.find(
-      (candidatVotantData) => candidatVotantData.id === candidat.id
-    );
-    let VotantData = listCandidatVoix.find(
-      (VotantData) => VotantData.id === candidat.id
-    );
-    return {
-      ...candidat,
-      ...candidatVotantData,
-      ...VotantData,
-    };
-  });
+  
 
   return (
     <>
-      <BreadCrumbs title="Dépouillement" url="/" data={[]} />
+      <BreadCrumbs title="Dépouillement" url="/" data={[{ title: searchTerm }]} />
       <Row>
         <Col lg="6" sm="6">
           <div className="basic-modal">
@@ -262,7 +224,9 @@ export default function Vote() {
             </Modal>
           </div>
         </Col>
-        <Col lg="6" sm="6"></Col>
+        <Col lg="6" sm="6">
+        </Col>
+        
         {newArray
           .filter((filtre) => {
             if (searchTerm == "") {
@@ -280,7 +244,6 @@ export default function Vote() {
               <StatsHorizontal
                 idbv={item.id}
                 idlv={item.id_lieu_vote}
-                candidats={candidatResult}
                 bv={item.bureau_vote}
                 lv={item.lieu_vote}
                 inscrit={item.nb_electeur}
@@ -288,7 +251,7 @@ export default function Vote() {
                 nombreBulletinBlanc={item.nombreBulletinBlanc}
                 nombreBulletinNull={item.nombreBulletinNull}
                 bulletinOuvert={item.bulletin ? item.bulletin : 0}
-                votants={item.nombre_votant ? item.nombre_votant : 0}
+                votants={item.nombre_votant ?? 0}
               />
             </Col>
           ))}
