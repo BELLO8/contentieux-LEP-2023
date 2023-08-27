@@ -13,7 +13,7 @@ const CandidatVoice = ({ nom, lib_parti, nombre_voix, color }) => {
   const voix = NombreVote.filter(function (param) {
     return param.id_bureau_vote === params.idbv;
   })[0]?.nombre_votant;
-
+  
   console.log(voix);
   const renderTransactions = () => {
     return (

@@ -79,7 +79,7 @@ const DepouillementInfo = () => {
             stats={
               resultatData?.filter(function (param) {
                 return param.id_candidat === "-1";
-              })[0]?.total_voix
+              })[0]?.total_voix ?? 0
             }
             statTitle="Bulletins blancs"
           />
@@ -91,7 +91,7 @@ const DepouillementInfo = () => {
             stats={
               resultatData?.filter(function (param) {
                 return param.id_candidat === "-2";
-              })[0]?.total_voix
+              })[0]?.total_voix ?? 0
             }
             statTitle="Bulletins nuls"
           />
@@ -101,16 +101,16 @@ const DepouillementInfo = () => {
             icon={<FileMinus size={21} />}
             color="danger"
             stats={
-              Number(votant[0]?.total_votant) -
+              Number(votant[0]?.total_votant ?? 0) -
               Number(
                 resultatData?.filter(function (param) {
                   return param.id_candidat === "-2";
-                })[0]?.total_voix
+                })[0]?.total_voix ?? 0
               ) -
               Number(
                 resultatData?.filter(function (param) {
                   return param.id_candidat === "-1";
-                })[0]?.total_voix
+                })[0]?.total_voix ?? 0
               )
             }
             statTitle="Suffrage exprimé"

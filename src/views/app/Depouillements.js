@@ -27,6 +27,7 @@ import {
   getNombreVotantCei,
   getResult,
   getTimeLineByCircons,
+  nombreElecteurByBvBYCircons,
 } from "../../redux/store/Election";
 import {
   getCandidats,
@@ -53,6 +54,7 @@ export default function Vote() {
   );
   const lieuxVote = getLv();
   const nombreElecteurByBv = getElecteurByBvBYCircons();
+  // const nombreElecteurByBv = useSelector((state) => state.election.nombreElecteurByBv);
   const nombreCei = [];
   const bulletinOuver = [];
   const nonValide = [];
@@ -85,6 +87,7 @@ export default function Vote() {
         type: user?.id_type_election,
       })
     );
+    // dispatch(nombreElecteurByBvBYCircons());
     dispatch(getCandidatsVoiceByDep());
     dispatch(getNombreVotantCei());
     dispatch(getNombreBulletinOuvertByCirconsElectorale());
@@ -118,7 +121,6 @@ export default function Vote() {
     });
   });
 
-  //console.log(dataVotant);
 
   let newArray = electeurbv.map((obj1) => {
     let timeLine = timeLineData.filter((time) => time.id === obj1.id);
@@ -152,8 +154,6 @@ export default function Vote() {
   lieuxVote?.map((item) => {
     lieuxVoteData.push({ value: item.cod_lieu, label: item.lib_lvote });
   });
-
-  
 
   return (
     <>

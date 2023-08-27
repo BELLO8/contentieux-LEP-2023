@@ -7,7 +7,8 @@ interface Admin (Pour l'activation d'un candidat)
 
 Vue regionale etape du vote {start:2023-08-26T06:22:32}
     Sur le dashboard afficher le nombre de commune|
-    Afficher les commune ( nombre inscrit et votant)
-    Details commune
-        filtre par lv pour afficher les bv
-Enlever les bulletin nuls et blanc dans le graphe
+    Afficher les commune ( nombre inscrit et votant) {cm:2023-08-27}
+    Details commune {cm:2023-08-27}
+        filtre par lv pour afficher les bv {cm:2023-08-27}
+Enlever les bulletin nuls et blanc dans le graphe {cm:2023-08-27}
+Afficher la liste des votants en temps reel (titre : liste des votants en temps réel)

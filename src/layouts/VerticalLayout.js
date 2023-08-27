@@ -51,7 +51,7 @@ const VerticalLayout = (props) => {
   return (
     <Layout
       menuData={
-        user?.role === "parti" ? menuVerti : user.id_type_election === "2" ? menuReg : navigation
+        user?.role === "parti" ? menuVerti : user?.id_type_election === "2" ? menuReg : navigation
       }
       {...props}
     >

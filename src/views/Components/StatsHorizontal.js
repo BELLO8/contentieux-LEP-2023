@@ -214,13 +214,17 @@ const StatsHorizontal = ({
                       <div
                         className="border rounded"
                         style={{
-                          padding: "5px",
-                          marginBottom: "8px",
-                          width: item.nom.length + "2px",
+                          minHeight:"65px",
+                          marginBottom:"8px"
                         }}
                       >
-                        <div>
-                          <small className="fw-bold">{item.nom}</small>
+                        <div className="" style={{
+                          minWidth:"15px",
+                          marginBottom:"8px"
+                        }}>
+                          <small style={{
+                          minWidth:"5px",
+                        }} className="fw-bold">{item.nom}</small>
                           <div className="d-flex">
                             <Badge
                               color="light-danger"

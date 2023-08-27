@@ -15,17 +15,21 @@ const ChartjsHorizontalBarChart = () => {
   const candidat = [];
 
   const resultatData = [];
-  result?.map((item) => {
-    resultatData.push(item);
-  });
-
+  result
+    ?.filter(function (param) {
+      return param.id_candidat != "-1" && param.id_candidat != "-2";
+    })
+    .map((item) => {
+      resultatData.push(item);
+    });
+    
   resultatData
     ?.sort((a, b) => b.total_voix - a.total_voix)
     .map((item) => {
       candidatData.push(item.total_voix);
       candidat.push(item.nom);
     });
-    
+
   useEffect(() => {
     dispatch(
       getResult({
@@ -94,7 +98,6 @@ const ChartjsHorizontalBarChart = () => {
           "#dddddd",
           "#dddddd",
           "#dddddd",
-         
         ],
         borderColor: "transparent",
         data: candidatData,

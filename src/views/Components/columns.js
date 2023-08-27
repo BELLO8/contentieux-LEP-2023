@@ -53,11 +53,14 @@ export const votants = [
   {
     name: "Heure de vote",
     selector: (row) => row.heure_vote,
-    cell: (row) =>
-      new Date(row.heure_vote).toLocaleTimeString("fr-FR", {
-        hour: "numeric",
-        minute: "numeric",
-      }),
+    cell: (row) => (
+      <Badge color="primary">
+        {new Date(row.heure_vote).toLocaleTimeString("fr-FR", {
+          hour: "numeric",
+          minute: "numeric",
+        })}{" "}
+      </Badge>
+    ),
   },
   {
     name: "Electeur",
@@ -71,7 +74,7 @@ export const votants = [
   {
     name: "Numero electeur",
     selector: (row) => row.num_electeur,
-    cell: (row) => <Badge color="primary"> {row.num_electeur} </Badge>,
+    cell: (row) => row.num_electeur
   },
   {
     name: "Sexe",
@@ -113,7 +116,6 @@ export const votants = [
     selector: (row) => row.profession,
     cell: (row) => row.profession,
   },
-  
 ];
 
 export const votantsElect = [

@@ -28,9 +28,7 @@ import {
 import { Label } from "reactstrap";
 import { useDispatch, useSelector } from "react-redux";
 import {
-  getBureauVote,
-  getCandidatsVoiceByDep,
-  getElecteurVotant, getTimeLineByBv
+  getBureauVote, getElecteurVotant, getResult, getTimeLineByBv
 } from "../../redux/store/Election";
 import {
   getCandidats,
@@ -57,19 +55,19 @@ export default function Resultat() {
   const electeurbv = [];
   const lieuxVoteData = [];
   const listCandidat = getCandidats();
-  const voixCandidat = useSelector((state) => state.election.CandidatsVoice);
+  const resultat = useSelector((state) => state.election.resultat);
   const user = getUserData();
   const bv = useSelector((state) => state.election.bureauVote);
 
   const listCandidatVoixData = [];
 
-  voixCandidat?.map((item) => {
-      listCandidatVoixData.push({
-        id: item.id_candidat,
-        voix: item.nombre_voix,
-        idBv: item.id_bv,
-      });
+  resultat?.map((item) => {
+    listCandidatVoixData.push({
+      id: item.id_candidat,
+      total_voix: item.total_voix,
+      nom: item.nom,
     });
+  });
 
   let candidatResult = listCandidat?.map((candidat) => {
     let candidatVotantData = listCandidatVoixData.find(
@@ -89,14 +87,14 @@ export default function Resultat() {
     if (getUserData().role === "parti") {
       navigate("/VueParti");
     }
-    dispatch(getCandidatsVoiceByDep());
-    // dispatch(
-    //   getResult({
-    //     id_circons: user?.id_circons,
-    //     id_parti: user?.id_parti,
-    //     type: user?.id_type_election,
-    //   })
-    // );
+    // dispatch(getCandidatsVoiceByDep());
+    dispatch(
+      getResult({
+        id_circons: user?.id_circons,
+        id_parti: user?.id_parti,
+        type: user?.id_type_election,
+      })
+    );
   }, [dispatch]);
   return (
     <div>

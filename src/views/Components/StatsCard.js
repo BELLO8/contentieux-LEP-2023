@@ -113,7 +113,7 @@ const StatsCard = () => {
               <div className="d-flex align-items-center">
                 <Avatar color={item.color} icon={item.icon} className="me-2" />
                 <div className="my-auto">
-                  <h4 className="fw-bolder mb-0">{item.title}</h4>
+                  <h1 className="fw-bolder mb-0">{item.title}</h1>
                   <h6 className="fw-bolder mb-0">
                     {item.subtitle}
                   </h6>

@@ -152,7 +152,11 @@ export default function SettingCandidat() {
 
   return (
     <>
-      <BreadCrumbs title="Bureau de vote" url="/" data={[]} />
+      <BreadCrumbs
+        title={searchTerm === "" ? "Tout les bureaux de vote" : searchTerm}
+        url="/"
+        data={[]}
+      />
       <Row>
         <Col lg="6" sm="6">
           <div className="basic-modal">
