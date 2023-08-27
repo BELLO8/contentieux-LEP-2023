@@ -2,26 +2,20 @@
 
 import StatsHorizontal from "@components/widgets/stats/StatsHorizontal";
 import {
-  Activity,
-  Copy,
-  Cpu,
   File,
   FileMinus,
-  FileText,
-  Server,
+  FileText
 } from "react-feather";
 import { Row, Col } from "reactstrap";
-import Candidat from "../Components/Candidant";
 import { useEffect, React } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import {
-  getCandidats,
   getResult,
-  nombreVotantGlobal,
+  nombreVotantGlobal
 } from "../../redux/store/Election";
 import { getNombreElecteur, getUserData } from "../../utility/Utils";
 
-const DepouillementBV = () => {
+const DepouillementInfo = () => {
   const result = useSelector((state) => state.election.resultat);
   const user = getUserData();
   const dispatch = useDispatch();
@@ -127,4 +121,4 @@ const DepouillementBV = () => {
   );
 };
 
-export default DepouillementBV;
+export default DepouillementInfo;

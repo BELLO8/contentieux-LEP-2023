@@ -65,7 +65,7 @@ const CustomTimeline = (props) => {
                   Bv terminé :{" "}
                   <b>{item.nombre_bv_termine ? item.nombre_bv_termine : 0}</b>
                 </p>
-                {item.libelle == "Déroulement du scrutin" ? (
+                {item.id == 3 ? (
                   <div>
                     <p>
                       Votants :{" "}

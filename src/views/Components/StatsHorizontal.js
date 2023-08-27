@@ -4,14 +4,15 @@ import Avatar from "@components/avatar";
 
 // ** Reactstrap Imports
 import { Button, Card, Row, Col, Badge, CardBody } from "reactstrap";
-import { Folder } from "react-feather";
-import { useDispatch, useSelector } from "react-redux";
-import { useNavigate, useParams } from "react-router-dom";
-import { Swiper, SwiperSlide } from "swiper/react";
+import { ArrowLeft, ArrowRight, Folder } from "react-feather";
+import { useSelector } from "react-redux";
+import { useNavigate } from "react-router-dom";
+import { Swiper, SwiperSlide, useSwiper } from "swiper/react";
 import "swiper/css";
 import { Autoplay, Navigation } from "swiper";
 import "../style.css";
-import { getCandidats, getUserData } from "../../utility/Utils";
+import { getCandidats } from "../../utility/Utils";
+import { useState } from "react";
 
 const StatsHorizontal = ({
   idbv,
@@ -30,6 +31,7 @@ const StatsHorizontal = ({
   const voixCandidat = useSelector((state) => state.election.CandidatsVoice);
   const listCandidatVoixData = [];
   const listCandidatVoix = [];
+  const [swiper, setSwiper] = useState(null);
 
   result?.map((item) => {
     listCandidatVoix.push({
@@ -177,49 +179,76 @@ const StatsHorizontal = ({
               >
                 <b style={{ color: "#183f98" }}>Détails</b>
               </Button>
-              <div className="px-1 mt-1">
-                <Row>
-                  <Swiper
-                    spaceBetween={2}
-                    slidesPerView={2}
-                    navigation={true}
-                    autoplay={{ delay: 10500, disableOnInteraction: false }}
-                    modules={[Autoplay, Navigation]}
-                  >
-                    {candidatResult.map((item) => (
-                      <SwiperSlide>
-                        <Card className="border">
-                          <CardBody>
-                            <small>{item.nom}</small>
-                            <div className="d-flex my-auto">
-                              <h4
-                                className="mb-0 bg-secondary px-1"
-                                style={{ fontWeight: "bold", color: "#ffff" }}
-                              >
-                                {votants
-                                  ? item.voix
-                                    ? parseFloat(
-                                        (item.voix * 100) / votants
-                                      ).toFixed(2) + "%"
-                                    : 0
-                                  : 0}
-                              </h4>
-                              <h4
-                                className="mb-0 bg-secondary px-1"
-                                style={{
-                                  fontWeight: "bold",
-                                  borderLeft: "solid 2px white",
-                                }}
-                              >
-                                {item.voix ?? 0}
-                              </h4>
-                            </div>
-                          </CardBody>
-                        </Card>
-                      </SwiperSlide>
-                    ))}
-                  </Swiper>
-                </Row>
+              <Button
+                className="btn-icon rounded-circle"
+                size="sm"
+                outline
+                color="primary"
+                onClick={() => swiper.slidePrev()}
+              >
+                <ArrowLeft size={14} />
+              </Button>
+
+              <Button
+                className="btn-icon rounded-circle"
+                outline
+                size="sm"
+                color="primary"
+                onClick={() => swiper.slideNext()}
+              >
+                <ArrowRight size={14} />
+              </Button>
+              <div className="px-2 mt-1">
+                <Swiper
+                  spaceBetween={2}
+                  slidesPerView={2}
+                  navigation={true}
+                  autoplay={{ delay: 10500, disableOnInteraction: false }}
+                  modules={[Autoplay, Navigation]}
+                  onSwiper={(s) => {
+                    setSwiper(s);
+                  }}
+                >
+                  {candidatResult.map((item) => (
+                    <SwiperSlide className="mx-auto">
+                      <div
+                        className="border rounded"
+                        style={{
+                          padding: "5px",
+                          marginBottom: "8px",
+                          width: item.nom.length + "2px",
+                        }}
+                      >
+                        <div>
+                          <small className="fw-bold">{item.nom}</small>
+                          <div className="d-flex">
+                            <Badge
+                              color="light-danger"
+                              style={{ fontWeight: "bold", color: "#ffff" }}
+                            >
+                              {votants
+                                ? item.voix
+                                  ? parseFloat(
+                                      (item.voix * 100) / votants
+                                    ).toFixed(2) + "%"
+                                  : 0
+                                : 0}
+                            </Badge>
+                            <Badge
+                              color="light-success"
+                              style={{
+                                fontWeight: "bold",
+                                marginLeft: "2px",
+                              }}
+                            >
+                              {item.voix ?? 0}
+                            </Badge>
+                          </div>
+                        </div>
+                      </div>
+                    </SwiperSlide>
+                  ))}
+                </Swiper>
               </div>
             </div>
           </div>

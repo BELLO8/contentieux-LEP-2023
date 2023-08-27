@@ -30,21 +30,17 @@ import { useDispatch, useSelector } from "react-redux";
 import {
   getBureauVote,
   getCandidatsVoiceByDep,
-  getElecteurVotant,
-  getResult,
-  getTimeLineByBv,
+  getElecteurVotant, getTimeLineByBv
 } from "../../redux/store/Election";
 import {
   getCandidats,
   getElecteurByBvBYCircons,
   getLv,
 } from "../../utility/Utils";
-import { Download, Filter, Printer } from "react-feather";
+import { Filter } from "react-feather";
 import CandidatVoice from "../Components/CardTransactions";
-import BVTimeline from "../Components/BVTimeline";
-import { isEmptyObject } from "jquery";
 import { colorByParti } from "../Components/columns";
-import DepouillementBV from "./DepouillementBV";
+import DepouillementInfo from "./DepouillementInfo";
 
 export default function Resultat() {
   const navigate = useNavigate();
@@ -230,7 +226,7 @@ export default function Resultat() {
       </Row>
       <Row className="mt-3">
         <Col lg="12" sm="6">
-          <DepouillementBV />
+          <DepouillementInfo />
           <Row className="mb-3">
             <h2 className="fw-bolder mb-3">Résultats </h2>
             {candidatResult
