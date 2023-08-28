@@ -4,7 +4,13 @@ import Avatar from "@components/avatar";
 
 // ** Reactstrap Imports
 import { Button, Card, Row, Col, Badge, CardBody } from "reactstrap";
-import { ArrowLeft, ArrowRight, Folder } from "react-feather";
+import {
+  ArrowLeft,
+  ArrowLeftCircle,
+  ArrowRight,
+  ArrowRightCircle,
+  Folder,
+} from "react-feather";
 import { useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import { Swiper, SwiperSlide, useSwiper } from "swiper/react";
@@ -82,7 +88,10 @@ const StatsHorizontal = ({
                     <Badge
                       style={{ marginLeft: "8px" }}
                       color={
-                        etape != "Dépouillement pas débuté" ? "success" : "dark"
+                        etape != "Dépouillement pas débuté" &&
+                        etape != "Pas debuté"
+                          ? "success"
+                          : "dark"
                       }
                     >
                       {etape}
@@ -179,46 +188,43 @@ const StatsHorizontal = ({
               >
                 <b style={{ color: "#183f98" }}>Détails</b>
               </Button>
-              <Button
-                className="btn-icon rounded-circle"
-                size="sm"
-                outline
-                color="primary"
-                onClick={() => swiper.slidePrev()}
-              >
-                <ArrowLeft size={14} />
-              </Button>
 
-              <Button
-                className="btn-icon rounded-circle"
-                outline
-                size="sm"
-                color="primary"
-                onClick={() => swiper.slideNext()}
-              >
-                <ArrowRight size={14} />
-              </Button>
-              <div className="px-2 mt-1">
+              <div className="d-flex mt-1 mb-1">
+                <div className="m-auto">
+                  <Button
+                    className="btn-icon rounded-circle"
+                    color="flat-primary"
+                    size="sm"
+                    onClick={() => swiper.slidePrev()}
+                  >
+                    <ArrowLeft size={16} />
+                  </Button>
+                </div>
+
                 <Swiper
                   spaceBetween={3}
                   slidesPerView={2}
                   navigation={true}
-                  autoplay={{ delay: 10500, disableOnInteraction: false }}
+                  autoplay={{ delay: 10500, disableOnInteraction: true }}
                   modules={[Autoplay, Navigation]}
                   onSwiper={(s) => {
                     setSwiper(s);
                   }}
                 >
                   {candidatResult.map((item) => (
-                    <SwiperSlide className="px-1 mx-auto">
-                      <div
-                        className="border rounded"
-                        
-                      >
-                        <div className="">
-                          <small style={{
-                          minWidth:"5px",
-                        }} className="fw-bold">{item.nom}</small>
+                    <SwiperSlide>
+                      <Card className="border rounded m-auto">
+                        <div style={{ padding: "4px" }}>
+                          <p
+                            style={{
+                              whiteSpace: "nowrap",
+                              overflow: "hidden",
+                              textOverflow: "ellipsis",
+                            }}
+                            className="fw-bold"
+                          >
+                            {item.nom}
+                          </p>
                           <div className="d-flex">
                             <Badge
                               color="light-danger"
@@ -243,10 +249,20 @@ const StatsHorizontal = ({
                             </Badge>
                           </div>
                         </div>
-                      </div>
+                      </Card>
                     </SwiperSlide>
                   ))}
                 </Swiper>
+                <div className="m-auto">
+                  <Button
+                    className="btn-icon rounded-circle"
+                    color="flat-primary"
+                    size="sm"
+                    onClick={() => swiper.slideNext()}
+                  >
+                    <ArrowRight className="text-primary" size={15} />
+                  </Button>
+                </div>
               </div>
             </div>
           </div>
