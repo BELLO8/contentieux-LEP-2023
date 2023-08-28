@@ -104,14 +104,14 @@ export default function Resultat() {
       <Row>
         <Col lg="6" sm="6">
           <div className="basic-modal">
-            <Button
+            {/* <Button
               className="mb-1 btn-icon rounded-circle btn-sm"
               outline
               color="primary"
               onClick={() => setBasicModal(!basicModal)}
             >
               <Filter size={16} />
-            </Button>
+            </Button> */}
             <Modal
               isOpen={basicModal}
               toggle={() => setBasicModal(!basicModal)}

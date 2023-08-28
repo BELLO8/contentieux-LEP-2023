@@ -1,43 +1,38 @@
 /* eslint-disable */
 
-import React, { useEffect } from "react";
 import "@styles/react/libs/react-select/_react-select.scss";
 import "@styles/react/libs/tables/react-dataTable-component.scss";
-import "../style.css";
-import { useState } from "react";
-import StatsHorizontal from "../Components/StatsHorizontal";
+import React, { useEffect, useState } from "react";
+import { Filter } from "react-feather";
+import { useDispatch, useSelector } from "react-redux";
+import { useNavigate } from "react-router-dom";
 import {
   Button,
   Col,
   Input,
+  Label,
   Modal,
   ModalBody,
   ModalHeader,
   Row,
 } from "reactstrap";
-import { Label } from "reactstrap";
-import { useDispatch, useSelector } from "react-redux";
+import { io } from "socket.io-client";
+import BreadCrumbs from "../../@core/components/breadcrumbs";
 import {
   allNombreVotant,
   getBureauVote,
-  getLieuxVote,
   getTimeLineByCircons,
-  nombreElecteurByBvBYCircons,
   vote,
 } from "../../redux/store/Election";
+import { getRepresentant } from "../../redux/store/Representant";
 import {
   getElecteurByBvBYCircons,
   getLv,
   getUserData,
 } from "../../utility/Utils";
-import { Filter } from "react-feather";
 import BureauVote from "../Components/BureauVote";
-import BreadCrumbs from "../../@core/components/breadcrumbs";
-import { getRepresentant } from "../../redux/store/Representant";
-import { isEmptyObject } from "jquery";
-import { useNavigate } from "react-router-dom";
-import { io } from "socket.io-client";
 import RealTimeVoteList from "../Components/RealTimeVoteList";
+import "../style.css";
 
 const socket = io.connect("https://jellyfish-app-wxyzd.ondigitalocean.app", {
   transports: ["websocket"],
@@ -54,11 +49,7 @@ export default function SettingCandidat() {
   const allNombreVotantByBvByCircons = useSelector(
     (state) => state.election.allNombreVotantByBvByCircons
   );
-  const nombreElecteurByBv = !isEmptyObject(
-    useSelector((state) => state.election.nombreElecteurByBv)
-  )
-    ? useSelector((state) => state.election.nombreElecteurByBv)
-    : getElecteurByBvBYCircons();
+  const nombreElecteurByBv = getElecteurByBvBYCircons();
   const timeLine = useSelector((state) => state.election.timeLineCircons);
   const ListRepresentant = useSelector(
     (state) => state.representant.representant.data
@@ -133,15 +124,14 @@ export default function SettingCandidat() {
     };
   });
 
-  console.log(newArray);
   lieuxVote?.map((item) => {
     lieuxVoteData.push({ value: item.cod_lieu, label: item.lib_lvote });
   });
 
   useEffect(() => {
     socket.on(`insertedvote-${user.id_candidat}`, (data) => {
-      console.log(data);
       dispatch(vote(JSON.parse(data)));
+      dispatch(allNombreVotant());
     });
     if (getUserData().role === "parti") {
       navigate("/VueParti");
@@ -246,13 +236,8 @@ export default function SettingCandidat() {
                 lv={item.lieu_vote}
                 nbrRep={item.nbrRep}
                 inscrit={item.nb_electeur}
-                votants={
-                  item.nombreVotant
-                    ? Number(item.total) + item.nombreVotant
-                    : item.total
-                    ? item.total
-                    : 0
-                }
+                route={`/bureau-vote/deroulement/${item.id_lieu_vote}/${item.id_bureau}`}
+                votants={item.total ?? 0}
                 etape={item.etape}
                 bv={" Bv : " + item.bureau_vote}
               />

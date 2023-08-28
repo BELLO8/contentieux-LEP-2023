@@ -6,6 +6,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { useNavigate, useParams } from "react-router-dom";
 import {
   allNombreVotant,
+  getCommuneByRegion,
   getNombreElecteurByBvByCommune,
   getTimeLineByCircons,
   getlieuVoteByCommune,
@@ -27,6 +28,8 @@ import { getRepresentant } from "../../redux/store/Representant";
 import { io } from "socket.io-client";
 import { useState } from "react";
 import { getUserData } from "../../utility/Utils";
+import { isEmptyObject } from "jquery";
+import RealTimeVoteList from "../Components/RealTimeVoteList";
 
 const socket = io.connect("https://jellyfish-app-wxyzd.ondigitalocean.app", {
   transports: ["websocket"],
@@ -39,6 +42,8 @@ const DetailEtape = () => {
   const [searchTerm, setSearchTerm] = useState("");
   const lieuxVote = useSelector((state) => state.election.lieuVoteByCommune);
   const navigate = useNavigate();
+  const communes = useSelector((state) => state.election.communeByRegion);
+
   const nombreElecteurByBv = useSelector(
     (state) => state.election.nombreElecteurByBvByCommune
   );
@@ -118,6 +123,11 @@ const DetailEtape = () => {
       nbrRep: [...obj3].length,
     };
   });
+
+  const commune = communes?.filter(function (item) {
+    return item.id === params.id;
+  });
+
   useEffect(() => {
     socket.on(`insertedvote-${user.id_candidat}`, (data) => {
       console.log(data);
@@ -126,6 +136,7 @@ const DetailEtape = () => {
     if (getUserData().role === "parti") {
       navigate("/VueParti");
     }
+    isEmptyObject(communes) ? dispatch(getCommuneByRegion()) : null;
     dispatch(getNombreElecteurByBvByCommune(params.id));
     dispatch(allNombreVotant());
     dispatch(getTimeLineByCircons());
@@ -134,7 +145,8 @@ const DetailEtape = () => {
   }, [dispatch, socket]);
   return (
     <>
-      <BreadCrumbs title="Bureau de vote" url="/bureau-vote" data={[]} />
+      <BreadCrumbs title={commune[0]?.libcommune} url="/vote" data={[]} />
+      <RealTimeVoteList />
       <Row>
         <Col lg="6" sm="6">
           <div className="basic-modal">
@@ -221,6 +233,7 @@ const DetailEtape = () => {
                 lv={item.lieu_vote}
                 nbrRep={item.nbrRep}
                 inscrit={item.nb_electeur}
+                route={`/vote/etape-vote/${item.id_lieu_vote}/${item.id_bureau}`}
                 votants={
                   item.nombreVotant
                     ? Number(item.total) + item.nombreVotant

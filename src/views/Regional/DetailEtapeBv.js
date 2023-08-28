@@ -16,7 +16,7 @@ import Breadcrumbs from "../../@core/components/breadcrumbs";
 import { getElecteurByBvBYCircons, getUserData } from "../../utility/Utils";
 import { isEmptyObject } from "jquery";
 
-const DetailBv = () => {
+const DetailEtapeBv = () => {
   const params = useParams();
   const dispatch = useDispatch();
   const navigate = useNavigate();
@@ -39,7 +39,7 @@ const DetailBv = () => {
     <>
       <Breadcrumbs
         title={data[0]?.lieu_vote}
-        url="/bureau-vote"
+        url="/vote"
         data={[
           { title: "Bureau de vote " },
           { title: `${data[0]?.bureau_vote}` },
@@ -51,4 +51,4 @@ const DetailBv = () => {
   );
 };
 
-export default DetailBv;
+export default DetailEtapeBv;

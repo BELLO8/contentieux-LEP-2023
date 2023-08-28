@@ -51,6 +51,13 @@ const Candidat = () => {
     socket.on(`insertedvoix-${user.id_candidat}`, (data) => {
       console.log(data);
       dispatch(voice(data));
+      dispatch(
+        getResult({
+          id_circons: user?.id_circons,
+          id_parti: user?.id_parti,
+          type: user?.id_type_election,
+        })
+      );
     });
   }, [dispatch, socket]);
 
@@ -83,13 +90,7 @@ const Candidat = () => {
                   <b>{item.parti}</b>
                 </div>
                 <div className="d-flex align-items-center flex-column">
-                  <h2 className="mt-1 mb-1">
-                    {item.voix
-                      ? item.voix
-                      : item.total_voix
-                      ? item.total_voix
-                      : 0}
-                  </h2>
+                  <h2 className="mt-1 mb-1">{item.total_voix ?? 0}</h2>
                 </div>
               </Card>
             </SwiperSlide>

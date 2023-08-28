@@ -25,6 +25,9 @@ import Parti from "../../views/VueParti/Home"
 import EtapeVote from "../../views/Regional/EtapeVote"
 import DetailEtape from "../../views/Regional/DetailEtape"
 import ComptageVoix from "../../views/Regional/ComptageVoix"
+import DetailEtapeBv from "../../views/Regional/DetailEtapeBv"
+import DepouillementBureauVote from "../../views/Regional/DepouillementsBureauVote"
+import DepouillementDetailsBureauVote from "../../views/Regional/DepouillementDetailsBureauVote"
 
 const getLayout = {
   blank: <BlankLayout />,
@@ -60,6 +63,10 @@ const Routes = [
     element: <DetailEtape />
   },
   {
+    path: "/vote/etape-vote/:idlv/:idbv",
+    element: <DetailEtapeBv />
+  },
+  {
     path: "/depouillement/depouillement-par-bv/:idlv/:idbv",
     element: <Depouillement />
   },
@@ -70,6 +77,14 @@ const Routes = [
   {
     path: "/comptageVoix",
     element: <ComptageVoix />
+  },
+  {
+    path: "/comptageVoix/:id",
+    element: <DepouillementBureauVote />
+  },
+  {
+    path: "/comptageVoix/depouillement-par-bv/:idlv/:idbv",
+    element: <DepouillementDetailsBureauVote />
   },
   {
     path: "/resultat",

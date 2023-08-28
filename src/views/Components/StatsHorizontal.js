@@ -30,6 +30,7 @@ const StatsHorizontal = ({
   bulletinOuvert,
   nombreBulletinBlanc,
   nombreBulletinNull,
+  route
 }) => {
   const navigate = useNavigate();
   const result = useSelector((state) => state.election.resultat);
@@ -181,9 +182,7 @@ const StatsHorizontal = ({
                 outline
                 className="mx-1"
                 onClick={() => {
-                  navigate(
-                    `/depouillement/depouillement-par-bv/${idlv}/${idbv}`
-                  );
+                  navigate(route);
                 }}
               >
                 <b style={{ color: "#183f98" }}>Détails</b>

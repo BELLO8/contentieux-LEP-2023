@@ -24,9 +24,11 @@ import {
   getCandidatsVoiceByDep,
   getNombreBulletinNonValideByCirconsElectorale,
   getNombreBulletinOuvertByCirconsElectorale,
+  getNombreElecteurByBvByCommune,
   getNombreVotantCei,
   getResult,
   getTimeLineByCircons,
+  getlieuVoteByCommune,
   nombreElecteurByBvBYCircons,
 } from "../../redux/store/Election";
 import {
@@ -37,8 +39,10 @@ import {
 } from "../../utility/Utils";
 import { Filter } from "react-feather";
 import BreadCrumbs from "../../@core/components/breadcrumbs";
+import { useParams } from "react-router-dom";
 
-export default function Vote() {
+export default function DepouillementBureauVote() {
+  const param = useParams();
   const dispatch = useDispatch();
   const [basicModal, setBasicModal] = useState(false);
   const [searchTerm, setSearchTerm] = useState("");
@@ -52,8 +56,10 @@ export default function Vote() {
   const nombreBulletinOuver = useSelector(
     (state) => state.election.nombreBulletinOuvertByCirconsElectorale
   );
-  const lieuxVote = getLv();
-  const nombreElecteurByBv = getElecteurByBvBYCircons();
+  const lieuxVote = useSelector((state) => state.election.lieuVoteByCommune);
+  const nombreElecteurByBv = useSelector(
+    (state) => state.election.nombreElecteurByBvByCommune
+  );
   // const nombreElecteurByBv = useSelector((state) => state.election.nombreElecteurByBv);
   const nombreCei = [];
   const bulletinOuver = [];
@@ -90,6 +96,8 @@ export default function Vote() {
     // dispatch(nombreElecteurByBvBYCircons());
     dispatch(getCandidatsVoiceByDep());
     dispatch(getNombreVotantCei());
+    dispatch(getNombreElecteurByBvByCommune(param.id));
+    dispatch(getlieuVoteByCommune(param.id));
     dispatch(getNombreBulletinOuvertByCirconsElectorale());
     dispatch(getNombreBulletinNonValideByCirconsElectorale());
     dispatch(getTimeLineByCircons());
@@ -148,10 +156,6 @@ export default function Vote() {
     electeurbv.push(item);
   });
 
-  lieuxVote?.map((item) => {
-    lieuxVoteData.push({ value: item.cod_lieu, label: item.lib_lvote });
-  });
-
   return (
     <>
       <BreadCrumbs
@@ -196,24 +200,23 @@ export default function Vote() {
                         </Label>
                       </div>
                     </li>
-                    {lieuxVoteData.map((item) => {
+                    {lieuxVote.map((item) => {
                       return (
-                        <li key={item.value} className="mb-1">
+                        <li key={item.id} className="mb-1">
                           <div className="form-check">
                             <Input
                               type="radio"
-                              id={item.value}
+                              id={item.id}
                               name="item-radio"
                               onClick={() => {
-                                dispatch(getBureauVote(item.value));
-                                setSearchTerm(item.label);
+                                setSearchTerm(item.liblvote);
                               }}
                             />
                             <Label
                               className="form-check-label"
-                              for={item.value}
+                              for={item.liblvote}
                             >
-                              {item.label}
+                              {item.liblvote}
                             </Label>
                           </div>
                         </li>
@@ -247,8 +250,8 @@ export default function Vote() {
                 bv={item.bureau_vote}
                 lv={item.lieu_vote}
                 inscrit={item.nb_electeur}
-                route={`/depouillement/depouillement-par-bv/${item.id_lieu_vote}/${item.id}`}
                 etape={item.etape}
+                route={`/comptageVoix/depouillement-par-bv/${item.id_lieu_vote}/${item.id}`}
                 nombreBulletinBlanc={item.nombreBulletinBlanc}
                 nombreBulletinNull={item.nombreBulletinNull}
                 bulletinOuvert={item.bulletin ? item.bulletin : 0}

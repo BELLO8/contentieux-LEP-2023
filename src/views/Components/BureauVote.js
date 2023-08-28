@@ -1,25 +1,17 @@
 /* eslint-disable */
 
-import Avatar from "@components/avatar";
-
-// ** Reactstrap Imports
 import {
   Badge,
   Button,
-  Card,
-  CardBody,
-  CardText,
+  Card, CardText,
   Col,
   Progress,
-  Row,
+  Row
 } from "reactstrap";
-import { Archive, Plus } from "react-feather";
-import { useDispatch, useSelector } from "react-redux";
+import { useDispatch } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import {
-  getElecteurByBv,
-  getElecteurVotant,
-  getTimeLineByBv,
+  getTimeLineByBv
 } from "../../redux/store/Election";
 import ModalForm from "./ModalForm";
 
@@ -32,6 +24,7 @@ const BureauVote = ({
   nbrRep,
   inscrit,
   votants,
+  route
 }) => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
@@ -122,7 +115,7 @@ const BureauVote = ({
                       size="sm"
                       onClick={() => {
                         dispatch(getTimeLineByBv({ bv: idbv }));
-                        navigate(`/bureau-vote/deroulement/${idlv}/${idbv}`);
+                        navigate(route);
                       }}
                     >
                       <b style={{ color: "#183f98" }}>Détails</b>

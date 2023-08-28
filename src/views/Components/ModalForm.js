@@ -21,11 +21,23 @@ import toast from "react-hot-toast";
 import { AlertCircle, Check, Plus } from "react-feather";
 import Avatar from "@components/avatar";
 import { getRepresentant } from "../../redux/store/Representant";
+import { selectThemeColors } from "@utils";
+import Select from "react-select";
 
 const ModalForm = ({ idbv, idlv, rep }) => {
   const [formModal, setFormModal] = useState(false);
+  const [roleId, setRoleId] = useState();
   const dispatch = useDispatch();
-
+  const role = [
+    {
+      value: 1,
+      label: "Representant Principale",
+    },
+    {
+      value: 2,
+      label: "Representant Suppléant",
+    },
+  ];
   const {
     control,
     setError,
@@ -44,7 +56,7 @@ const ModalForm = ({ idbv, idlv, rep }) => {
         id_candidat: user.id_candidat,
         id_lieu_vote: idlv,
         id_bureau_vote: idbv,
-        id_role: "1",
+        id_role: roleId,
       })
         .then((res) => {
           if (res.data.status === "success") {
@@ -122,7 +134,7 @@ const ModalForm = ({ idbv, idlv, rep }) => {
 
   return (
     <div>
-      <b className="text-dark">{rep} Répresentants </b> 
+      <b className="text-dark">{rep} Répresentants </b>
       <Button
         color="primary"
         className="btn-icon rounded-circle"
@@ -202,6 +214,22 @@ const ModalForm = ({ idbv, idlv, rep }) => {
                   />
                 )}
               />
+              <div className="mt-1 mb-1">
+                <Label className="form-label" for="role">
+                  Selectionner un role
+                </Label>
+                <Select
+                  isClearable={false}
+                  theme={selectThemeColors}
+                  id="role"
+                  options={role}
+                  className="react-select"
+                  classNamePrefix="select"
+                  onChange={(event) => {
+                    setRoleId(event.value);
+                  }}
+                />
+              </div>
             </div>
             <div className="mb-1">
               <Label className="form-label" for="login-telephone">
