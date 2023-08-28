@@ -36,9 +36,10 @@ import {
   getLv,
 } from "../../utility/Utils";
 import { Filter } from "react-feather";
-import CandidatVoice from "../Components/CardTransactions";
+import CandidatVoice from "../Components/CandidatVoice";
 import { colorByParti } from "../Components/columns";
 import DepouillementInfo from "./DepouillementInfo";
+import ResultatVoice from "../Components/ResultatVoice";
 
 export default function Resultat() {
   const navigate = useNavigate();
@@ -231,7 +232,7 @@ export default function Resultat() {
               .sort((a, b) => b.voix - a.voix)
               .map((result) => (
                 <Col lg="3" sm="6">
-                  <CandidatVoice
+                  <ResultatVoice
                     nom={result.nom}
                     lib_parti={result.parti}
                     nombre_voix={result.total_voix}

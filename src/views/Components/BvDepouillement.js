@@ -6,7 +6,7 @@ import { Card } from "reactstrap";
 import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import { isEmptyObject } from "jquery";
-import CandidatVoice from "./CardTransactions";
+import CandidatVoice from "./CandidatVoice";
 import { getCandidats } from "../../utility/Utils";
 
 const Bv = ({ idbv, bv, lv }) => {

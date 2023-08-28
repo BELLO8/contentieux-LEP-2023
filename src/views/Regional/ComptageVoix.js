@@ -31,7 +31,7 @@ import {
 import { Filter } from "react-feather";
 import BreadCrumbs from "../../@core/components/breadcrumbs";
 import { useNavigate } from "react-router-dom";
-import CandidatVoice from "../Components/CardTransactions";
+import CandidatVoice from "../Components/CandidatVoice";
 import HorizontalBarChart from "../Components/HorizontalBar";
 import { colorByParti } from "../Components/columns";
 

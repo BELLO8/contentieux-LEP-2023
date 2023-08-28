@@ -37,6 +37,7 @@ import { getRepresentant } from "../../redux/store/Representant";
 import { isEmptyObject } from "jquery";
 import { useNavigate } from "react-router-dom";
 import { io } from "socket.io-client";
+import RealTimeVoteList from "../Components/RealTimeVoteList";
 
 const socket = io.connect("https://jellyfish-app-wxyzd.ondigitalocean.app", {
   transports: ["websocket"],
@@ -157,6 +158,7 @@ export default function SettingCandidat() {
         url="/"
         data={[]}
       />
+      <RealTimeVoteList />
       <Row>
         <Col lg="6" sm="6">
           <div className="basic-modal">

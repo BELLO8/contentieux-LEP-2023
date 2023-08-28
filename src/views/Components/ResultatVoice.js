@@ -7,14 +7,9 @@ import img1 from "@src/assets/images/portrait/small/1.png";
 import { useSelector } from "react-redux";
 import { useParams } from "react-router-dom";
 
-const CandidatVoice = ({ nom, lib_parti, nombre_voix, color }) => {
-  const NombreVote = useSelector((state) => state.election.nombreVotantCei);
-  const params = useParams();
-  const voix = NombreVote.filter(function (param) {
-    return param.id_bureau_vote === params.idbv;
-  })[0]?.nombre_votant;
-  
-  console.log(voix);
+const ResultatVoice = ({ nom, lib_parti, nombre_voix, color }) => {
+  const voix = useSelector((state) => state.election.nombreVotantGlobal);
+
   const renderTransactions = () => {
     return (
       <Card
@@ -38,8 +33,10 @@ const CandidatVoice = ({ nom, lib_parti, nombre_voix, color }) => {
             </div>
             <div className="d-flex bg-light-secondary px-1 fw-bolder text-dark">
               <div className="mx-1">
-                {voix
-                  ? parseFloat((nombre_voix * 100) / voix).toFixed(2) + "%"
+                {voix[0]?.total_votant
+                  ? parseFloat(
+                      (nombre_voix * 100) / Number(voix[0]?.total_votant)
+                    ).toFixed(2) + "%"
                   : 0}
               </div>
               <div className="px-2" style={{ borderLeft: "solid 2px white" }}>
@@ -55,4 +52,4 @@ const CandidatVoice = ({ nom, lib_parti, nombre_voix, color }) => {
   return renderTransactions();
 };
 
-export default CandidatVoice;
+export default ResultatVoice;

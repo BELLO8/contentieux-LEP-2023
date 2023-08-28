@@ -103,7 +103,7 @@ const BureauVote = ({
                 <Col lg="8" sm="8">
                   <div className="px-1">
                     <span>
-                      Taux de participations…{" "}
+                      Taux de participations{" "}
                       <b className="text-danger">
                         {parseFloat(taux).toFixed(2)}%
                       </b>

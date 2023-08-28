@@ -1,18 +1,11 @@
 /* eslint-disable */
 
 import StatsHorizontal from "@components/widgets/stats/StatsHorizontal";
-import {
-  File,
-  FileMinus,
-  FileText
-} from "react-feather";
+import { File, FileMinus, FileText } from "react-feather";
 import { Row, Col } from "reactstrap";
 import { useEffect, React } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import {
-  getResult,
-  nombreVotantGlobal
-} from "../../redux/store/Election";
+import { getResult, nombreVotantGlobal } from "../../redux/store/Election";
 import { getNombreElecteur, getUserData } from "../../utility/Utils";
 
 const DepouillementInfo = () => {
@@ -54,7 +47,7 @@ const DepouillementInfo = () => {
           <StatsHorizontal
             icon={<FileText size={21} />}
             color="primary"
-            stats={votant[0]?.total_votant}
+            stats={votant[0]?.total_votant ?? 0}
             statTitle="Nombre votants"
           />
         </Col>
@@ -63,10 +56,12 @@ const DepouillementInfo = () => {
             icon={<FileText size={21} />}
             color="primary"
             stats={
-              parseFloat(
-                (Number(votant[0]?.total_votant) * 100) /
-                  Number(getNombreElecteur()?.nombre)
-              ).toFixed(2) + " %"
+              votant
+                ? parseFloat(
+                    (Number(votant[0]?.total_votant ?? 0) * 100) /
+                      Number(getNombreElecteur()?.nombre)
+                  ).toFixed(2) + " %"
+                : 0
             }
             statTitle="Taux de participation"
           />

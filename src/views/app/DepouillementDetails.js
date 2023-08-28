@@ -20,7 +20,7 @@ import {
 } from "../../utility/Utils";
 import BreadCrumbs from "../../@core/components/breadcrumbs";
 import { useNavigate, useParams } from "react-router-dom";
-import CandidatVoice from "../Components/CardTransactions";
+import CandidatVoice from "../Components/CandidatVoice";
 import HorizontalBarChart from "../Components/HorizontalBar";
 import { colorByParti } from "../Components/columns";
 
