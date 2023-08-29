@@ -70,7 +70,6 @@ const LoginParti = () => {
               refreshToken: res.data.refreshToken,
             };
             dispatch(handleLogin(data));
-            dispatch(getLieuxVote())
             navigate("/JamaweAdmin");
           }
         })

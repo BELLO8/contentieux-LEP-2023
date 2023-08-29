@@ -26,7 +26,7 @@ const ListCandidats = () => {
   return (
     <>
       <Row>
-        <Col lg="6" sm="4">
+        <Col lg="6" sm="10">
           <Card className="shadow-none round">
             <CardBody>
               <h4 className="mb-1">

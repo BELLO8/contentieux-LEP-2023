@@ -25,11 +25,23 @@ export const loginParti = async (...args) => {
 };
 
 export const ActivateCandidat = async (...args) => {
-  return client.post("ActivateCandidat", ...args);
+  return axios.post(`${urlBase}ActivateCandidat`, ...args, {
+    headers: {
+      "content-type": "application/json",
+      "Access-Control-Allow-Origin": "*",
+      Authorization: `Bearer ${getUserData().accessToken}`,
+    },
+  });
 };
 
 export const DesactivateCandidat = async (...args) => {
-  return client.post("DesactivateCandidat", ...args);
+  return axios.post(`${urlBase}DesactivateCandidat`, ...args, {
+    headers: {
+      "content-type": "application/json",
+      "Access-Control-Allow-Origin": "*",
+      Authorization: `Bearer ${getUserData().accessToken}`,
+    },
+  });
 };
 
 export const login = async (...args) => {
