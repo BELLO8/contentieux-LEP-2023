@@ -37,12 +37,12 @@ const CandidatVoice = ({ nom, lib_parti, nombre_voix, color }) => {
             </div>
             <div className="d-flex bg-light-secondary px-1 fw-bolder text-dark">
               <div className="mx-1">
+                {nombre_voix ?? 0}
+              </div>
+              <div className="px-2" style={{ borderLeft: "solid 2px white" }}>
                 {voix
                   ? parseFloat((nombre_voix * 100) / voix).toFixed(2) + "%"
                   : 0}
-              </div>
-              <div className="px-2" style={{ borderLeft: "solid 2px white" }}>
-                {nombre_voix ?? 0}
               </div>
             </div>
           </div>

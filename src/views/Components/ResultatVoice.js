@@ -32,7 +32,8 @@ const ResultatVoice = ({ nom, lib_parti, nombre_voix, color }) => {
               <small className="fw-bolder text-dark">{nom}</small>
             </div>
             <div className="d-flex bg-light-secondary px-1 fw-bolder text-dark">
-              <div className="mx-1">
+              <div className="mx-1">{nombre_voix ?? 0}</div>
+              <div className="px-2" style={{ borderLeft: "solid 2px white" }}>
                 {voix[0]?.total_votant
                   ? voix[0]?.total_votant != 0
                     ? parseFloat(
@@ -40,9 +41,6 @@ const ResultatVoice = ({ nom, lib_parti, nombre_voix, color }) => {
                       ).toFixed(2) + "%"
                     : 0
                   : 0}
-              </div>
-              <div className="px-2" style={{ borderLeft: "solid 2px white" }}>
-                {nombre_voix ?? 0}
               </div>
             </div>
           </div>

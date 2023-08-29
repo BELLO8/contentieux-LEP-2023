@@ -226,6 +226,15 @@ const StatsHorizontal = ({
                           </p>
                           <div className="d-flex">
                             <Badge
+                              color="light-success"
+                              style={{
+                                fontWeight: "bold",
+                                marginLeft: "2px",
+                              }}
+                            >
+                              {item.voix ?? 0}
+                            </Badge>
+                            <Badge
                               color="light-danger"
                               style={{ fontWeight: "bold", color: "#ffff" }}
                             >
@@ -236,15 +245,6 @@ const StatsHorizontal = ({
                                     ).toFixed(2) + "%"
                                   : 0
                                 : 0}
-                            </Badge>
-                            <Badge
-                              color="light-success"
-                              style={{
-                                fontWeight: "bold",
-                                marginLeft: "2px",
-                              }}
-                            >
-                              {item.voix ?? 0}
                             </Badge>
                           </div>
                         </div>
