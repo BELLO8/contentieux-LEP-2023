@@ -34,9 +34,6 @@ export const authSlice = createSlice({
       localStorage.removeItem('nombreLV')
       localStorage.removeItem('nombreElecteur')
       localStorage.removeItem('candidats')
-      
-     
-      
     }
   }
 })

@@ -43,13 +43,13 @@ const UserDropdown = () => {
         onClick={(e) => e.preventDefault()}
       >
         <div className="user-nav d-sm-flex d-none">
-          <h6 style={{ fontWeight:"bold" }}>
+          <h6 style={{ fontWeight: "bold" }}>
             {user?.role === "parti" ? user?.username : user?.nom}
           </h6>
           <span className="user-status fw-bold text-warning">
             {user?.role !== "parti"
-              ? user?.role + " " + user?.lib_parti 
-              : 'Administrateur'}
+              ? user?.role + " " + user?.lib_parti
+              : "Administrateur"}
           </span>
         </div>
         <Avatar imgHeight="40" imgWidth="40" status="online" />
@@ -58,7 +58,11 @@ const UserDropdown = () => {
         <DropdownItem
           onClick={() => {
             dispatch(handleLogout());
-            navigate("/login");
+            {
+              user?.role === "parti"
+                ? navigate("/jamawe/login")
+                : navigate("/login");
+            }
           }}
         >
           <Power size={14} className="me-75" />
