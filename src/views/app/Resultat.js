@@ -86,7 +86,7 @@ export default function Resultat() {
 
   useEffect(() => {
     if (getUserData().role === "parti") {
-      navigate("/VueParti");
+      navigate("/JamaweAdmin");
     }
     // dispatch(getCandidatsVoiceByDep());
     dispatch(

@@ -109,7 +109,7 @@ export default function DepouillementDetailsBureauVote() {
 
   useEffect(() => {
     if (getUserData().role === "parti") {
-      navigate("/VueParti");
+      navigate("/JamaweAdmin");
     }
     dispatch(getElecteurVotant({ id_bv: params.idbv }));
     dispatch(getNombreVotantCei());

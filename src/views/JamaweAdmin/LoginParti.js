@@ -1,5 +1,5 @@
 /* eslint-disable */
-import { useState } from "react";
+
 import { Link, useNavigate } from "react-router-dom";
 import {
   Card,
@@ -11,64 +11,42 @@ import {
   Input,
   Button,
 } from "reactstrap";
+import { AlertCircle } from "react-feather";
+import Avatar from "@components/avatar";
 import "@styles/react/pages/page-authentication.scss";
 import InputPasswordToggle from "@components/input-password-toggle";
+import { loginParti } from "../../@core/auth/jwt/const";
 import { useForm, Controller } from "react-hook-form";
-import { getUserData, isUserLoggedIn } from "../../utility/Utils";
-import { useDispatch, useSelector } from "react-redux";
+import {
+  getUserData,
+  isUserLoggedIn
+} from "../../utility/Utils";
+import { handleLogin } from "../../redux/auth";
+import { useDispatch } from "react-redux";
 import { useEffect } from "react";
-import { selectThemeColors } from "@utils";
-import Select from "react-select";
-import { getCirconscription } from "../../redux/store/Circonscription";
-import { getParti } from "../../redux/store/Parti";
-import { getTypeElection } from "../../redux/store/TypeElection";
-import { register, registerParti } from "../../@core/auth/jwt/const";
-import toast from 'react-hot-toast'
-import { Check } from "react-feather";
-import Avatar from "@components/avatar";
+import toast from "react-hot-toast";
+import {
+  getLieuxVote
+} from "../../redux/store/Election";
 
-const defaultValues = {};
+const defaultValues = {
+  password: "",
+  username: "",
+};
 
-const RegisterParti = () => {
+const LoginParti = () => {
   const navigate = useNavigate();
   const dispatch = useDispatch();
-  const [idTypeElection, setIdTypeElection] = useState();
-  const [idParti, setParti] = useState();
-  const [idcirconscription, setIdcirconscription] = useState();
-
-  const typeElection = useSelector((state) => state.typeElection.data);
-  const circonscription = useSelector((state) => state.circonscription.data);
-  const parti = useSelector((state) => state.parti.data);
-
-  const typeElectionData = [];
-  const circonscriptionData = [];
-  const partiData = [];
-
-  parti.map((item) => {
-    partiData.push({ value: item.id, label: item.libelle });
-  });
-
-  typeElection.map((item) => {
-    typeElectionData.push({ value: item.id_type, label: item.type_election });
-  });
-
-  circonscription.map((item) => {
-    circonscriptionData.push({ value: item.id_circons, label: item.circons });
-  });
-
   const {
     control,
-    setError,
     handleSubmit,
     formState: { errors },
   } = useForm({ defaultValues });
 
   useEffect(() => {
-    dispatch(getTypeElection());
-    dispatch(getParti());
     if (isUserLoggedIn() !== null) {
       if (getUserData().role === "parti") {
-        navigate("/VueParti");
+        navigate("/JamaweAdmin");
       }else{
         navigate("/home");
       }
@@ -76,46 +54,24 @@ const RegisterParti = () => {
   }, []);
 
   const onSubmit = (data) => {
-
     if (Object.values(data).every((field) => field.length > 0)) {
-      registerParti({
-        ...data,
-        id_parti: idParti,
+      loginParti({
+        username: data.username,
+        password: data.password,
       })
         .then((res) => {
+          console.log(res);
+          const Token = res.data.data.token;
           if (res.data.status === "success") {
-            localStorage.removeItem("candidatInfo");
-            toast(
-              <div className="d-flex">
-                <div className="me-1">
-                  <Avatar
-                    size="sm"
-                    color="success"
-                    icon={<Check size={12} />}
-                  />
-                </div>
-                <div className="d-flex flex-column">
-                  <h6>{res.data.message}</h6>
-                </div>
-              </div>
-            );
-            navigate("/MonParti/login");
-          } else if (res.data.status === "error") {
-            toast(
-              <div className="d-flex">
-                <div className="me-1">
-                  <Avatar
-                    size="sm"
-                    color="danger"
-                    icon={<AlertCircle size={12} />}
-                  />
-                </div>
-                <div className="d-flex flex-column">
-                  <h6>{res.data.message}</h6>
-                  <Link to="/paiement-candidat">payer maintenant</Link>
-                </div>
-              </div>
-            );
+            const data = {
+              ...res.data.data.admin,
+              role: "parti",
+              accessToken: Token,
+              refreshToken: res.data.refreshToken,
+            };
+            dispatch(handleLogin(data));
+            dispatch(getLieuxVote())
+            navigate("/JamaweAdmin");
           }
         })
         .catch((err) => {
@@ -162,10 +118,10 @@ const RegisterParti = () => {
         <Card className="mb-0">
           <CardBody>
             <CardTitle tag="h4" className="mb-1">
-              Inscription sur JamElec ! 👋
+              Bienvenue sur JamElec ! 👋
             </CardTitle>
             <CardText className="mb-2">
-              Créer votre compte et commencez votre aventure
+              Connectez-vous à votre compte et commencez l'aventure
             </CardText>
             <Form
               className="auth-login-form mt-2"
@@ -183,28 +139,12 @@ const RegisterParti = () => {
                     <Input
                       autoFocus
                       type="text"
-                      placeholder="Entrer votre username"
+                      placeholder="username"
                       invalid={errors.username && true}
                       {...field}
                       required
                     />
                   )}
-                />
-              </div>
-              <div className="mb-1">
-                <Label className="form-label" for="parti">
-                  Selectionner votre parti politique
-                </Label>
-                <Select
-                  theme={selectThemeColors}
-                  isClearable={false}
-                  id="parti"
-                  className="react-select"
-                  classNamePrefix="select"
-                  options={partiData}
-                  onChange={(event) => {
-                    setParti(event.value);
-                  }}
                 />
               </div>
               <div className="mb-1">
@@ -230,13 +170,13 @@ const RegisterParti = () => {
               </div>
 
               <Button type="submit" color="primary" block>
-                Créer mon compte
+                Se connecter
               </Button>
             </Form>
             <p className="text-center mt-2">
-              <span className="me-25">Vous avez déjà un compte ?</span>
-              <Link to="/MonParti/login">
-                <span>Se connecter</span>
+              <span className="me-25">Nouveau sur notre plateforme?</span>
+              <Link to="/MonParti/inscription">
+                <span>créer un compte</span>
               </Link>
             </p>
           </CardBody>
@@ -246,4 +186,4 @@ const RegisterParti = () => {
   );
 };
 
-export default RegisterParti;
+export default LoginParti;

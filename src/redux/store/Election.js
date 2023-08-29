@@ -267,6 +267,13 @@ export const getCandidatsVoiceByDep = createAsyncThunk(
     return response.data.data;
   }
 );
+export const getlistCandidatByType = createAsyncThunk(
+  "listCandidatByType/getlistCandidatByType",
+  async (id) => {
+    const response = await client.get(`listCandidatByType/${id}`);
+    return response.data.data;
+  }
+);
 
 export const getNombreVotantCei = createAsyncThunk(
   "nombreVotantCei/getNombreVotantCei",
@@ -282,7 +289,9 @@ export const getNombreBulletinNonValideByCirconsElectorale = createAsyncThunk(
   "nombreBulletinNonValideByCirconsElectorale/getNombreBulletinNonValideByCirconsElectorale",
   async () => {
     const response = await client.get(
-      `NombreBulletinByCirconsElectorale/${getUserData().id_candidat}/${getUserData().id_type_election}`
+      `NombreBulletinByCirconsElectorale/${getUserData().id_candidat}/${
+        getUserData().id_type_election
+      }`
     );
     return response.data.data;
   }
@@ -362,10 +371,11 @@ export const ElectionSlice = createSlice({
   name: "election",
   initialState: {
     status: null,
+    listCandidatByType:[],
     lieuxVote: [],
     nombreVotantCei: [],
     nombreBulletinOuvertByCirconsElectorale: [],
-    nombreBulletinNonValideByCirconsElectorale:[],
+    nombreBulletinNonValideByCirconsElectorale: [],
     nombreElecteurByBvByCommune: [],
     lieuVoteByCommune: [],
     communeByRegion: [],
@@ -392,8 +402,12 @@ export const ElectionSlice = createSlice({
     taux: [],
     candidats: [],
     resultat: [],
+    id:""
   },
   reducers: {
+    idTypeElection:(state,action) => {
+      state.id = action.payload
+    },
     vote: (state, action) => {
       state.votants.unshift(action.payload);
     },
@@ -410,6 +424,10 @@ export const ElectionSlice = createSlice({
       .addCase(getBureauVote.fulfilled, (state, action) => {
         state.status = "succeeded";
         state.bureauVote = action.payload;
+      })
+      .addCase(getlistCandidatByType.fulfilled, (state, action) => {
+        state.status = "succeeded";
+        state.listCandidatByType = action.payload;
       })
       .addCase(getListBvConforme.fulfilled, (state, action) => {
         state.status = "succeeded";
@@ -524,6 +542,6 @@ export const ElectionSlice = createSlice({
   },
 });
 
-export const { vote, voice } = ElectionSlice.actions;
+export const { vote, voice, idTypeElection } = ElectionSlice.actions;
 
 export default ElectionSlice.reducer;

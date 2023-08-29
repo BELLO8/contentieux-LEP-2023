@@ -134,7 +134,7 @@ const DetailEtape = () => {
       dispatch(vote(JSON.parse(data)));
     });
     if (getUserData().role === "parti") {
-      navigate("/VueParti");
+      navigate("/JamaweAdmin");
     }
     isEmptyObject(communes) ? dispatch(getCommuneByRegion()) : null;
     dispatch(getNombreElecteurByBvByCommune(params.id));

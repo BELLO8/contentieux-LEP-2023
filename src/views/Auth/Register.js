@@ -70,7 +70,7 @@ const Register = () => {
     dispatch(getParti());
     if (isUserLoggedIn() !== null) {
       if (getUserData().role === "parti") {
-        navigate("/VueParti");
+        navigate("/JamaweAdmin");
       } else {
         navigate("/home");
       }

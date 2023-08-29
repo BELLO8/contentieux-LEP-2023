@@ -8,17 +8,17 @@ import Layout from "@layouts/VerticalLayout";
 
 // ** Menu Items Array
 import navigation from "@src/navigation/vertical";
-import { Monitor, Archive, CheckSquare, Table } from "react-feather";
+import { Monitor, Archive, CheckSquare, Table, CheckCircle } from "react-feather";
 import { getUserData } from "../utility/Utils";
 
 const VerticalLayout = (props) => {
   const user = getUserData();
   const menuVerti = [
     {
-      id: "parti",
-      title: "Vue du parti",
-      icon: <Monitor size={20} />,
-      navLink: "/VueParti",
+      id: "admin",
+      title: "Activation candidat",
+      icon: <CheckCircle size={20} />,
+      navLink: "/JamaweAdmin",
     },
   ];
   const menuReg = [

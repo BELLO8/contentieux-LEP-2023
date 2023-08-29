@@ -1,6 +1,7 @@
 /*eslint-disable */
 
 import { Badge } from "reactstrap";
+import ActivateOrDesactivate from "./ActivateOrDesactivate";
 
 export const columns = [
   {
@@ -74,7 +75,7 @@ export const votants = [
   {
     name: "Numero electeur",
     selector: (row) => row.num_electeur,
-    cell: (row) => row.num_electeur
+    cell: (row) => row.num_electeur,
   },
   {
     name: "Sexe",
@@ -170,6 +171,55 @@ export const votantsElect = [
         hour: "numeric",
         minute: "numeric",
       }),
+  },
+];
+
+export const candidats = [
+  {
+    name: "Candidat",
+    minWidth: "400px",
+    sortable: true,
+    sortField: "nom",
+    selector: (row) => <span>{row.nom}</span>,
+    cell: (row) => (
+      <div className="d-flex justify-content-left align-items-center">
+        <div className="d-flex flex-column">
+          <span className="fw-bolder">{row.nom}</span>
+        </div>
+      </div>
+    ),
+  },
+  {
+    name: "Circonscrition",
+    sortable: true,
+    sortField: "num_electeur",
+    selector: (row) => row.circons,
+    cell: (row) => row.circons,
+  },
+  {
+    name: "Parti",
+    sortable: true,
+    sortField: "parti",
+    selector: (row) => row.parti,
+    cell: (row) => <span className="text-capitalize">{row.parti}</span>,
+  },
+  {
+    name: "Status",
+    sortable: true,
+    sortField: "actif",
+    selector: (row) => row.actif,
+    cell: (row) => (
+      <Badge color={row.actif === "actif" ? "light-success" : "light-danger"}>
+        {row.actif}
+      </Badge>
+    ),
+  },
+  {
+    name: "Actions",
+    allowOverflow: true,
+    cell: (row) => {
+      return <ActivateOrDesactivate actif={row.actif} id={row.id} />;
+    },
   },
 ];
 

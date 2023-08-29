@@ -134,7 +134,7 @@ export default function SettingCandidat() {
       dispatch(allNombreVotant());
     });
     if (getUserData().role === "parti") {
-      navigate("/VueParti");
+      navigate("/JamaweAdmin");
     }
     dispatch(allNombreVotant());
     dispatch(getTimeLineByCircons());

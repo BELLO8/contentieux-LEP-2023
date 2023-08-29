@@ -19,9 +19,9 @@ import Depouillement from "../../views/app/DepouillementDetails"
 import Resultat from "../../views/app/Resultat"
 import SettingCandidat from "../../views/app/EtapeVote"
 import DetailBv from "../../views/app/DetailBv"
-import LoginParti from "../../views/VueParti/LoginParti"
-import RegisterParti from "../../views/VueParti/RegisterParti"
-import Parti from "../../views/VueParti/Home"
+import LoginParti from "../../views/JamaweAdmin/LoginParti"
+import RegisterParti from "../../views/JamaweAdmin/RegisterParti"
+import Parti from "../../views/JamaweAdmin/Home"
 import EtapeVote from "../../views/Regional/EtapeVote"
 import DetailEtape from "../../views/Regional/DetailEtape"
 import ComptageVoix from "../../views/Regional/ComptageVoix"
@@ -91,7 +91,7 @@ const Routes = [
     element: <Resultat />
   },
   {
-    path: "/VueParti",
+    path: "/JamaweAdmin",
     element: <Parti />
   },
   {
@@ -103,7 +103,7 @@ const Routes = [
     element: <DetailBv />
   },
   {
-    path: "/MonParti/login",
+    path: "/Jamawe/login",
     element: <LoginParti />,
     meta: {
       publicRoute: true,
@@ -111,7 +111,7 @@ const Routes = [
     }
   },
   {
-    path: "/MonParti/inscription",
+    path: "/Jamawe/inscription",
     element: <RegisterParti />,
     meta: {
       publicRoute: true,

@@ -27,7 +27,7 @@ const PrivateRoute = ({ children, route }) => {
       if (user.role === "candidat") {
         return <Navigate to="/" />;
       } else if (user.role === "parti") {
-        return <Navigate to="/VueParti" />;
+        return <Navigate to="/JamaweAdmin" />;
       }
     }
     if (user && restrictedRoute && user.role === "candidat") {

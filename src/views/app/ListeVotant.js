@@ -23,7 +23,7 @@ const ListeVotant = () => {
 
   useEffect(() => {
     if (getUserData().role === "parti") {
-      navigate("/VueParti");
+      navigate("/JamaweAdmin");
     }
     dispatch(getElecteurByBv({ bv: params.idbv }));
     dispatch(getElecteurVotant({ id_bv: params.idbv }));

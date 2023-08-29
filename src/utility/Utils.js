@@ -75,7 +75,7 @@ export const token = () => JSON.parse(localStorage.getItem("accessToken"))
  */
 export const getHomeRouteForLoggedInUser = (userRole) => {
   if (userRole === "candidat") return DefaultRoute
-  if (userRole === "parti") return '/VueParti'
+  if (userRole === "parti") return '/JamaweAdmin'
   return "/login"
 }
 

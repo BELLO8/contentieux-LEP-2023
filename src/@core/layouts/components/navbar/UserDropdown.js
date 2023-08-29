@@ -49,7 +49,7 @@ const UserDropdown = () => {
           <span className="user-status fw-bold text-warning">
             {user?.role !== "parti"
               ? user?.role + " " + user?.lib_parti 
-              : 'Parti politique'}
+              : 'Administrateur'}
           </span>
         </div>
         <Avatar imgHeight="40" imgWidth="40" status="online" />

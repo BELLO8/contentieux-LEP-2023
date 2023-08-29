@@ -29,7 +29,7 @@ const DetailEtapeBv = () => {
 
   useEffect(() => {
     if (getUserData().role === "parti") {
-      navigate("/VueParti");
+      navigate("/JamaweAdmin");
     }
     dispatch(getTimeLineByBv({ bv: params.idbv }));
     dispatch(getListBvConforme());

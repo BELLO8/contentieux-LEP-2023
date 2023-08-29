@@ -36,8 +36,6 @@ export default function TableVote({ idbv }) {
   const paginationComponentOptions = {
     rowsPerPageText: 'Résultat par page',
     rangeSeparatorText: 'de',
-    selectAllRowsItem: true,
-    selectAllRowsItemText: 'Todos',
 };
   return (
     <>

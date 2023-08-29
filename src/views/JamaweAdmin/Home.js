@@ -4,10 +4,11 @@ import React from "react";
 import { useEffect } from "react";
 import { useDispatch } from "react-redux";
 import { getTypeElection } from "../../redux/store/TypeElection";
-import LvCard from "../Components/LvCard";
+import ListCandidats from "../Components/LvCard";
 import { getCirconscription } from "../../redux/store/Circonscription";
 import { getUserData } from "../../utility/Utils";
 import { useNavigate } from "react-router-dom";
+import { getlistCandidatByType, idTypeElection } from "../../redux/store/Election";
 
 const Parti = () => {
   const dispatch = useDispatch();
@@ -19,12 +20,13 @@ const Parti = () => {
         navigate("/home");
       }
     dispatch(getTypeElection());
-    dispatch(getCirconscription(2));
+    dispatch(getlistCandidatByType(2));
+    dispatch(idTypeElection("2"))
   }, [dispatch]);
   return (
     <>
-      <h2 className="mb-3">Vue du parti</h2>
-      <LvCard />
+      <h2 className="mb-3">Liste des candidats</h2>
+      <ListCandidats />
     </>
   );
 };
