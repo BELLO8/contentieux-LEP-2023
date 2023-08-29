@@ -175,7 +175,7 @@ const LoginParti = () => {
             </Form>
             <p className="text-center mt-2">
               <span className="me-25">Nouveau sur notre plateforme?</span>
-              <Link to="/MonParti/inscription">
+              <Link to="/Jamawe/inscription">
                 <span>créer un compte</span>
               </Link>
             </p>

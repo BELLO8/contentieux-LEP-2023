@@ -110,7 +110,6 @@ const RegisterParti = () => {
                 </div>
                 <div className="d-flex flex-column">
                   <h6>{res.data.message}</h6>
-                  <Link to="/paiement-candidat">payer maintenant</Link>
                 </div>
               </div>
             );
@@ -233,7 +232,7 @@ const RegisterParti = () => {
             </Form>
             <p className="text-center mt-2">
               <span className="me-25">Vous avez déjà un compte ?</span>
-              <Link to="/MonParti/login">
+              <Link to="/Jamawe/login">
                 <span>Se connecter</span>
               </Link>
             </p>
