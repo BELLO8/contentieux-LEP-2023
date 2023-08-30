@@ -28,6 +28,7 @@ import ComptageVoix from "../../views/Regional/ComptageVoix"
 import DetailEtapeBv from "../../views/Regional/DetailEtapeBv"
 import DepouillementBureauVote from "../../views/Regional/DepouillementsBureauVote"
 import DepouillementDetailsBureauVote from "../../views/Regional/DepouillementDetailsBureauVote"
+import FirebaseTest from "../../views/app/FirebaseTest"
 
 const getLayout = {
   blank: <BlankLayout />,
@@ -54,10 +55,6 @@ const Routes = [
     path: "/vote",
     element: <EtapeVote />
   },
-  // {
-  //   path: "/vote/liste-votants",
-  //   element: <TableVote />
-  // },
   {
     path: "/vote/etape-vote/:id",
     element: <DetailEtape />

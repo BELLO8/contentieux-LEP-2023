@@ -15,7 +15,7 @@ import {
 } from "../../redux/store/Election";
 import ModalForm from "./ModalForm";
 
-const BureauVote = ({
+const BureauVoteCard = ({
   idbv,
   bv,
   lv,
@@ -131,4 +131,4 @@ const BureauVote = ({
   );
 };
 
-export default BureauVote;
+export default BureauVoteCard;

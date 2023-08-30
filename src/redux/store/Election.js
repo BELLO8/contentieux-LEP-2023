@@ -371,7 +371,7 @@ export const ElectionSlice = createSlice({
   name: "election",
   initialState: {
     status: null,
-    listCandidatByType:[],
+    listCandidatByType: [],
     lieuxVote: [],
     nombreVotantCei: [],
     nombreBulletinOuvertByCirconsElectorale: [],
@@ -402,11 +402,11 @@ export const ElectionSlice = createSlice({
     taux: [],
     candidats: [],
     resultat: [],
-    id:""
+    id: "",
   },
   reducers: {
-    idTypeElection:(state,action) => {
-      state.id = action.payload
+    idTypeElection: (state, action) => {
+      state.id = action.payload;
     },
     vote: (state, action) => {
       state.votants.unshift(action.payload);

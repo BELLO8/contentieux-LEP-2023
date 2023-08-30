@@ -30,13 +30,9 @@ import {
   getLv,
   getUserData,
 } from "../../utility/Utils";
-import BureauVote from "../Components/BureauVote";
+import BureauVoteCard from "../Components/BureauVote";
 import RealTimeVoteList from "../Components/RealTimeVoteList";
 import "../style.css";
-
-const socket = io.connect("https://jellyfish-app-wxyzd.ondigitalocean.app", {
-  transports: ["websocket"],
-});
 
 export default function SettingCandidat() {
   const dispatch = useDispatch();
@@ -129,17 +125,13 @@ export default function SettingCandidat() {
   });
 
   useEffect(() => {
-    socket.on(`insertedvote-${user.id_candidat}`, (data) => {
-      dispatch(vote(JSON.parse(data)));
-      dispatch(allNombreVotant());
-    });
     if (getUserData().role === "parti") {
       navigate("/JamaweAdmin");
     }
     dispatch(allNombreVotant());
     dispatch(getTimeLineByCircons());
     dispatch(getRepresentant());
-  }, [dispatch, socket]);
+  }, [dispatch]);
 
   return (
     <>
@@ -230,7 +222,7 @@ export default function SettingCandidat() {
           })
           .map((item) => (
             <Col lg="4" sm="6">
-              <BureauVote
+              <BureauVoteCard
                 idbv={item.id_bureau}
                 idlv={item.id_lieu_vote}
                 lv={item.lieu_vote}

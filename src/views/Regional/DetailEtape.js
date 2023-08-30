@@ -22,7 +22,7 @@ import {
 } from "reactstrap";
 import { Label } from "reactstrap";
 import { Filter } from "react-feather";
-import BureauVote from "../Components/BureauVote";
+import BureauVoteCard from "../Components/BureauVote";
 import BreadCrumbs from "../../@core/components/breadcrumbs";
 import { getRepresentant } from "../../redux/store/Representant";
 import { io } from "socket.io-client";
@@ -227,7 +227,7 @@ const DetailEtape = () => {
           })
           .map((item) => (
             <Col lg="4" sm="6">
-              <BureauVote
+              <BureauVoteCard
                 idbv={item.id_bureau}
                 idlv={item.id_lieu_vote}
                 lv={item.lieu_vote}

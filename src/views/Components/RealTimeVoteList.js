@@ -8,30 +8,48 @@ import "../style.css";
 import { ChevronDown } from "react-feather";
 import { CardText, Spinner } from "reactstrap";
 import { useDispatch, useSelector } from "react-redux";
-import { getElecteurVotant, vote } from "../../redux/store/Election";
+import {
+  allNombreVotant,
+  getElecteurVotant,
+  vote,
+} from "../../redux/store/Election";
 import { getUserData } from "../../utility/Utils";
 import { Card } from "reactstrap";
 import DataTable from "react-data-table-component";
 import { columns, votants, votantsElect } from "./columns";
 import { useState } from "react";
 import { isEmptyObject } from "jquery";
-
-const socket = io.connect("https://jellyfish-app-wxyzd.ondigitalocean.app", {
-  transports: ["websocket"],
-});
+import { db } from "../../utility/Firebase";
+import { onValue, ref } from "firebase/database";
 
 export default function RealTimeVoteList() {
   const dispatch = useDispatch();
   const user = getUserData();
   const listeVotants = useSelector((state) => state.election.votants);
   // const [pending, setPending] = useState(true);
+  const voteData = [];
 
+  listeVotants.map((item) => {
+    voteData.push(item);
+  });
   useEffect(() => {
-    socket.on(`insertedvote-${user.id_candidat}`, (data) => {
-      console.log(data);
-      dispatch(vote(JSON.parse(data)));
+    const query = ref(db, "electeurs");
+    return onValue(query, (snapshot) => {
+      dispatch(allNombreVotant());
+      const data = snapshot.val();
+      if (snapshot.exists()) {
+        Object.values(data).map((item) => {
+          isEmptyObject(listeVotants)
+            ? dispatch(vote(item))
+            : listeVotants.map((listvote) => {
+                if (item.id !== listvote.id) {
+                  dispatch(vote(item));
+                }
+              });
+        });
+      }
     });
-  }, [dispatch, socket]);
+  }, [dispatch]);
 
   const paginationComponentOptions = {
     rowsPerPageText: "Résultat par page",
@@ -61,7 +79,9 @@ export default function RealTimeVoteList() {
             className="react-dataTable"
             paginationPerPage={6}
             paginationRowsPerPageOptions={[6, 10, 25, 50, 75, 100]}
-            data={listeVotants}
+            data={voteData.filter(function (p) {
+              return p.id_candidat === user.id_candidat;
+            })}
           />
         </div>
       </Card>
