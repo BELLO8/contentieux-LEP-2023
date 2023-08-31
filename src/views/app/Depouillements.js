@@ -19,21 +19,18 @@ import {
 import { Label } from "reactstrap";
 import { useDispatch, useSelector } from "react-redux";
 import {
-  allNombreVotant,
   getBureauVote,
   getCandidatsVoiceByDep,
   getNombreBulletinNonValideByCirconsElectorale,
   getNombreBulletinOuvertByCirconsElectorale,
   getNombreVotantCei,
   getResult,
-  getTimeLineByCircons,
-  nombreElecteurByBvBYCircons,
+  getTimeLineByCircons
 } from "../../redux/store/Election";
 import {
-  getCandidats,
   getElecteurByBvBYCircons,
   getLv,
-  getUserData,
+  getUserData
 } from "../../utility/Utils";
 import { Filter } from "react-feather";
 import BreadCrumbs from "../../@core/components/breadcrumbs";

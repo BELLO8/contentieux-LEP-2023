@@ -1,23 +1,17 @@
 /* eslint-disable */
 
 import React, { useEffect } from "react";
-import { io } from "socket.io-client";
 import "@styles/react/libs/react-select/_react-select.scss";
 import "@styles/react/libs/tables/react-dataTable-component.scss";
 import "../style.css";
 import { ChevronDown } from "react-feather";
 import { CardText, Spinner } from "reactstrap";
 import { useDispatch, useSelector } from "react-redux";
-import {
-  allNombreVotant,
-  getElecteurVotant,
-  vote,
-} from "../../redux/store/Election";
+import { allNombreVotant, nombreVotantGlobal, vote } from "../../redux/store/Election";
 import { getUserData } from "../../utility/Utils";
 import { Card } from "reactstrap";
 import DataTable from "react-data-table-component";
-import { columns, votants, votantsElect } from "./columns";
-import { useState } from "react";
+import { votants } from "./columns";
 import { isEmptyObject } from "jquery";
 import { db } from "../../utility/Firebase";
 import { onValue, ref } from "firebase/database";
@@ -42,6 +36,7 @@ export default function RealTimeVoteList() {
           isEmptyObject(listeVotants)
             ? dispatch(vote(item))
             : listeVotants.map((listvote) => {
+                console.log(item.id !== listvote.id);
                 if (item.id !== listvote.id) {
                   dispatch(vote(item));
                 }

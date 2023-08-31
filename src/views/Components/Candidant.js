@@ -3,19 +3,15 @@
 import { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { Card, Row } from "reactstrap";
-import { voice } from "../../redux/store/Election";
+import { getResult } from "../../redux/store/Election";
 import { getCandidats, getUserData } from "../../utility/Utils";
-import { io } from "socket.io-client";
 import img1 from "@src/assets/images/portrait/small/1.png";
 import vide from "@src/assets/images/portrait/small/vide.png";
-
 import { Swiper, SwiperSlide } from "swiper/react";
 import "swiper/css";
 import { Autoplay, Navigation } from "swiper";
-
-const socket = io.connect("https://jellyfish-app-wxyzd.ondigitalocean.app", {
-  transports: ["websocket"],
-});
+import { db } from "../../utility/Firebase";
+import { onValue, ref } from "firebase/database";
 
 const Candidat = () => {
   const dispatch = useDispatch();
@@ -48,9 +44,8 @@ const Candidat = () => {
   });
 
   useEffect(() => {
-    socket.on(`insertedvoix-${user.id_candidat}`, (data) => {
-      console.log(data);
-      dispatch(voice(data));
+    const query = ref(db, "depouillement");
+    return onValue(query, (snapshot) => {
       dispatch(
         getResult({
           id_circons: user?.id_circons,
@@ -59,7 +54,7 @@ const Candidat = () => {
         })
       );
     });
-  }, [dispatch, socket]);
+  }, [dispatch]);
 
   const renderCandidatList = () => {
     return (
@@ -118,7 +113,7 @@ const Candidat = () => {
                 <b>{item.parti}</b>
               </div> */}
                 <div className="d-flex align-items-center flex-column">
-                  <h2 className="mt-1 mb-1">{item.total_voix}</h2>
+                  <h2 className="mt-1 mb-1">{item.total_voix ?? 0}</h2>
                 </div>
               </Card>
             </SwiperSlide>

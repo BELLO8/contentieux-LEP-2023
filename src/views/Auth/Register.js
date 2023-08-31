@@ -30,32 +30,37 @@ import { AlertCircle, Check } from "react-feather";
 import Avatar from "@components/avatar";
 import { getCandidatInfo } from "../../redux/store/InfoCandidat";
 import img1 from "@src/assets/images/portrait/small/5.jpg";
+import { isEmptyObject } from "jquery";
 const defaultValues = {};
 
 const Register = () => {
   const navigate = useNavigate();
   const dispatch = useDispatch();
-  const [idTypeElection, setIdTypeElection] = useState();
-  const [idParti, setParti] = useState();
-  const [idcirconscription, setIdcirconscription] = useState();
+  const [idCandidat, setIdcandidat] = useState();
 
   const typeElection = useSelector((state) => state.typeElection.data);
   const circonscription = useSelector((state) => state.circonscription.data);
   const candidatInfo = useSelector((state) => state.infoCandidat.data);
   const typeElectionData = [];
   const circonscriptionData = [];
-  // const partiData = [];
+  const candidatData = [];
 
-  // parti.map((item) => {
-  //   partiData.push({ value: item.id, label: item.libelle });
-  // });
+  candidatInfo.map((item) => {
+    candidatData.push({
+      value: item.id,
+      label: item.nom + "(" + item.parti + ")",
+    });
+  });
 
   typeElection.map((item) => {
     typeElectionData.push({ value: item.id_type, label: item.type_election });
   });
 
   circonscription.map((item) => {
-    circonscriptionData.push({ value: item.id_circons, label: item.circons });
+    circonscriptionData.push({
+      value: item.id_circons_electorale,
+      label: item.circons,
+    });
   });
 
   const {
@@ -79,7 +84,7 @@ const Register = () => {
 
   const onSubmit = (data) => {
     if (Object.values(data).every((field) => field.length > 0)) {
-      register({ id_candidat: candidatInfo.cod_candidat, ...data })
+      register({ id_candidat: idCandidat, ...data })
         .then((res) => {
           if (res.data.status === "success") {
             toast(
@@ -158,25 +163,82 @@ const Register = () => {
       <Row className="auth-inner m-0">
         <Col className="d-none d-lg-flex align-items-center" lg="8" sm="12">
           <div className="w-100 d-lg-flex align-items-center justify-content-center">
-            <img  src={img1} alt="Login Cover" height={713} />
+            <img src={img1} alt="Login Cover" height={713} />
           </div>
         </Col>
-        <Col
-          className="d-flex align-items-center auth-bg "
-          lg="4"
-          sm="12"
-        >
+        <Col className="d-flex align-items-center auth-bg " lg="4" sm="12">
           <Col className="px-xl-2 mx-auto" xs="12" sm="8" md="6" lg="12">
             <CardTitle tag="h1" className="fw-bolder mb-1">
-              <b style={{ color:"maroon" }}>Elector |</b> Créer votre compte
+              <b style={{ color: "maroon" }}>Elector |</b> Créer votre compte
             </CardTitle>
             <CardText className="mb-2 text-dark">
-               Assurer l'égalité des droits et garantir l'égalit des chances.
+              Assurer l'égalité des droits et garantir l'égalit des chances.
             </CardText>
             <Form
               className="auth-login-form mt-2"
               onSubmit={handleSubmit(onSubmit)}
             >
+              <div className="mb-1">
+                <Label className="form-label" for="type-elec">
+                  Selectionner le type d'élection
+                </Label>
+                <Select
+                  theme={selectThemeColors}
+                  isClearable={false}
+                  id="type-election"
+                  className="react-select"
+                  classNamePrefix="select"
+                  options={typeElectionData}
+                  onChange={(event) => {
+                    dispatch(getCirconscription(event.value));
+                  }}
+                />
+              </div>
+              <div className="mb-1">
+                <Label className="form-label" for="circons">
+                  Selectionner une circonscription
+                </Label>
+                <Select
+                  isClearable={false}
+                  theme={selectThemeColors}
+                  id="circons"
+                  options={circonscriptionData}
+                  className="react-select"
+                  classNamePrefix="select"
+                  onChange={(event) => {
+                    dispatch(
+                      getCandidatInfo({
+                        idcirconscription: event.value,
+                      })
+                    );
+                  }}
+                />
+              </div>
+
+              <div className="">
+                <Label className="form-label" for="circons">
+                  Selectionner le candidat
+                </Label>
+                {!isEmptyObject(candidatInfo) ? (
+                  ""
+                ) : (
+                  <Label className="text-danger">( Aucun candidat actif )</Label>
+                )}
+
+                <Select
+                  isClearable={false}
+                  theme={selectThemeColors}
+                  id="candidat"
+                  options={candidatData}
+                  className="react-select"
+                  classNamePrefix="select"
+                  onChange={(event) => {
+                    setIdcandidat(event.value);
+                    console.log(event.value);
+                  }}
+                />
+              </div>
+
               <div className="mb-1">
                 <Label className="form-label" for="login-username">
                   Username
@@ -195,46 +257,6 @@ const Register = () => {
                       required
                     />
                   )}
-                />
-              </div>
-              <div className="mb-1">
-                <Label className="form-label" for="type-elec">
-                  Selectionner le type d'élection
-                </Label>
-                <Select
-                  theme={selectThemeColors}
-                  isClearable={false}
-                  id="type-election"
-                  className="react-select"
-                  classNamePrefix="select"
-                  options={typeElectionData}
-                  onChange={(event) => {
-                    setIdTypeElection(event.value);
-                    dispatch(getCirconscription(event.value));
-                  }}
-                />
-              </div>
-              <div className="mb-1">
-                <Label className="form-label" for="circons">
-                  Selectionner une circonscription
-                </Label>
-                <Select
-                  isClearable={false}
-                  theme={selectThemeColors}
-                  id="circons"
-                  options={circonscriptionData}
-                  className="react-select"
-                  classNamePrefix="select"
-                  onChange={(event) => {
-                    setIdcirconscription(event.value);
-                    console.log(event.value);
-                    dispatch(
-                      getCandidatInfo({
-                        idTypeElection: idTypeElection,
-                        idcirconscription: event.value,
-                      })
-                    );
-                  }}
                 />
               </div>
 

@@ -2,7 +2,7 @@ import { createAsyncThunk, createSlice } from "@reduxjs/toolkit"
 import { client } from "../../@core/auth/jwt/const"
 
 export const getCandidatInfo = createAsyncThunk('candidatInfo/getCandidatInfo', async params => {
-    const response = await client.get(`/candidat_info/${params.idTypeElection}/${params.idcirconscription}`)
+    const response = await client.get(`/listeInfoCandidats/${params.idcirconscription}`)
     return response.data.data
   })
 
