@@ -25,20 +25,24 @@ import {
   getNombreBulletinOuvertByCirconsElectorale,
   getNombreVotantCei,
   getResult,
-  getTimeLineByCircons
+  getTimeLineByCircons,
 } from "../../redux/store/Election";
 import {
   getElecteurByBvBYCircons,
   getLv,
-  getUserData
+  getUserData,
 } from "../../utility/Utils";
 import { Filter } from "react-feather";
 import BreadCrumbs from "../../@core/components/breadcrumbs";
+import CustomPagination from "../Components/CustomPagination";
+import { paginate } from "../../@core/auth/jwt/const";
 
 export default function Vote() {
   const dispatch = useDispatch();
   const [basicModal, setBasicModal] = useState(false);
   const [searchTerm, setSearchTerm] = useState("");
+  const [currentPage, setCurrentPage] = useState(1);
+
   const bulletinNonValid = useSelector(
     (state) => state.election.nombreBulletinNonValideByCirconsElectorale
   );
@@ -75,6 +79,10 @@ export default function Vote() {
   nombreBulletinOuver.map((bulletin) => {
     bulletinOuver.push({ id: bulletin.id_bv, bulletin: bulletin.bulletin });
   });
+
+  const handlePagination = (page) => {
+    setCurrentPage(page.selected + 1);
+  };
 
   useEffect(() => {
     dispatch(
@@ -193,24 +201,24 @@ export default function Vote() {
                         </Label>
                       </div>
                     </li>
-                    {lieuxVoteData.map((item) => {
+                    {paginate(newArray, currentPage).items?.map((item) => {
                       return (
-                        <li key={item.value} className="mb-1">
+                        <li key={item.id_lieu_vote} className="mb-1">
                           <div className="form-check">
                             <Input
                               type="radio"
-                              id={item.value}
+                              id={item.id_lieu_vote}
                               name="item-radio"
                               onClick={() => {
-                                dispatch(getBureauVote(item.value));
-                                setSearchTerm(item.label);
+                                dispatch(getBureauVote(item.id_lieu_vote));
+                                setSearchTerm(item.lieu_vote);
                               }}
                             />
                             <Label
                               className="form-check-label"
-                              for={item.value}
+                              for={item.id_lieu_vote}
                             >
-                              {item.label}
+                              {item.lieu_vote}
                             </Label>
                           </div>
                         </li>
@@ -223,9 +231,13 @@ export default function Vote() {
           </div>
         </Col>
         <Col lg="6" sm="6"></Col>
-
-        {newArray
-          .filter((filtre) => {
+        <CustomPagination
+          total={paginate(newArray, currentPage).totalPages}
+          currentPage={currentPage}
+          handlePagination={handlePagination}
+        />
+        {paginate(newArray, currentPage).items
+          ?.filter((filtre) => {
             if (searchTerm == "") {
               return filtre;
             } else if (
@@ -236,8 +248,8 @@ export default function Vote() {
               return filtre;
             }
           })
-          .map((item) => (
-            <Col lg="4" sm="6">
+          .map((item, index) => (
+            <Col key={index} lg="4" sm="6">
               <StatsHorizontal
                 idbv={item.id}
                 idlv={item.id_lieu_vote}

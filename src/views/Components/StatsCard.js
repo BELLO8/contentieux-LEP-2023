@@ -85,7 +85,7 @@ const StatsCard = () => {
       icon: <User size={18} />,
     },
     {
-      title: votant[0]?.total_votant,
+      title: votant[0]?.total_votant ?? 0,
       subtitle: "Nombre de votants",
       color: "light-success",
       icon: <CheckCircle size={18} />,
@@ -93,7 +93,7 @@ const StatsCard = () => {
     {
       title:
         parseFloat(
-          (Number(votant[0]?.total_votant) * 100) /
+          (Number(votant[0]?.total_votant ?? 0) * 100) /
             Number(
               inscrit?.nombre ? inscrit?.nombre : getNombreElecteur()?.nombre
             )
@@ -105,9 +105,9 @@ const StatsCard = () => {
   ];
 
   const renderData = () => {
-    return data.map((item, index) => {
+    return data.map((item,index) => {
       return (
-        <Col lg="4" className="">
+        <Col key={index} lg="4" className="">
           <Card className="shadow-none round" style={{ minWidth: "220px" }}>
             <CardBody>
               <div className="d-flex align-items-center">

@@ -36,7 +36,6 @@ export default function RealTimeVoteList() {
           isEmptyObject(listeVotants)
             ? dispatch(vote(item))
             : listeVotants.map((listvote) => {
-                console.log(item.id !== listvote.id);
                 if (item.id !== listvote.id) {
                   dispatch(vote(item));
                 }
@@ -55,9 +54,9 @@ export default function RealTimeVoteList() {
   return (
     <>
       <Card className="overflow-hidden round mt-2 shadow-none">
-        <CardText className="m-2">
-          <h4>liste des votants en temps réel</h4>
-        </CardText>
+        <h4 className="m-2">
+          liste des votants en temps réel
+        </h4>
         <div className="mb-2 react-dataTable" id="electeur">
           <DataTable
             pagination

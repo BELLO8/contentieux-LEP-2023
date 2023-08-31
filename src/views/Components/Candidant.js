@@ -67,8 +67,8 @@ const Candidat = () => {
       >
         {candidatResult
           ?.sort((a, b) => Number(b.total_voix) - Number(a.total_voix))
-          .map((item) => (
-            <SwiperSlide>
+          .map((item, index) => (
+            <SwiperSlide key={index}>
               <Card className="shadow-none">
                 <img className="img-fluid m-1" src={img1} alt="Card cap" />
                 {/* <CardImg top src={img1} alt='Card cap' /> */}
@@ -95,8 +95,8 @@ const Candidat = () => {
           .filter(function (param) {
             return param.id == "-1" || param.id == "-2";
           })
-          .map((item) => (
-            <SwiperSlide>
+          .map((item, index) => (
+            <SwiperSlide key={index}>
               <Card className="shadow-none">
                 <img className="img-fluid m-1" src={vide} alt="Card cap" />
                 {/* <CardImg top src={img1} alt='Card cap' /> */}

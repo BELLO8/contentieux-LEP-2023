@@ -17,7 +17,7 @@ import Home from "../../views/Home"
 import Vote from "../../views/app/Depouillements"
 import Depouillement from "../../views/app/DepouillementDetails"
 import Resultat from "../../views/app/Resultat"
-import SettingCandidat from "../../views/app/EtapeVote"
+import BureauVoteList from "../../views/app/EtapeVote"
 import DetailBv from "../../views/app/DetailBv"
 import LoginParti from "../../views/JamaweAdmin/LoginParti"
 import RegisterParti from "../../views/JamaweAdmin/RegisterParti"
@@ -93,7 +93,7 @@ const Routes = [
   },
   {
     path: "/bureau-vote",
-    element: <SettingCandidat />
+    element: <BureauVoteList />
   },
   {
     path: "/bureau-vote/deroulement/:idlv/:idbv",

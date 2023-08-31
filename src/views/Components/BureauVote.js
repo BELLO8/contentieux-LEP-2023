@@ -1,18 +1,9 @@
 /* eslint-disable */
 
-import {
-  Badge,
-  Button,
-  Card, CardText,
-  Col,
-  Progress,
-  Row
-} from "reactstrap";
+import { Badge, Button, Card, CardText, Col, Progress, Row } from "reactstrap";
 import { useDispatch } from "react-redux";
 import { useNavigate } from "react-router-dom";
-import {
-  getTimeLineByBv
-} from "../../redux/store/Election";
+import { getTimeLineByBv } from "../../redux/store/Election";
 import ModalForm from "./ModalForm";
 
 const BureauVoteCard = ({
@@ -24,12 +15,12 @@ const BureauVoteCard = ({
   nbrRep,
   inscrit,
   votants,
-  route
+  route,
 }) => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const taux = votants === 0 ? 0 : (Number(votants) * 100) / Number(inscrit);
-
+ 
   return (
     <Card className="rounded mb-1">
       <div>

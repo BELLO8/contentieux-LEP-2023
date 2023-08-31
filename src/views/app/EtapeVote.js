@@ -16,13 +16,11 @@ import {
   ModalHeader,
   Row,
 } from "reactstrap";
-import { io } from "socket.io-client";
 import BreadCrumbs from "../../@core/components/breadcrumbs";
 import {
   allNombreVotant,
   getBureauVote,
-  getTimeLineByCircons,
-  vote,
+  getTimeLineByCircons
 } from "../../redux/store/Election";
 import { getRepresentant } from "../../redux/store/Representant";
 import {
@@ -33,11 +31,14 @@ import {
 import BureauVoteCard from "../Components/BureauVote";
 import RealTimeVoteList from "../Components/RealTimeVoteList";
 import "../style.css";
+import { paginate } from "../../@core/auth/jwt/const";
+import CustomPagination from "../Components/CustomPagination";
 
-export default function SettingCandidat() {
+export default function BureauVoteList() {
   const dispatch = useDispatch();
   const [basicModal, setBasicModal] = useState(false);
   const [searchTerm, setSearchTerm] = useState("");
+  const [currentPage, setCurrentPage] = useState(1);
   const navigate = useNavigate();
   const user = getUserData();
   const lieuxVote = getLv();
@@ -101,7 +102,7 @@ export default function SettingCandidat() {
       nombreVotant: dataVotant.length,
     });
   });
-
+  
   let newArray = electeurbv.map((obj1) => {
     let obj2 = timeLineData.filter((obj2) => obj2.id === obj1.id);
     let obj3 = ListRepresentantData.filter((obj3) => obj3.id === obj1.id);
@@ -119,11 +120,13 @@ export default function SettingCandidat() {
       nbrRep: [...obj3].length,
     };
   });
-
   lieuxVote?.map((item) => {
     lieuxVoteData.push({ value: item.cod_lieu, label: item.lib_lvote });
   });
-
+  const handlePagination = (page) => {
+    setCurrentPage(page.selected + 1);
+  };
+  
   useEffect(() => {
     if (getUserData().role === "parti") {
       navigate("/JamaweAdmin");
@@ -178,24 +181,24 @@ export default function SettingCandidat() {
                         </Label>
                       </div>
                     </li>
-                    {lieuxVoteData.map((item) => {
+                    {paginate(newArray, currentPage).items?.map((item) => {
                       return (
-                        <li key={item.value} className="mb-1">
+                        <li key={item.id_lieu_vote} className="mb-1">
                           <div className="form-check">
                             <Input
                               type="radio"
-                              id={item.value}
+                              id={item.id_lieu_vote}
                               name="item-radio"
                               onClick={() => {
-                                dispatch(getBureauVote(item.value));
-                                setSearchTerm(item.label);
+                                dispatch(getBureauVote(item.id_lieu_vote));
+                                setSearchTerm(item.lieu_vote);
                               }}
                             />
                             <Label
                               className="form-check-label"
-                              for={item.value}
+                              for={item.id_lieu_vote}
                             >
-                              {item.label}
+                              {item.lieu_vote}
                             </Label>
                           </div>
                         </li>
@@ -208,8 +211,13 @@ export default function SettingCandidat() {
           </div>
         </Col>
         <Col lg="6" sm="6"></Col>
-        {newArray
-          .filter((filtre) => {
+        <CustomPagination
+          total={paginate(newArray, currentPage).totalPages}
+          currentPage={currentPage}
+          handlePagination={handlePagination}
+        />
+        {paginate(newArray, currentPage).items
+          ?.filter((filtre) => {
             if (searchTerm == "") {
               return filtre;
             } else if (
@@ -221,7 +229,7 @@ export default function SettingCandidat() {
             }
           })
           .map((item) => (
-            <Col lg="4" sm="6">
+            <Col lg="4" sm="6" key={item.id_bureau}>
               <BureauVoteCard
                 idbv={item.id_bureau}
                 idlv={item.id_lieu_vote}

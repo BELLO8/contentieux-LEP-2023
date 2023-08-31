@@ -23,6 +23,7 @@ const CustomTimeline = (props) => {
         const ItemTag = item.tag ? item.tag : "li";
         return (
           <Tag
+            key={i}
             className={classnames("timeline", {
               [className]: className,
             })}
@@ -77,8 +78,8 @@ const CustomTimeline = (props) => {
                         ? inscrit?.nombre
                         : getNombreElecteur()?.nombre}
                     </p>
-                    <Badge color='danger' className="fw-bolder" >
-                        Taux :{" "}
+                    <Badge color="danger" className="fw-bolder">
+                      Taux :{" "}
                       {parseFloat(
                         (Number(votant[0]?.total_votant) * 100) /
                           Number(
@@ -87,8 +88,7 @@ const CustomTimeline = (props) => {
                               : getNombreElecteur()?.nombre
                           )
                       ).toFixed(2) + " %"}
-                     
-                    </Badge> 
+                    </Badge>
                   </div>
                 ) : (
                   ""
