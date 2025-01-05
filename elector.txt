@@ -1,0 +1,28 @@
+enlever candidat pdci-rda, tableau de bord
+ faire un breadcrumb sur donnees general 
+tout doit etre sur une ligne 
+https://www.anychart.com/products/anymap/gallery/Maps_in_Dashboard/
+tendance notionnal avant  le tableau de bord faire icon pays vote en live plugin à utiliser => anychart 
+
+timeline 
+résultat 
+convoyage de l'urne
+convoyage
+encours | bien arrivé | a problème |
+
+mettre en bas de décompte des voix
+résultat
+
+et convoyage des urnes ensuite
+après résultat CEI 
+faire une interface de saisi pour la proclamation des résultats CEI
+
+menu 
+les contentieux : affiche tout les probleme sur le parcours du debut jusqu'à resultat cei
+
+affichage par le process
+affichage par lieu de vote (du plus important au chiffre d'electeur au moins important)
+différentiel proclamation cei et resultat à nous 
+
+	
+
