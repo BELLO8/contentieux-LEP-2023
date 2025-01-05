@@ -1,10 +1,10 @@
 /*eslint-disable*/
 
-import { getUserData, token } from "../../../utility/Utils";
 import axios from "axios";
+import { getUserData } from "../../../utility/Utils";
 
 const user = getUserData();
-export const urlBase = "https://jellyfish-app-wxyzd.ondigitalocean.app/";
+export const urlBase = "http://149.56.30.76:3000/";
 
 export const register = async (...args) => {
   return axios.post(`${urlBase}RegisterCandidatApp`, ...args);
@@ -62,7 +62,6 @@ export const client = axios.create({
 });
 
 export const paginate = (items, page, perPage = 12) => {
-  
   const offset = perPage * (page - 1);
   const totalPages = Math.ceil(items.length / perPage);
   const paginatedItems = items.slice(offset, perPage * page);
