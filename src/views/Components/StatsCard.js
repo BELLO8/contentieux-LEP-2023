@@ -1,34 +1,22 @@
 /* eslint-disable */
-import classnames from "classnames";
 import {
-  TrendingUp,
-  User,
-  Box,
-  DollarSign,
-  UserPlus,
-  Users,
-  Percent,
   Archive,
-  MapPin,
-  Check,
   CheckCircle,
+  MapPin,
+  Percent,
+  User,
+  Users,
 } from "react-feather";
 
 // ** Custom Components
 import Avatar from "@components/avatar";
 
 // ** Reactstrap Imports
-import {
-  Card,
-  CardHeader,
-  CardTitle,
-  CardBody,
-  CardText,
-  Row,
-  Col,
-} from "reactstrap";
+import { isEmptyObject } from "jquery";
+import { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { useEffect, useState } from "react";
+import { Card, CardBody, Col, Row } from "reactstrap";
+import { nombreVotantGlobal } from "../../redux/store/Election";
 import { nombreRepresentant } from "../../redux/store/Representant";
 import {
   getNombreBV,
@@ -36,14 +24,6 @@ import {
   getNombreLV,
   getUserData,
 } from "../../utility/Utils";
-import {
-  nombreBV,
-  nombreElecteur,
-  nombreLV,
-  nombreVotant,
-  nombreVotantGlobal,
-} from "../../redux/store/Election";
-import { isEmptyObject } from "jquery";
 
 const StatsCard = () => {
   const dispatch = useDispatch();
@@ -105,16 +85,16 @@ const StatsCard = () => {
   ];
 
   const renderData = () => {
-    return data.map((item,index) => {
+    return data.map((item, index) => {
       return (
-        <Col key={index} lg="4" className="">
-          <Card className="shadow-none round" style={{ minWidth: "220px" }}>
+        <Col key={index} lg="2" className="">
+          <Card className="shadow-none round">
             <CardBody>
               <div className="d-flex align-items-center">
                 <Avatar color={item.color} icon={item.icon} className="me-2" />
                 <div className="my-auto">
-                  <h1 className="fw-bolder mb-0">{item.title}</h1>
-                  <h6 className="fw-bolder mb-0">
+                  <h3 className="fw-bolder mb-0">{item.title}</h3>
+                  <h6 className="fw-bolder mb-0" style={{ fontSize: 11 }}>
                     {item.subtitle}
                   </h6>
                 </div>

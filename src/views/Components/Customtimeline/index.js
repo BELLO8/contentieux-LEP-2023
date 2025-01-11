@@ -1,11 +1,11 @@
 /*eslint-disable */
 
-import Proptypes from "prop-types";
 import classnames from "classnames";
-import { useSelector } from "react-redux";
-import { getNombreElecteur } from "../../../utility/Utils";
 import { isEmptyObject } from "jquery";
+import Proptypes from "prop-types";
+import { useSelector } from "react-redux";
 import { Badge } from "reactstrap";
+import { getNombreElecteur } from "../../../utility/Utils";
 
 const CustomTimeline = (props) => {
   // ** Props
@@ -17,7 +17,7 @@ const CustomTimeline = (props) => {
   // ** Custom Tagg
 
   return (
-    <div className="d-flex">
+    <div className="flex">
       {data.map((item, i) => {
         const Tag = tag ? tag : "ul";
         const ItemTag = item.tag ? item.tag : "li";
@@ -27,7 +27,6 @@ const CustomTimeline = (props) => {
             className={classnames("timeline", {
               [className]: className,
             })}
-            style={{ marginRight: "5px" }}
           >
             <ItemTag
               key={i}
@@ -36,12 +35,12 @@ const CustomTimeline = (props) => {
               })}
             >
               <span
-                className={classnames("timeline-point", {
+                className={classnames("font-bold text-black timeline-point", {
                   [`timeline-point-${item.color}`]: "item.color",
-                  "timeline-point-indicator": !item.icon,
+                  "": !item.icon,
                 })}
               >
-                {item.icon ? item.icon : null}
+                {i + 1}
               </span>
               <div className="timeline-event">
                 <div
@@ -52,20 +51,41 @@ const CustomTimeline = (props) => {
                     }
                   )}
                 >
-                  <h6>{item.libelle}</h6>
+                  <p className="text-sm text-black font-bold">{item.libelle}</p>
                 </div>
-                <p
-                  className={classnames({
-                    "mb-0": i === data.length - 1 && !item.customContent,
-                  })}
-                >
-                  Bv encours :{" "}
-                  <b>{item.nombre_en_cours ? item.nombre_en_cours : 0}</b>
-                </p>
-                <p>
-                  Bv terminé :{" "}
-                  <b>{item.nombre_bv_termine ? item.nombre_bv_termine : 0}</b>
-                </p>
+                {
+                  item.id == 7 ? (
+                    <>
+                      <p>
+                        Encours :{" "}
+                        <b>0</b>
+                      </p>
+                      <p>
+                        Bien arrivé :{" "}
+                        <b>0</b>
+                      </p>
+
+                      <p>
+                        A problème :{" "}
+                        <b>0</b>
+                      </p>
+                    </>
+                  ) : <>
+                    <p
+                      className={classnames({
+                        "mb-0": i === data.length - 1 && !item.customContent,
+                      })}
+                    >
+                      Bv encours :{" "}
+                      <b>{item.nombre_en_cours ? item.nombre_en_cours : 0}</b>
+                    </p>
+                    <p>
+                      Bv terminé :{" "}
+                      <b>{item.nombre_bv_termine ? item.nombre_bv_termine : 0}</b>
+                    </p>
+                  </>
+                }
+
                 {item.id == 3 ? (
                   <div>
                     <p>
@@ -82,17 +102,15 @@ const CustomTimeline = (props) => {
                       Taux :{" "}
                       {parseFloat(
                         (Number(votant[0]?.total_votant) * 100) /
-                          Number(
-                            inscrit?.nombre
-                              ? inscrit?.nombre
-                              : getNombreElecteur()?.nombre
-                          )
+                        Number(
+                          inscrit?.nombre
+                            ? inscrit?.nombre
+                            : getNombreElecteur()?.nombre
+                        )
                       ).toFixed(2) + " %"}
                     </Badge>
                   </div>
-                ) : (
-                  ""
-                )}
+                ) : ""}
 
                 {item.customContent ? item.customContent : null}
               </div>

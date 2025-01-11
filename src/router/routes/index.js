@@ -2,33 +2,34 @@
 import { Fragment, lazy } from "react"
 // ** Layouts
 import BlankLayout from "@layouts/BlankLayout"
-import VerticalLayout from "@src/layouts/VerticalLayout"
-import HorizontalLayout from "@src/layouts/HorizontalLayout"
 import LayoutWrapper from "@src/@core/layouts/components/layout-wrapper"
+import HorizontalLayout from "@src/layouts/HorizontalLayout"
+import VerticalLayout from "@src/layouts/VerticalLayout"
 import NotAuthorized from "../../views/NotAuthorized"
 // ** Route Components
-import PublicRoute from "@components/routes/PublicRoute"
 import PrivateRoute from '@components/routes/PrivateRoute'
+import PublicRoute from "@components/routes/PublicRoute"
 
 // ** Utils
 import { isObjEmpty } from "@utils"
 import Register from "../../views/Auth/Register"
 import Home from "../../views/Home"
-import Vote from "../../views/app/Depouillements"
-import Depouillement from "../../views/app/DepouillementDetails"
-import Resultat from "../../views/app/Resultat"
-import BureauVoteList from "../../views/app/EtapeVote"
-import DetailBv from "../../views/app/DetailBv"
+import Parti from "../../views/JamaweAdmin/Home"
 import LoginParti from "../../views/JamaweAdmin/LoginParti"
 import RegisterParti from "../../views/JamaweAdmin/RegisterParti"
-import Parti from "../../views/JamaweAdmin/Home"
-import EtapeVote from "../../views/Regional/EtapeVote"
-import DetailEtape from "../../views/Regional/DetailEtape"
 import ComptageVoix from "../../views/Regional/ComptageVoix"
-import DetailEtapeBv from "../../views/Regional/DetailEtapeBv"
-import DepouillementBureauVote from "../../views/Regional/DepouillementsBureauVote"
 import DepouillementDetailsBureauVote from "../../views/Regional/DepouillementDetailsBureauVote"
-import FirebaseTest from "../../views/app/FirebaseTest"
+import DepouillementBureauVote from "../../views/Regional/DepouillementsBureauVote"
+import DetailEtape from "../../views/Regional/DetailEtape"
+import DetailEtapeBv from "../../views/Regional/DetailEtapeBv"
+import EtapeVote from "../../views/Regional/EtapeVote"
+import { Contentieux } from "../../views/app/Contentieux"
+import Depouillement from "../../views/app/DepouillementDetails"
+import Vote from "../../views/app/Depouillements"
+import DetailBv from "../../views/app/DetailBv"
+import BureauVoteList from "../../views/app/EtapeVote"
+import LiveVote from "../../views/app/LiveVote"
+import Resultat from "../../views/app/Resultat"
 
 const getLayout = {
   blank: <BlankLayout />,
@@ -70,6 +71,14 @@ const Routes = [
   {
     path: "/depouillement",
     element: <Vote />
+  },
+  {
+    path: "/tandance-nationale",
+    element: <LiveVote />
+  },
+  {
+    path: "/contentieux",
+    element: <Contentieux />
   },
   {
     path: "/comptageVoix",
@@ -170,7 +179,7 @@ const MergeLayoutRoutes = (layout, defaultLayout) => {
         ((route.meta === undefined || route.meta.layout === undefined) &&
           defaultLayout === layout)
       ) {
-        
+
         let RouteTag = PrivateRoute
         // let RouteTag = PublicRoute
         // ** Check for public or private route
@@ -183,7 +192,7 @@ const MergeLayoutRoutes = (layout, defaultLayout) => {
             // eslint-disable-next-line multiline-ternary
             isObjEmpty(route.element.props) && isBlank === false
               ? // eslint-disable-next-line multiline-ternary
-                LayoutWrapper
+              LayoutWrapper
               : Fragment
 
           route.element = (
@@ -220,4 +229,5 @@ const getRoutes = (layout) => {
   return AllRoutes
 }
 
-export { DefaultRoute, TemplateTitle, Routes, getRoutes }
+export { DefaultRoute, getRoutes, Routes, TemplateTitle }
+

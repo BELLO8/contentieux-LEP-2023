@@ -1,13 +1,11 @@
 /*eslint-disable */
 
-import Timeline from "@components/timeline";
-
 // ** Reactstrap Imports
-import { Card, CardBody, CardHeader, CardTitle } from "reactstrap";
+import { Card } from "reactstrap";
 
 // ** Timeline Data
-import CustomTimeline from "./Customtimeline";
 import { useSelector } from "react-redux";
+import CustomTimeline from "./Customtimeline";
 
 const BasicTimeline = () => {
   const etape = useSelector((state) => state.election.etape);
@@ -38,6 +36,14 @@ const BasicTimeline = () => {
       id: "6",
       color: "success",
     },
+    {
+      id: "7",
+      color: "success",
+    },
+    {
+      id: "8",
+      color: "success",
+    },
   ];
   statusEtape.map((item) => {
     statusData.push({
@@ -60,15 +66,16 @@ const BasicTimeline = () => {
         param.id == 2 ||
         param.id == 3 ||
         param.id == 5 ||
-        param.id == 6
+        param.id == 7 ||
+        param.id == 8
       );
     });
 
-  //console.log(data);
+  console.log(data);
 
   return (
     <Card className="p-1 shadow-none round">
-      <h5 className="mb-3" style={{ fontWeight: "bold" }}>
+      <h5 className="mb-1" style={{ fontWeight: "bold" }}>
         Chronologie globale du déroulement de l'élection
       </h5>
       <CustomTimeline data={data} />

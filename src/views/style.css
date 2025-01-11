@@ -1,3 +1,6 @@
 @page {
-    size: A3 landscape; /* Définir la taille de la page en mode paysage */
+  size: A3 landscape; /* Définir la taille de la page en mode paysage */
 }
+@tailwind base;
+@tailwind components;
+@tailwind utilities;

@@ -1,6 +1,7 @@
 import { Archive, CheckSquare, Monitor, Package, Table } from "react-feather"
 
 export default [
+
   {
     id: "home",
     title: "Tableau de bord",

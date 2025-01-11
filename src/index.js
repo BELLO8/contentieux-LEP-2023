@@ -4,8 +4,8 @@ import { createRoot } from "react-dom/client"
 import { BrowserRouter } from "react-router-dom"
 
 // ** Redux Imports
-import { store } from "./redux/store"
 import { Provider } from "react-redux"
+import { store } from "./redux/store"
 
 // ** ThemeColors Context
 
@@ -25,8 +25,8 @@ import "./@core/components/ripple-button"
 
 // ** PrismJS
 import "prismjs"
-import "prismjs/themes/prism-tomorrow.css"
 import "prismjs/components/prism-jsx.min"
+import "prismjs/themes/prism-tomorrow.css"
 
 // ** React Perfect Scrollbar
 import "react-perfect-scrollbar/dist/css/styles.css"
@@ -35,6 +35,7 @@ import "react-perfect-scrollbar/dist/css/styles.css"
 import "@styles/react/libs/react-hot-toasts/react-hot-toasts.scss"
 
 // ** Core styles
+import 'leaflet/dist/leaflet.css'
 import "./@core/assets/fonts/feather/iconfont.css"
 import "./@core/scss/core.scss"
 import "./assets/scss/style.scss"

@@ -1,19 +1,20 @@
 /* eslint-disable */
-import StatsCard from "./Components/StatsCard";
-import ChartjsHorizontalBarChart from "./Components/ChartjsHorizontalBar";
-import Candidat from "./Components/Candidant";
-import { useDispatch } from "react-redux";
+import { useEffect } from "react";
+import { useDispatch, useSelector } from "react-redux";
+import { useNavigate } from "react-router-dom";
 import {
   getAllEtapeBv,
   getNombreBvEtapeEnCours,
 } from "../redux/store/Election";
-import { useEffect } from "react";
 import BasicTimeline from "./Components/BasicTimeline";
-import { useNavigate } from "react-router-dom";
+import Candidat from "./Components/Candidant";
+import ChartjsHorizontalBarChart from "./Components/ChartjsHorizontalBar";
+import StatsCard from "./Components/StatsCard";
 
 const Home = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
+  const etape = useSelector((state) => state.election.etape);
 
   useEffect(() => {
     dispatch(getAllEtapeBv());
@@ -21,9 +22,7 @@ const Home = () => {
   }, [dispatch]);
   return (
     <div>
-      <h1 style={{ fontWeight: "bold" }} className="mb-3">
-        Tableau de bord
-      </h1>
+
       {/* <p>{getUserData().lib_type_election } ( {getUserData().lib_circons} )</p> */}
       <StatsCard />
       <BasicTimeline />

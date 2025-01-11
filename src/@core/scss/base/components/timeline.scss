@@ -13,13 +13,13 @@
 .timeline {
   padding: 0;
   margin-bottom: 0;
-  margin-left: 1rem;
+  margin-left: 20px;
   list-style: none;
 
   // Timeline Item
   .timeline-item {
     position: relative;
-    padding-left: 2.5rem;
+    padding-left: 20px;
     border-left: 1px solid $timeline-border-color;
 
     &:not(:last-child) {
@@ -52,8 +52,11 @@
         background-color: $timeline-point-indicator-color;
 
         &:before {
-          content: '';
-          background: rgba($color: $timeline-point-indicator-color, $alpha: 0.12);
+          content: "";
+          background: rgba(
+            $color: $timeline-point-indicator-color,
+            $alpha: 0.12
+          );
           height: $timeline-point-indicator-wrapper-size;
           width: $timeline-point-indicator-wrapper-size;
           display: block;
@@ -88,7 +91,7 @@
     &:last-of-type {
       border-left-color: transparent !important;
       &:after {
-        content: '';
+        content: "";
         position: absolute;
         left: -1px;
         bottom: 0;

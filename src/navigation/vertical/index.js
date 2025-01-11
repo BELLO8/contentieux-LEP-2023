@@ -1,6 +1,12 @@
-import { Archive, CheckSquare, Monitor, Package, Table } from "react-feather"
+import { AlertCircle, Archive, BarChart2, CheckSquare, Monitor, Table } from "react-feather"
 
 export default [
+  {
+    id: "live",
+    title: "Tandance nationale",
+    icon: <BarChart2 />,
+    navLink: "/tandance-nationale"
+  },
   {
     id: "home",
     title: "Tableau de bord",
@@ -30,6 +36,12 @@ export default [
     title: "Résultats",
     icon: <CheckSquare size={20} />,
     navLink: "/resultat"
+  },
+  {
+    id: "contentieux",
+    title: "Les Contentieux",
+    icon: <AlertCircle size={20} />,
+    navLink: "/contentieux"
   }
-   
+
 ]

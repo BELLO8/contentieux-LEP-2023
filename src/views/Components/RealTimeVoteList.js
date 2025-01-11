@@ -1,20 +1,19 @@
 /* eslint-disable */
 
-import React, { useEffect } from "react";
 import "@styles/react/libs/react-select/_react-select.scss";
 import "@styles/react/libs/tables/react-dataTable-component.scss";
-import "../style.css";
-import { ChevronDown } from "react-feather";
-import { CardText, Spinner } from "reactstrap";
-import { useDispatch, useSelector } from "react-redux";
-import { allNombreVotant, nombreVotantGlobal, vote } from "../../redux/store/Election";
-import { getUserData } from "../../utility/Utils";
-import { Card } from "reactstrap";
-import DataTable from "react-data-table-component";
-import { votants } from "./columns";
-import { isEmptyObject } from "jquery";
-import { db } from "../../utility/Firebase";
 import { onValue, ref } from "firebase/database";
+import { isEmptyObject } from "jquery";
+import React, { useEffect } from "react";
+import DataTable from "react-data-table-component";
+import { ChevronDown } from "react-feather";
+import { useDispatch, useSelector } from "react-redux";
+import { Card, Spinner } from "reactstrap";
+import { allNombreVotant, vote } from "../../redux/store/Election";
+import { db } from "../../utility/Firebase";
+import { getUserData } from "../../utility/Utils";
+import "../style.css";
+import { votants } from "./columns";
 
 export default function RealTimeVoteList() {
   const dispatch = useDispatch();
@@ -36,10 +35,10 @@ export default function RealTimeVoteList() {
           isEmptyObject(listeVotants)
             ? dispatch(vote(item))
             : listeVotants.map((listvote) => {
-                if (item.id !== listvote.id) {
-                  dispatch(vote(item));
-                }
-              });
+              if (item.id !== listvote.id) {
+                dispatch(vote(item));
+              }
+            });
         });
       }
     });
@@ -54,9 +53,9 @@ export default function RealTimeVoteList() {
   return (
     <>
       <Card className="overflow-hidden round mt-2 shadow-none">
-        <h4 className="m-2">
+        {/* <h4 className="m-2">
           liste des votants en temps réel
-        </h4>
+        </h4> */}
         <div className="mb-2 react-dataTable" id="electeur">
           <DataTable
             pagination

@@ -1,24 +1,24 @@
 /* eslint-disable */
 
-import { Link, useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 
 // ** Custom Components
 import Avatar from "@components/avatar";
 
 // ** Third Party Components
-import { User, Power } from "react-feather";
+import { Power } from "react-feather";
 
 // ** Reactstrap Imports
+import { useEffect, useState } from "react";
+import { useDispatch } from "react-redux";
 import {
-  UncontrolledDropdown,
+  DropdownItem,
   DropdownMenu,
   DropdownToggle,
-  DropdownItem,
+  UncontrolledDropdown,
 } from "reactstrap";
-import { useEffect, useState } from "react";
-import { getUserData, isUserLoggedIn } from "../../../../utility/Utils";
-import { useDispatch } from "react-redux";
 import { handleLogout } from "../../../../redux/auth";
+import { getUserData, isUserLoggedIn } from "../../../../utility/Utils";
 
 // ** Default Avatar Image
 
@@ -45,12 +45,7 @@ const UserDropdown = () => {
         <div className="user-nav d-sm-flex d-none">
           <h6 style={{ fontWeight: "bold" }}>
             {user?.role === "parti" ? user?.username : user?.nom}
-          </h6>
-          <span className="user-status fw-bold text-warning">
-            {user?.role !== "parti"
-              ? user?.role + " " + user?.lib_parti
-              : "Administrateur"}
-          </span>
+          </h6>{" "}
         </div>
         <Avatar imgHeight="40" imgWidth="40" status="online" />
       </DropdownToggle>
