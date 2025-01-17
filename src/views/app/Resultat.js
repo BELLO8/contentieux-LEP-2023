@@ -1,45 +1,35 @@
 /* eslint-disable */
-import ChartjsHorizontalBarChart from "../Components/ChartjsHorizontalBar";
-import "chart.js/auto";
-import BreadCrumbs from "../../@core/components/breadcrumbs";
-import { useEffect } from "react";
-import { getUserData } from "../../utility/Utils";
-import { useNavigate } from "react-router-dom";
-import React from "react";
 import "@styles/react/libs/react-select/_react-select.scss";
 import "@styles/react/libs/tables/react-dataTable-component.scss";
-import "../style.css";
-import { useState } from "react";
+import "chart.js/auto";
+import React, { useEffect, useState } from "react";
+import { useDispatch, useSelector } from "react-redux";
+import { useNavigate } from "react-router-dom";
 import {
-  Card,
-  CardBody,
-  Col,
-  Input,
-  Row,
-  Modal,
-  ModalBody,
-  ModalHeader,
-  Button,
   Accordion,
   AccordionBody,
   AccordionHeader,
   AccordionItem,
+  Card,
+  CardBody,
+  Col,
+  Input,
+  Label,
+  Modal,
+  ModalBody,
+  ModalHeader,
+  Row
 } from "reactstrap";
-import { Label } from "reactstrap";
-import { useDispatch, useSelector } from "react-redux";
+import BreadCrumbs from "../../@core/components/breadcrumbs";
 import {
   getBureauVote, getElecteurVotant, getResult, getTimeLineByBv
 } from "../../redux/store/Election";
-import {
-  getCandidats,
-  getElecteurByBvBYCircons,
-  getLv,
-} from "../../utility/Utils";
-import { Filter } from "react-feather";
-import CandidatVoice from "../Components/CandidatVoice";
+import { getCandidats, getLv, getUserData } from "../../utility/Utils";
+import ChartjsHorizontalBarChart from "../Components/ChartjsHorizontalBar";
 import { colorByParti } from "../Components/columns";
-import DepouillementInfo from "./DepouillementInfo";
 import ResultatVoice from "../Components/ResultatVoice";
+import "../style.css";
+import DepouillementInfo from "./DepouillementInfo";
 
 export default function Resultat() {
   const navigate = useNavigate();
@@ -47,7 +37,6 @@ export default function Resultat() {
   const [searchTerm, setSearchTerm] = useState("");
   const [basicModal, setBasicModal] = useState(false);
   const lieuxVote = getLv();
-  const nombreElecteurByBv = getElecteurByBvBYCircons();
   const [open, setOpen] = useState("1");
   const [idBv, setIdBv] = useState();
   const toggle = (id) => {
@@ -77,7 +66,7 @@ export default function Resultat() {
     let colors = colorByParti.filter(function (params) {
       return params.libelle === candidat.parti;
     });
-    return { ...candidat, ...candidatVotantData, color: colors[0].color };
+    return { ...candidat, ...candidatVotantData, color: colors[0]?.color };
   });
 
   lieuxVote?.map((item) => {

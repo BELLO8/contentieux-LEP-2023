@@ -1,9 +1,9 @@
 /* eslint-disable */
 
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
+import axios from "axios";
 import { client, urlBase } from "../../@core/auth/jwt/const";
 import { getUserData } from "../../utility/Utils";
-import axios from "axios";
 
 export const getLieuxVote = createAsyncThunk(
   "lieuxVote/getLieuxVote",
@@ -56,11 +56,9 @@ export const getCommuneByRegion = createAsyncThunk(
   }
 );
 
-export const nombreBV = createAsyncThunk("bv/nombreBureauVote", async () => {
+export const statLVBV = createAsyncThunk("bv/nombreBureauVote", async () => {
   const response = await client.get(
-    `NombreBvByCirconsElectorale/${getUserData().id_circons}/${
-      getUserData().id_type_election
-    }`
+    `statLVBV`
   );
   localStorage.setItem("nombreBV", JSON.stringify(response.data.data));
 
@@ -69,8 +67,7 @@ export const nombreBV = createAsyncThunk("bv/nombreBureauVote", async () => {
 
 export const nombreLV = createAsyncThunk("lv/nombreLV", async () => {
   const response = await client.get(
-    `NombreLvByCirconsElectorale/${getUserData().id_circons}/${
-      getUserData().id_type_election
+    `NombreLvByCirconsElectorale/${getUserData().id_circons}/${getUserData().id_type_election
     }`
   );
   localStorage.setItem("nombreLV", JSON.stringify(response.data.data));
@@ -89,8 +86,7 @@ export const nombreElecteur = createAsyncThunk(
   "nbreElecteur/nombreElecteur",
   async () => {
     const response = await client.get(
-      `${urlBase}NombreElecteurByCirconsElectorale/${
-        getUserData().id_type_election
+      `${urlBase}NombreElecteurByCirconsElectorale/${getUserData().id_type_election
       }`,
       {
         headers: {
@@ -148,8 +144,7 @@ export const nombreVotantGlobal = createAsyncThunk(
   "NombreVotantGlobal/nombreVotantGlobal",
   async () => {
     const response = await client.get(
-      `${urlBase}NombreVotantByCirconsElectorale/${
-        getUserData().id_type_election
+      `${urlBase}NombreVotantByCirconsElectorale/${getUserData().id_type_election
       }`,
       {
         headers: {
@@ -213,8 +208,7 @@ export const getElecteurVotant = createAsyncThunk(
   "votant/getElecteurVotant",
   async (params) => {
     const response = await client.get(
-      `ListeElecteurVoteBv/${params.id_bv}/${getUserData().id_type_election}/${
-        getUserData().id_parti
+      `ListeElecteurVoteBv/${params.id_bv}/${getUserData().id_type_election}/${getUserData().id_parti
       }`
     );
     return response.data.data;
@@ -225,8 +219,7 @@ export const getElecteurByCommune = createAsyncThunk(
   "electeurbycommune/getElecteurByCommune",
   async (params) => {
     const response = await client.get(
-      `electeurbycommune/2023/${params.idCom}/${params.idCand}/?page=${
-        params.page === undefined ? 1 : params.page
+      `electeurbycommune/2023/${params.idCom}/${params.idCand}/?page=${params.page === undefined ? 1 : params.page
       }`
     );
     return response.data.data;
@@ -237,8 +230,7 @@ export const getElecteurByLieuVote = createAsyncThunk(
   "electeurbyLieuVote/getElecteurByLieuVote",
   async (params) => {
     const response = await client.get(
-      `electeurbyLieuVote/2023/${params.idLv}/${params.idCand}/?page=${
-        params.page === undefined ? 1 : params.page
+      `electeurbyLieuVote/2023/${params.idLv}/${params.idCand}/?page=${params.page === undefined ? 1 : params.page
       }`
     );
     return response.data.data;
@@ -289,8 +281,7 @@ export const getNombreBulletinNonValideByCirconsElectorale = createAsyncThunk(
   "nombreBulletinNonValideByCirconsElectorale/getNombreBulletinNonValideByCirconsElectorale",
   async () => {
     const response = await client.get(
-      `NombreBulletinByCirconsElectorale/${getUserData().id_candidat}/${
-        getUserData().id_type_election
+      `NombreBulletinByCirconsElectorale/${getUserData().id_candidat}/${getUserData().id_type_election
       }`
     );
     return response.data.data;
@@ -301,8 +292,7 @@ export const getNombreBulletinOuvertByCirconsElectorale = createAsyncThunk(
   "nombreBulletinOuvertByCirconsElectorale/getNombreBulletinOuvertByCirconsElectorale",
   async () => {
     const response = await client.get(
-      `NombreBulletinOuvertByCirconsElectorale/${getUserData().id_candidat}/${
-        getUserData().id_type_election
+      `NombreBulletinOuvertByCirconsElectorale/${getUserData().id_candidat}/${getUserData().id_type_election
       }`
     );
     return response.data.data;
@@ -467,7 +457,7 @@ export const ElectionSlice = createSlice({
         state.status = "succeeded";
         state.lieuVoteByCommune = action.payload;
       })
-      .addCase(nombreBV.fulfilled, (state, action) => {
+      .addCase(statLVBV.fulfilled, (state, action) => {
         state.status = "succeeded";
         state.nbrBv = action.payload;
       })

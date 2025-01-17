@@ -1,5 +1,5 @@
 // ** Router imports
-import { useRoutes, Navigate } from "react-router-dom"
+import { Navigate, useRoutes } from "react-router-dom"
 
 // ** GetRoutes
 import { getRoutes } from "./routes"
@@ -7,9 +7,10 @@ import { getRoutes } from "./routes"
 // ** Hooks Imports
 import { useLayout } from "@hooks/useLayout"
 import BlankLayout from "@layouts/BlankLayout"
-import Error from "../views/Error"
-import { getUserData, getHomeRouteForLoggedInUser } from "../utility/Utils"
+import { getHomeRouteForLoggedInUser, getUserData } from "../utility/Utils"
 import Login from "../views/Auth/Login"
+import Error from "../views/Error"
+import LiveVote from "../views/app/LiveVote"
 
 const Router = () => {
   // ** Hooks
@@ -35,6 +36,10 @@ const Router = () => {
       path: '/login',
       element: <BlankLayout />,
       children: [{ path: '/login', element: <Login /> }]
+    },
+    {
+      path: "/tandance-nationale",
+      element: <LiveVote />
     },
     {
       path: '*',

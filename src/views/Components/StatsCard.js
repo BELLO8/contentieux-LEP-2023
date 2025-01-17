@@ -5,14 +5,13 @@ import {
   MapPin,
   Percent,
   User,
-  Users,
+  Users
 } from "react-feather";
 
 // ** Custom Components
 import Avatar from "@components/avatar";
 
 // ** Reactstrap Imports
-import { isEmptyObject } from "jquery";
 import { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { Card, CardBody, Col, Row } from "reactstrap";
@@ -20,9 +19,7 @@ import { nombreVotantGlobal } from "../../redux/store/Election";
 import { nombreRepresentant } from "../../redux/store/Representant";
 import {
   getNombreBV,
-  getNombreElecteur,
-  getNombreLV,
-  getUserData,
+  getUserData
 } from "../../utility/Utils";
 
 const StatsCard = () => {
@@ -41,13 +38,13 @@ const StatsCard = () => {
 
   const data = [
     {
-      title: !isEmptyObject(nbreLV) ? nbreLV : getNombreLV(),
+      title: getNombreBV()[0].valeur,
       subtitle: "Lieux de vote",
       color: "light-primary",
       icon: <MapPin size={18} />,
     },
     {
-      title: !isEmptyObject(nbreBV) ? nbreBV : getNombreBV(),
+      title: getNombreBV()[1].valeur,
       subtitle: "Bureaux de vote",
       color: "light-info",
       icon: <Archive size={18} />,
@@ -59,7 +56,7 @@ const StatsCard = () => {
       icon: <Users size={18} />,
     },
     {
-      title: inscrit?.nombre ? inscrit?.nombre : getNombreElecteur()?.nombre,
+      title: getNombreBV()[2].valeur,
       subtitle: "Nombre d'inscrits",
       color: "light-success",
       icon: <User size={18} />,
@@ -74,9 +71,9 @@ const StatsCard = () => {
       title:
         parseFloat(
           (Number(votant[0]?.total_votant ?? 0) * 100) /
-            Number(
-              inscrit?.nombre ? inscrit?.nombre : getNombreElecteur()?.nombre
-            )
+          Number(
+            getNombreBV()[2].valeur
+          )
         ).toFixed(2) + " %",
       subtitle: "Taux de participations",
       color: "light-success",

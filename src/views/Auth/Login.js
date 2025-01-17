@@ -1,42 +1,37 @@
 /* eslint-disable */
 
+import Avatar from "@components/avatar";
+import InputPasswordToggle from "@components/input-password-toggle";
+import img1 from "@src/assets/images/portrait/small/6.jpg";
+import "@styles/react/pages/page-authentication.scss";
+import { useEffect } from "react";
+import { AlertCircle } from "react-feather";
+import { Controller, useForm } from "react-hook-form";
+import toast from "react-hot-toast";
+import { useDispatch } from "react-redux";
 import { Link, useNavigate } from "react-router-dom";
 import {
-  Card,
-  CardBody,
-  CardTitle,
-  CardText,
-  Form,
-  Label,
-  Row,
-  Col,
-  Input,
   Button,
+  CardText,
+  CardTitle,
+  Col,
+  Form,
+  Input,
+  Label,
+  Row
 } from "reactstrap";
-import { AlertCircle } from "react-feather";
-import Avatar from "@components/avatar";
-import "@styles/react/pages/page-authentication.scss";
-import InputPasswordToggle from "@components/input-password-toggle";
 import { login } from "../../@core/auth/jwt/const";
-import { useForm, Controller } from "react-hook-form";
+import { handleLogin } from "../../redux/auth";
+import {
+  getCandidats,
+  getLieuxVote,
+  statLVBV
+} from "../../redux/store/Election";
 import {
   getHomeRouteForLoggedInUser,
   getUserData,
   isUserLoggedIn,
 } from "../../utility/Utils";
-import { handleLogin } from "../../redux/auth";
-import { useDispatch } from "react-redux";
-import { useEffect } from "react";
-import toast from "react-hot-toast";
-import {
-  getCandidats,
-  getLieuxVote,
-  nombreBV,
-  nombreElecteur,
-  nombreElecteurByBvBYCircons,
-  nombreLV,
-} from "../../redux/store/Election";
-import img1 from "@src/assets/images/portrait/small/6.jpg";
 
 const defaultValues = {
   password: "",
@@ -78,11 +73,11 @@ const Login = () => {
               refreshToken: res.data.refreshToken,
             };
             dispatch(handleLogin(data));
-            dispatch(nombreElecteurByBvBYCircons());
+            // dispatch(nombreElecteurByBvBYCircons());
             dispatch(getLieuxVote());
-            dispatch(nombreBV());
-            dispatch(nombreLV());
-            dispatch(nombreElecteur());
+            dispatch(statLVBV());
+            // dispatch(nombreLV());
+            // dispatch(nombreElecteur());
             dispatch(getCandidats());
             navigate(getHomeRouteForLoggedInUser("candidat"));
           }

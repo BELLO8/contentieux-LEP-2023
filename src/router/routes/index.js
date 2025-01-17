@@ -72,10 +72,7 @@ const Routes = [
     path: "/depouillement",
     element: <Vote />
   },
-  {
-    path: "/tandance-nationale",
-    element: <LiveVote />
-  },
+ 
   {
     path: "/contentieux",
     element: <Contentieux />

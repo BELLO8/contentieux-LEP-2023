@@ -1,21 +1,18 @@
 /* eslint-disable */
 
 import StatsHorizontal from "@components/widgets/stats/StatsHorizontal";
+import { React, useEffect } from "react";
 import { File, FileMinus, FileText } from "react-feather";
-import { Row, Col } from "reactstrap";
-import { useEffect, React } from "react";
 import { useDispatch, useSelector } from "react-redux";
+import { Col, Row } from "reactstrap";
 import { getResult, nombreVotantGlobal } from "../../redux/store/Election";
-import { getNombreElecteur, getUserData } from "../../utility/Utils";
+import { getNombreBV, getUserData } from "../../utility/Utils";
 
 const DepouillementInfo = () => {
   const result = useSelector((state) => state.election.resultat);
   const user = getUserData();
   const dispatch = useDispatch();
   const votant = useSelector((state) => state.election.nombreVotantGlobal);
-
-  const candidatData = [];
-  const candidat = [];
 
   const resultatData = [];
   result?.map((item) => {
@@ -39,7 +36,7 @@ const DepouillementInfo = () => {
           <StatsHorizontal
             icon={<FileText size={21} />}
             color="primary"
-            stats={getNombreElecteur().nombre}
+            stats={getNombreBV()[2]?.valeur}
             statTitle="Nombre inscrits"
           />
         </Col>
@@ -58,9 +55,9 @@ const DepouillementInfo = () => {
             stats={
               votant
                 ? parseFloat(
-                    (Number(votant[0]?.total_votant ?? 0) * 100) /
-                      Number(getNombreElecteur()?.nombre)
-                  ).toFixed(2) + " %"
+                  (Number(votant[0]?.total_votant ?? 0) * 100) /
+                  Number(getNombreBV()[2]?.valeur)
+                ).toFixed(2) + " %"
                 : 0
             }
             statTitle="Taux de participation"
