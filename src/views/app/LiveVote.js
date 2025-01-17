@@ -1,23 +1,15 @@
 import 'leaflet/dist/leaflet.css'
 import React from 'react'
-import { GeoJSON, Map, TileLayer } from 'react-leaflet'
+import { GeoJSON, Map } from 'react-leaflet'
 import usaStatesGeoJSON from '../../assets/usaGeo.json'
 
 const LiveVote = () => {
-    // Styles dynamiques pour les états
-    const getColor = (stateName) => {
-        const republicanStates = ['TX', 'FL', 'GA'] // Remplacez par vos données
-        const democratStates = ['CA', 'NY', 'WA']
-
-        if (republicanStates.includes(stateName)) return '#b22234' // Rouge
-        if (democratStates.includes(stateName)) return '#3c3b6e' // Bleu
-        return '#d3d3d3' // Gris
-    }
 
     const onEachFeature = (feature, layer) => {
-        const stateName = feature.properties.name // Nom de l'état depuis GeoJSON
+        const stateName = feature.properties.shapeName
+
         layer.setStyle({
-            fillColor: getColor(stateName),
+            fillColor: "red",
             weight: 1,
             color: 'white',
             fillOpacity: 1
@@ -28,7 +20,7 @@ const LiveVote = () => {
         layer.on('mouseover', (e) => {
             e.target.setStyle({
                 weight: 2,
-                color: 'black'
+                color: 'white'
             })
         })
 
@@ -41,13 +33,17 @@ const LiveVote = () => {
     }
 
     return (
-        <Map center={[37.8, -96]} zoom={4} style={{ height: '60vh', width: '60%' }}>
-            <TileLayer
-                attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a>'
-                url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
-            />
-            <GeoJSON data={usaStatesGeoJSON} onEachFeature={onEachFeature} />
-        </Map>
+        <div>
+            <Map center={[7.5468545, -5.547099500000002]} zoom={7} style={{ height: '80vh', width: '60%', zIndex: 0, borderRadius: "9px" }}>
+
+                <GeoJSON
+                    data={usaStatesGeoJSON} onEachFeature={onEachFeature} />
+            </Map>
+            <div>
+
+            </div>
+        </div>
+
     )
 }
 
