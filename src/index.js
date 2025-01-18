@@ -38,7 +38,6 @@ import "@styles/react/libs/react-hot-toasts/react-hot-toasts.scss"
 import 'leaflet/dist/leaflet.css'
 import "./@core/assets/fonts/feather/iconfont.css"
 import "./@core/scss/core.scss"
-import "./assets/scss/style.scss"
 
 // ** Service Worker
 import * as serviceWorker from "./serviceWorker"

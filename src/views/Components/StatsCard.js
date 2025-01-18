@@ -38,13 +38,13 @@ const StatsCard = () => {
 
   const data = [
     {
-      title: getNombreBV()[0].valeur,
+      title: getNombreBV()[0]?.valeur,
       subtitle: "Lieux de vote",
       color: "light-primary",
       icon: <MapPin size={18} />,
     },
     {
-      title: getNombreBV()[1].valeur,
+      title: getNombreBV()[1]?.valeur,
       subtitle: "Bureaux de vote",
       color: "light-info",
       icon: <Archive size={18} />,
@@ -56,7 +56,7 @@ const StatsCard = () => {
       icon: <Users size={18} />,
     },
     {
-      title: getNombreBV()[2].valeur,
+      title: getNombreBV()[2]?.valeur,
       subtitle: "Nombre d'inscrits",
       color: "light-success",
       icon: <User size={18} />,
@@ -72,7 +72,7 @@ const StatsCard = () => {
         parseFloat(
           (Number(votant[0]?.total_votant ?? 0) * 100) /
           Number(
-            getNombreBV()[2].valeur
+            getNombreBV()[2]?.valeur
           )
         ).toFixed(2) + " %",
       subtitle: "Taux de participations",

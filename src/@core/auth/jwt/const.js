@@ -4,7 +4,7 @@ import axios from "axios";
 import { getUserData } from "../../../utility/Utils";
 
 const user = getUserData();
-export const urlBase = "http://149.56.30.76:3000/";
+export const urlBase = "https://149.56.30.76:3000/";
 
 export const register = async (...args) => {
   return axios.post(`${urlBase}RegisterCandidatApp`, ...args);
